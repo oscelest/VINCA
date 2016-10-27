@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">VINCA</string>
+    <string name="search">Search</string>
+    <string name="action_settings">Settings</string>
+    <string name="notifications">Notifications</string>
+    <string name="log_out">Log Out</string>
 
 
     <string-array name="Planets">
