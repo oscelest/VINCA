@@ -13,11 +13,13 @@ import java.util.ArrayList;
 
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener {
 
-    private ArrayList<String> listItems = new ArrayList<String>();
+    private ArrayList<String> fileFolderList = new ArrayList<String>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_own, container, false);
-
+        fileFolderList.add("Folder 1");
+        fileFolderList.add("Folder 2");
+        fileFolderList.add("Folder 3");
 
         return view;
     }
@@ -25,7 +27,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.own_folder_list_item, R.id.projectTitle, fileFolderList);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
     }
