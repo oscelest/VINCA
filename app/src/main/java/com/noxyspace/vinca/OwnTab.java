@@ -9,9 +9,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener {
 
-    private String[] listItems = {"Folder 1", "Folder 2", "Folder 2"};
+    private ArrayList<String> listItems = new ArrayList<String>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_own, container, false);
@@ -23,7 +25,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Planets, android.R.layout.simple_list_item_1);
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
     }
