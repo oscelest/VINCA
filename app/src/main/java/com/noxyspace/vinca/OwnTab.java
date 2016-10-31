@@ -68,17 +68,8 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
     @Override
     public void onClick(View v) {
-        //fileFolderList.add("Folder " + folderNo++);
+        fileFolderList.add("Folder " + folderNo++);
 
-//        Date date = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy 'at' hh.mm.ss");
-//
-//
-//        View view = super.getView(position, cachedView, parent);
-//        TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-//        createdAt.setText("09-09-2016");
-//        TextView createdBy = (TextView) view.findViewById(R.id.lastEdit);
-//        createdBy.setText("Rune (" + dateFormat.format(date) + ")");
 
         adapter.notifyDataSetChanged();
     }
