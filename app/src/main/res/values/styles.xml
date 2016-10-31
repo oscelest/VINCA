@@ -3,9 +3,28 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="actionOverflowMenuStyle">@style/toolBarStyle</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="toolBarStyle" parent="AppTheme">
+
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">9dp</item>
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <item name="android:popupBackground">#FFF</item>
+
+    </style>
+
+   <!-- <style name="toolbarPopup" parent="@android:style/Widget.Holo.ListPopupWindow">
+
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">5dp</item>
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <item name="android:popupBackground">#FFF</item>
+
+    </style> -->
 
 </resources>

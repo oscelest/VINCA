@@ -23,6 +23,7 @@
         android:title="@string/action_settings"
         app:showAsAction="never"/>
 
+
     <item
         android:id="@+id/log_out"
         android:title="@string/log_out"
