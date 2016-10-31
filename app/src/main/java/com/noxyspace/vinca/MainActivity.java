@@ -1,18 +1,26 @@
 package com.noxyspace.vinca;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.util.Log;
+import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 import static android.graphics.Color.WHITE;
 
 
 public class MainActivity extends AppCompatActivity {
+
+
 
 
     @Override
@@ -61,5 +69,13 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_icons, menu); //your file name
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    public void onGroupItemClick(MenuItem item) {
+        // custom dialog
+        // One of the group items (using the onClick attribute) was clicked
+        // The item parameter passed here indicates which item it is
+        // All other menu item clicks are handled by onOptionsItemSelected()
     }
 }
