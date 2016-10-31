@@ -10,6 +10,6 @@ public class NewsTab extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_fragment_news, container, false);
+        return inflater.inflate(R.layout.news_tab_fragment, container, false);
     }
 }
