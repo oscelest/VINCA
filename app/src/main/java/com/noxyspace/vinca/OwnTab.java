@@ -1,6 +1,7 @@
 package com.noxyspace.vinca;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private ArrayList<String> fileFolderList = new ArrayList<String>();
     ArrayAdapter adapter;
     private int folderNo = 1;
-    private Button btn;
+    FloatingActionButton fab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,10 +33,9 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         fileFolderList.add("Folder " + folderNo++);
 
 
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
 
-
-        btn = (Button) view.findViewById(R.id.button);
-        btn.setOnClickListener(this);
 
         return view;
     }
