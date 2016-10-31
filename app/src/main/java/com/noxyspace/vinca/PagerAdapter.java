@@ -23,7 +23,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 OwnTab tab2 = new OwnTab();
                 return tab2;
             case 2:
-                recentTab tab3 = new recentTab();
+                RecentTab tab3 = new RecentTab();
                 return tab3;
             default:
                 return null;
