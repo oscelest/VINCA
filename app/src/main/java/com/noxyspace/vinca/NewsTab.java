@@ -15,6 +15,8 @@ public class NewsTab extends Fragment implements AdapterView.OnItemClickListener
 
     }
 
+    // Test
+
     @Override
     public void onClick(View v) {
 
