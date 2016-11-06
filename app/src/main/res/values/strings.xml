@@ -17,4 +17,31 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+
+    <string-array name="NewsTitle">
+        <item>NewsTitle0</item>
+        <item>NewsTitle1</item>
+        <item>NewsTitle2</item>
+        <item>NewsTitle3</item>
+        <item>NewsTitle4</item>
+        <item>NewsTitle5</item>
+        <item>NewsTitle6</item>
+        <item>NewsTitle7</item>
+        <item>NewsTitle8</item>
+        <item>NewsTitle9</item>
+    </string-array>
+
+    <string-array name="NewsDescription">
+        <item>NewsDescription0</item>
+        <item>NewsDescription1</item>
+        <item>NewsDescription2</item>
+        <item>NewsDescription3</item>
+        <item>NewsDescription4</item>
+        <item>NewsDescription5</item>
+        <item>NewsDescription6</item>
+        <item>NewsDescription7</item>
+        <item>NewsDescription8</item>
+        <item>NewsDescription9</item>
+    </string-array>
+
 </resources>

@@ -6,8 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
+
+import static com.noxyspace.vinca.R.id.NewsListWiev;
 
 public class NewsTab extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener{
+
+    ListView newsList;
+
+    public NewsTab() {
+        newsList = (ListView) newsList.findViewById(NewsListWiev);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
