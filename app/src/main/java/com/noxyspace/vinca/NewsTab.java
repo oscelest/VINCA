@@ -14,14 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-import static com.noxyspace.vinca.R.id.NewsListWiev;
-
 public class NewsTab extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener{
 
     ListView newsList;
 
     public NewsTab() {
-        newsList = (ListView) newsList.findViewById(NewsListWiev);
+        newsList = (ListView) newsList.findViewById(R.id.NewsListWiev);
     }
 
     @Override
@@ -67,10 +65,10 @@ class NewsAdapter extends BaseAdapter{
         Resources res = c.getResources();
         String[] titles = res.getStringArray(R.array.NewsTitle);
         String[] descriptions = res.getStringArray(R.array.NewsDescription);
-        int[] imiges = {    R.drawable.news_Icon,R.drawable.news_Icon,R.drawable.news_Icon,
-                            R.drawable.news_Icon,R.drawable.news_Icon,R.drawable.news_Icon,
-                            R.drawable.news_Icon,R.drawable.news_Icon,R.drawable.news_Icon,
-                            R.drawable.news_Icon};
+        int[] imiges = {    R.drawable.news_icon,R.drawable.news_icon,R.drawable.news_icon,
+                            R.drawable.news_icon,R.drawable.news_icon,R.drawable.news_icon,
+                            R.drawable.news_icon,R.drawable.news_icon,R.drawable.news_icon,
+                            R.drawable.news_icon};
 
         for (int i = 0 ; i < titles.length ; i++){
 
