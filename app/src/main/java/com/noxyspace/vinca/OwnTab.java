@@ -21,7 +21,8 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private ArrayList<String> fileFolderList = new ArrayList<String>();
     ArrayAdapter adapter;
     private int folderNo = 1;
-    FloatingActionButton fab;
+    FloatingActionButton fab_plus, fab_folder, fab_file;
+    boolean fab_plus_toggled = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,8 +34,12 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         fileFolderList.add("Folder " + folderNo++);
 
 
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        fab_plus = (FloatingActionButton) view.findViewById(R.id.fab_plus);
+        fab_folder = (FloatingActionButton) view.findViewById(R.id.fab_folder);
+        fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
+        fab_plus.setOnClickListener(this);
+        fab_folder.setOnClickListener(this);
+        fab_file.setOnClickListener(this);
 
 
         return view;
@@ -68,9 +73,19 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
     @Override
     public void onClick(View v) {
-        fileFolderList.add("Folder " + folderNo++);
-
-
+        if (v == fab_plus && !fab_plus_toggled){
+            fab_folder.setVisibility(View.VISIBLE);
+            fab_file.setVisibility(View.VISIBLE);
+            fab_plus_toggled = true;
+        }else {
+            fab_folder.setVisibility(View.INVISIBLE);
+            fab_file.setVisibility(View.INVISIBLE);
+            fab_plus_toggled = false;
+        }
+        if (v == fab_folder){
+            fileFolderList.add("Folder " + folderNo++);
+            fab_plus_toggled = false;
+        }
         adapter.notifyDataSetChanged();
     }
 }

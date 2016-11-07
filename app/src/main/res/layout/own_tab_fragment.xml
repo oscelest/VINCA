@@ -62,18 +62,48 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fab_plus"
+            android:backgroundTint="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
             android:src="@drawable/plus_button"
             android:clickable="true" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_folder"
+            android:backgroundTint="@color/White"
+            android:layout_above="@+id/fab_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/folder_blue"
+            android:visibility="invisible"
+            app:layout_anchor="@id/fab_plus"
+            app:layout_anchorGravity="top" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_file"
+            android:backgroundTint="@color/White"
+            android:layout_above="@+id/fab_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/file_blue"
+            android:visibility="invisible"
+            app:layout_anchor="@id/fab_folder"
+            app:layout_anchorGravity="top" />
 
     </RelativeLayout>
 
