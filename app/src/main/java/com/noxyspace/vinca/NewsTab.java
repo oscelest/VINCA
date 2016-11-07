@@ -1,8 +1,6 @@
 package com.noxyspace.vinca;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.os.Bundle;
 import android.view.View;
@@ -12,115 +10,90 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
-public class NewsTab extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener{
+public class NewsTab extends ListFragment implements AdapterView.OnItemClickListener {
+
+    private ArrayList<SingleRow> newsList = new ArrayList<SingleRow>();
+    private CustomAdapter adapter;
+    private int id = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.news_tab_fragment, container, false);
 
-        BaseAdapter adapter = new NewsAdapter(this.getContext());
+        newsList.add(new SingleRow("Titel " + id, "Beskrivelse " + id++));
+        newsList.add(new SingleRow("Titel " + id, "Beskrivelse " + id++));
+        newsList.add(new SingleRow("Titel " + id, "Beskrivelse " + id++));
 
-        ListView listView = new ListView(this.getContext());
-        listView.setOnItemClickListener(this);
-        listView.setAdapter(adapter);
-
-        listView.setSelector(android.R.drawable.ic_notification_overlay);
-
-        // setContentView(listView);
-
-
-        return inflater.inflate(R.layout.news_tab_fragment, container, false);
+        return view;
     }
 
-
     @Override
-    public void onClick(View v) {
-
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        adapter = new CustomAdapter();
+        setListAdapter(adapter);
+        getListView().setOnItemClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
     }
 
+    class SingleRow {
 
-}
+        String title, description;
+        int image;
 
-class singleRow{
-
-    String title, description;
-    int image;
-
-    singleRow(String title, String description, int image){
-        this.title = title;
-        this.description = description;
-        this.image = image;
-    }
-}
-
-class NewsAdapter extends BaseAdapter{
-
-    ArrayList<singleRow> list;
-
-    Context context;
-
-    NewsAdapter(Context c){
-
-        context = c;
-
-        list = new ArrayList<>();
-        Resources res = c.getResources();
-        String[] titles = res.getStringArray(R.array.NewsTitle);
-        String[] descriptions = res.getStringArray(R.array.NewsDescription);
-        int[] imiges = {    R.drawable.news_icon,R.drawable.news_icon,R.drawable.news_icon,
-                            R.drawable.news_icon,R.drawable.news_icon,R.drawable.news_icon,
-                            R.drawable.news_icon,R.drawable.news_icon,R.drawable.news_icon,
-                            R.drawable.news_icon};
-
-        for (int i = 0 ; i < titles.length ; i++){
-
-            list.add(new singleRow(titles[i], descriptions[i], imiges[i]));
-
+        SingleRow(String title, String description) {
+            this.title = title;
+            this.description = description;
+            //this.image = image;
         }
 
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 
+    public class CustomAdapter extends BaseAdapter {
 
-    @Override
-    public int getCount() {
-        return list.size();
-    }
+        @Override
+        public int getCount() {
+            return newsList.size();
+        }
 
-    @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+        @Override
+        public View getView(int position, View view, ViewGroup parent) {
+            int type = getItemViewType(position);
+            if (view == null) {
+                    view = getActivity().getLayoutInflater().inflate(R.layout.news_element, null);
+            }
+                ImageView img = (ImageView) view.findViewById(R.id.newsImage);
+                TextView title = (TextView) view.findViewById(R.id.newsTitle);
+                title.setText(newsList.get(position).getTitle());
+                TextView description = (TextView) view.findViewById(R.id.newsDescription);
+                description.setText(newsList.get(position).getDescription());
 
-        System.out.println("getView er kaldt");
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.news_element, parent,false);
-        TextView title = (TextView) row.findViewById(R.id.newsTitle);
-        TextView description = (TextView) row.findViewById(R.id.newsDescription);
-        ImageView image = (ImageView) row.findViewById(R.id.newsImage);
-
-
-
-        singleRow temp = list.get(position);
-
-        title.setText(temp.title);
-        description.setText(temp.description);
-        image.setImageResource(temp.image);
-
-        return row;
+            return view;
+        }
     }
 }
