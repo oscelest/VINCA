@@ -19,4 +19,12 @@ public class FolderItem {
         lastEditString = editor + " (" + dateFormat.format(new Date() + ")");
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getEditor() {
+        return editor;
+    }
+
 }

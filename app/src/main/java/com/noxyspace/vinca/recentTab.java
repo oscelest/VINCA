@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
-public class recentTab extends ListFragment {
+public class RecentTab extends ListFragment {
 
     private ArrayList<String> recentList = new ArrayList<String>();
     private int fileNo = 1;

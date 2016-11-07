@@ -67,7 +67,7 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_plus"
-            android:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -79,7 +79,7 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_folder"
-            android:backgroundTint="@color/White"
+            app:backgroundTint="@color/White"
             android:layout_above="@+id/fab_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_file"
-            android:backgroundTint="@color/White"
+            app:backgroundTint="@color/White"
             android:layout_above="@+id/fab_folder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
