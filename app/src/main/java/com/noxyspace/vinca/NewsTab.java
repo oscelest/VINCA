@@ -16,17 +16,23 @@ import java.util.ArrayList;
 
 public class NewsTab extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener{
 
-    ListView newsList;
-
-    public NewsTab() {
-        newsList = (ListView) newsList.findViewById(R.id.NewsListWiev);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.news_tab_fragment, container, false);
 
+        BaseAdapter adapter = new NewsAdapter(this.getContext());
+
+        ListView listView = new ListView(this.getContext());
+        listView.setOnItemClickListener(this);
+        listView.setAdapter(adapter);
+
+        listView.setSelector(android.R.drawable.ic_notification_overlay);
+
+        // setContentView(listView);
+
+
+        return inflater.inflate(R.layout.news_tab_fragment, container, false);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -37,6 +43,8 @@ public class NewsTab extends Fragment implements AdapterView.OnItemClickListener
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
+
+
 }
 
 class singleRow{
@@ -78,6 +86,7 @@ class NewsAdapter extends BaseAdapter{
 
     }
 
+
     @Override
     public int getCount() {
         return list.size();
@@ -96,11 +105,15 @@ class NewsAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        System.out.println("getView er kaldt");
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(R.layout.news_element, parent,false);
         TextView title = (TextView) row.findViewById(R.id.newsTitle);
         TextView description = (TextView) row.findViewById(R.id.newsDescription);
         ImageView image = (ImageView) row.findViewById(R.id.newsImage);
+
+
 
         singleRow temp = list.get(position);
 
