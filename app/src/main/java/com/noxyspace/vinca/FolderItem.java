@@ -6,7 +6,7 @@ import java.util.Date;
 public class FolderItem {
     private String title, editor, createdAt, updatedAt, lastEditString;
     private int id = 0;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy 'at' hh.mm.ss");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy 'at' HH.mm.ss");
 
     public FolderItem(String title, String editor) {
         this.title = title;
@@ -27,4 +27,11 @@ public class FolderItem {
         return editor;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
 }
