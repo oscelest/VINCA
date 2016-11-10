@@ -142,6 +142,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         }
         if (v == fab_folder){
             createFolderDialog();
+
             fab_plus_toggled = false;
         } if (v == fab_file) {
             createFileDialog();
@@ -205,7 +206,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String s = folderTitle.getText().toString();
-                directoryObjects.add(new File(fileID++, s, "Rune", 1, false, (int)(System.currentTimeMillis() / 1000)));
+                directoryObjects.add(new Folder(fileID++, s, "Rune", 1, false));
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
