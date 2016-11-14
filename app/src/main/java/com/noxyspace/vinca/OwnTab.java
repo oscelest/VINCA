@@ -208,16 +208,16 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
             if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.Folder) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.folder_item, null);
-                ImageView img = (ImageView) view.findViewById(R.id.icon);
-//                img.setImageResource(R.drawable.folder_blue);
+                ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
+
                 TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
                 folderName.setText(directoryObjects.get(position).getTitle());
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);
                 editor.setText(directoryObjects.get(position).getOwnerName());
             } else {
                 view = getActivity().getLayoutInflater().inflate(R.layout.file_item, null);
-                ImageView img = (ImageView) view.findViewById(R.id.icon);
-//                img.setImageResource(R.drawable.file_blue);
+                ImageView img = (ImageView) view.findViewById(R.id.file_icon);
+
                 TextView fileName = (TextView) view.findViewById(R.id.projectTitle);
                 fileName.setText(directoryObjects.get(position).getTitle());
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);

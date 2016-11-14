@@ -8,14 +8,15 @@
     android:paddingBottom="15dp">
 
 
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_action_name"
-        android:id="@+id/icon"
-        android:paddingLeft="30dp"
-        android:paddingRight="15dp"/>
+    <ImageButton
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/file_white"
+        android:background="@drawable/circle"
+        android:gravity="center_vertical|center_horizontal"
+        android:id="@+id/file_icon"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
