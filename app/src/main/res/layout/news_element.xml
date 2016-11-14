@@ -14,7 +14,7 @@
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/beslut_icon"
+            app:srcCompat="@mipmap/confirm_icon"
             android:layout_gravity="top"
             android:id="@+id/newsImage" />
 

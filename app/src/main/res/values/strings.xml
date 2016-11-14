@@ -47,11 +47,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Own_tab_fragment start-->
-    <string name="pte">Project Title</string>
-    <string name="cA_ce">Created at</string>
-    <string name="las">Last Edited By</string>
-    <!-- Own_tab_fragment end-->
+    <!-- settings_dialog_fragment start-->
+    <string name="settings">Settings</string>
+    <!-- settings_dialog_fragment start end-->
 
     <!-- Own_tab_fragment start-->
     <string name="projectTitle_columnName">Project Title</string>
