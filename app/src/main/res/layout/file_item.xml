@@ -7,10 +7,12 @@
     android:paddingTop="15dp"
     android:paddingBottom="15dp">
 
+
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/folder_black_24dp"
+        app:srcCompat="@drawable/ic_action_name"
         android:id="@+id/icon"
         android:paddingLeft="30dp"
         android:paddingRight="15dp"/>
@@ -23,7 +25,9 @@
         android:id="@+id/projectTitle"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:paddingTop="2dp"/>
+        android:textAlignment="textStart"
+        android:paddingTop="2dp"
+        android:maxLines="1"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +36,8 @@
         android:id="@+id/createdAt"
         android:layout_weight="1"
         android:paddingTop="2dp"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:ellipsize="end"/>
 
     <TextView
         android:layout_width="wrap_content"

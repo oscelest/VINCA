@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +26,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private int fileID = 0;
     private int folderID = 0;
 
-
-    private ArrayList<FolderItem> folderItems = new ArrayList<FolderItem>();
-    private ArrayList<FolderItem> fileItems = new ArrayList<FolderItem>();
     private CustomAdapter adapter;
-    private int folderNo = 1;
     private FloatingActionButton fab_plus, fab_folder, fab_file;
     private boolean fab_plus_toggled = false;
 
@@ -40,65 +37,8 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         directoryObjects.add(new Folder(folderID++, "Title 1", "Rune1", 1, false));
         directoryObjects.add(new File(fileID++, "File 1", "Rune", 1, false, (int)(System.currentTimeMillis() / 1000)));
         directoryObjects.add(new Folder(folderID++, "Title 2", "Rune2", 2, false));
-        directoryObjects.add(new File(fileID++, "File 1", "Rune", 1, false, (int)(System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new File(fileID++, "File 2", "Rune", 1, false, (int)(System.currentTimeMillis() / 1000)));
 
-        Collections.sort(directoryObjects, new Comparator<DirectoryObject>() {
-            @Override
-            public int compare(DirectoryObject dirObject1, DirectoryObject dirObject2)
-            {
-                if(dirObject1 instanceof Folder && dirObject2 instanceof File)
-                {
-                    return -1;
-                }
-                else if(dirObject1 instanceof File && dirObject2 instanceof Folder)
-                {
-                    return 1;
-                }
-
-                return 0;
-            }
-        });
-
-
-//        file1 = new Leaf("File 1", "Rune1");
-//        file2 = new Leaf("File 2", "Rune2");
-//        file3 = new Leaf("File 3", "Rune3");
-//        file4 = new Leaf("File 4", "Rune4");
-//        file5 = new Leaf("File 5", "Rune5");
-//        file6 = new Leaf("File 6", "Rune6");
-//        files1 = new ArrayList<Leaf>();
-//        files1.add(file1);
-//        files1.add(file2);
-//        files1.add(file3);
-//
-//        files2.add(file4);
-//        files2.add(file5);
-//
-//        files3.add(file6);
-//
-//
-//        folder2 = new Node(new ArrayList(), files2, "Folder 2", "Editor2");
-//        folder3 = new Node(new ArrayList(), files3, "Folder 3", "Editor3");
-//
-//        folder1 = new Node(dirs1, files1, "Folder 1", "Editor1");
-//
-//        dirs2 = new ArrayList<Node>();
-//        dirs2.add(new Node(new ArrayList(), files2, "Dirs 2", "Rune2"));
-//
-//        dirs1 = new ArrayList<Node>();
-//        dirs1.add(folder2);
-//        dirs1.add((folder3));
-
-
-
-
-        folderItems.add(new FolderItem("Folder 1", "Rune "));
-        folderItems.add(new FolderItem("Folder 2", "Magnus "));
-        folderItems.add(new FolderItem("Folder 3", "Andreas "));
-
-        fileItems.add(new FolderItem("Folder 1", "Oliver "));
-        fileItems.add(new FolderItem("Folder 2", "Mikkel "));
-        fileItems.add(new FolderItem("Folder 3", "Valdemar "));
 
         fab_plus = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_folder = (FloatingActionButton) view.findViewById(R.id.fab_folder);
@@ -148,6 +88,12 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             createFileDialog();
             fab_plus_toggled = false;
         }
+        int i = 0;
+        for (DirectoryObject s : directoryObjects) {
+            Log.d("Object" + i++, s.getTitle() + " Type: " + s.getType());
+        }
+        Log.d("size:", "" + directoryObjects.size());
+
         adapter.notifyDataSetChanged();
     }
 
@@ -191,7 +137,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         builder.setView(inflater.inflate(R.layout.fragment_create_folder_dialog, null));
-        builder.setTitle("Filens navn:");
+        builder.setTitle("Mappens navn:");
 
 //          Set up the input
         final EditText folderTitle = new EditText(getActivity());
@@ -206,7 +152,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String s = folderTitle.getText().toString();
-                directoryObjects.add(new Folder(fileID++, s, "Rune", 1, false));
+                directoryObjects.add(new Folder(folderID++, s, "Rune", 1, false));
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -254,25 +200,47 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         public View getView(int position, View view, ViewGroup parent) {
             if (view == null) {
                 if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.Folder) {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.folder_list_item, null);
+                    view = getActivity().getLayoutInflater().inflate(R.layout.folder_item, null);
                 } else {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.file_list_item, null);
+                    view = getActivity().getLayoutInflater().inflate(R.layout.file_item, null);
                 }
             }
 
             if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.Folder) {
+                view = getActivity().getLayoutInflater().inflate(R.layout.folder_item, null);
                 ImageView img = (ImageView) view.findViewById(R.id.icon);
+//                img.setImageResource(R.drawable.folder_blue);
                 TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
                 folderName.setText(directoryObjects.get(position).getTitle());
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-                editor.setText(directoryObjects.get(position).getOwnerName() + " (" + folderItems.get(position).getUpdatedAt() + ")");
+                editor.setText(directoryObjects.get(position).getOwnerName());
             } else {
+                view = getActivity().getLayoutInflater().inflate(R.layout.file_item, null);
                 ImageView img = (ImageView) view.findViewById(R.id.icon);
+//                img.setImageResource(R.drawable.file_blue);
                 TextView fileName = (TextView) view.findViewById(R.id.projectTitle);
                 fileName.setText(directoryObjects.get(position).getTitle());
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);
                 editor.setText(directoryObjects.get(position).getOwnerName());
             }
+
+            Collections.sort(directoryObjects, new Comparator<DirectoryObject>() {
+                @Override
+                public int compare(DirectoryObject dirObject1, DirectoryObject dirObject2)
+                {
+                    if(dirObject1 instanceof Folder && dirObject2 instanceof File)
+                    {
+                        return -1;
+                    }
+                    else if(dirObject1 instanceof File && dirObject2 instanceof Folder)
+                    {
+                        return 1;
+                    }
+
+                    return 0;
+                }
+            });
+            notifyDataSetChanged();
             return view;
         }
     }
