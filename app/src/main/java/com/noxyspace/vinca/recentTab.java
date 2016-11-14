@@ -29,7 +29,7 @@ public class RecentTab extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new ArrayAdapter(getActivity(), R.layout.file_list_item, R.id.projectTitle, recentList);
+        adapter = new ArrayAdapter(getActivity(), R.layout.file_item, R.id.projectTitle, recentList);
         setListAdapter(adapter);
 
     }
