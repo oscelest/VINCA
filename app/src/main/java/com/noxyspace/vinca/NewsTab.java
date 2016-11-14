@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,7 +98,7 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
         // Position is position in the list, 0 is first
     }
 
-    class SingleRow {
+    private class SingleRow {
 
         private String title, description;
         private int image;
@@ -116,6 +115,23 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
 
         public String getDescription() {
             return description;
+        }
+    }
+
+    private class singleNews{
+        private String fullTitle, fullDescription;
+
+        singleNews(String fullTitle, String fullDescription){
+            this.fullTitle = fullTitle;
+            this.fullDescription = fullDescription;
+        }
+
+        public String getFullTitle(){
+            return fullTitle;
+        }
+
+        public String getFullDescription(){
+            return fullDescription;
         }
     }
 
