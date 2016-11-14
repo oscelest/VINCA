@@ -83,6 +83,8 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_folder"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
             app:backgroundTint="@color/White"
             android:layout_above="@+id/fab_plus"
             android:layout_width="wrap_content"
@@ -97,6 +99,8 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_file"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
             app:backgroundTint="@color/White"
             android:layout_above="@+id/fab_folder"
             android:layout_width="wrap_content"
