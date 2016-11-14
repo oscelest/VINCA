@@ -7,7 +7,7 @@
     android:paddingTop="15dp"
     android:paddingBottom="15dp">
 
-    <ImageButton
+    <ImageView
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/folder_white"
