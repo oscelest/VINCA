@@ -10,35 +10,36 @@
         android:orientation="horizontal"
         android:paddingTop="13dp"
         android:paddingBottom="13dp"
-        android:paddingLeft="30dp">
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Project Title"
+            android:text="@string/projectTitle_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@color/black"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Created at"
+            android:text="@string/createdAt_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:textSize="17dp"
+            android:textSize="15sp"
             android:textColor="@color/black"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last Edited By"
+            android:text="@string/lastEditedBy_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@color/black"
             />
 
