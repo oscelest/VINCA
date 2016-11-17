@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("News"));
-        tabLayout.addTab(tabLayout.newTab().setText("Own"));
-        tabLayout.addTab(tabLayout.newTab().setText("Recent"));
+        tabLayout.addTab(tabLayout.newTab().setText("My Projects"));
+        tabLayout.addTab(tabLayout.newTab().setText("Recent Projects"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
