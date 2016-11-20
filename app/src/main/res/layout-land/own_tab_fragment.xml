@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +26,7 @@
             android:text="@string/projectTitle_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
+            android:gravity="center"
             android:textSize="15sp"
             android:textColor="@color/black"
             />
@@ -34,6 +37,7 @@
             android:text="@string/createdAt_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
+            android:gravity="center"
             android:textSize="15sp"
             android:textColor="@color/black"
             />
@@ -45,6 +49,7 @@
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="15sp"
+            android:gravity="center"
             android:textColor="@color/black"
             />
 

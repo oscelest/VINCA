@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("News"));
-        tabLayout.addTab(tabLayout.newTab().setText("My Projects"));
-        tabLayout.addTab(tabLayout.newTab().setText("Recent Projects"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.newsTab));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.myProjects));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.recent));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
