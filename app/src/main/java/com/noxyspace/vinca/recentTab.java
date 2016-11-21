@@ -22,15 +22,13 @@ public class RecentTab extends ListFragment {
         recentList.add("File " + fileNo++);
         recentList.add("File " + fileNo++);
 
-
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new ArrayAdapter(getActivity(), R.layout.file_item, R.id.projectTitle, recentList);
+        adapter = new ArrayAdapter(getActivity(), R.layout.directory_object_item, R.id.projectTitle, recentList);
         setListAdapter(adapter);
-
     }
 }

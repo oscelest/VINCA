@@ -23,8 +23,6 @@ import java.util.Comparator;
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private ArrayList<DirectoryObject> directoryObjects = new ArrayList<DirectoryObject>();
-    private int fileID = 0;
-    private int folderID = 0;
 
     private CustomAdapter adapter;
     private FloatingActionButton fab_plus, fab_folder, fab_file;
@@ -34,10 +32,10 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
 
-        directoryObjects.add(new Folder(folderID++, "Blabsfdsvgsgsgsdfgsfgsfjdgsfdigposfdigposfdhigåashidfuoghåafudoghågl", "Rune1", 1, false));
-        directoryObjects.add(new File(fileID++, "File 1 adfsdpfjsdfjsdåfjsåpfjsdåpfsdåp¨fsdfsdfdsfsdfsdfsd", "Rune", 1, false, (int)(System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new Folder(folderID++, "Folder 2", "Rune2", 2, false));
-        directoryObjects.add(new File(fileID++, "File 2", "Rune", 1, false, (int)(System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new Folder(0, "Mappe 1", "Rune1", 1, false));
+        directoryObjects.add(new File(0, "File 1", "Rune", 1, false, (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new Folder(1, "Folder 2", "Rune2", 2, false));
+        directoryObjects.add(new File(1, "File 2", "Rune", 1, false, (int) (System.currentTimeMillis() / 1000)));
 
         fab_plus = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_folder = (FloatingActionButton) view.findViewById(R.id.fab_folder);
@@ -65,25 +63,25 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         } else if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.Folder) {
             Toast.makeText(getActivity(), "Folder: " + position, Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
     public void onClick(View v) {
-        if (v == fab_plus && !fab_plus_toggled){
+        if (v == fab_plus && !fab_plus_toggled) {
             fab_folder.setVisibility(View.VISIBLE);
             fab_file.setVisibility(View.VISIBLE);
             fab_plus_toggled = true;
-        }else {
+        } else {
             fab_folder.setVisibility(View.INVISIBLE);
             fab_file.setVisibility(View.INVISIBLE);
             fab_plus_toggled = false;
         }
-        if (v == fab_folder){
+        if (v == fab_folder) {
             createFolderDialog();
 
             fab_plus_toggled = false;
-        } if (v == fab_file) {
+        }
+        if (v == fab_file) {
             createFileDialog();
             fab_plus_toggled = false;
         }
@@ -102,7 +100,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         builder.setView(inflater.inflate(R.layout.fragment_create_folder_dialog, null));
-            builder.setTitle(R.string.filesName);
+        builder.setTitle(R.string.filesName);
 
 //          Set up the input
         final EditText fileTitle = new EditText(getActivity());
@@ -117,7 +115,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String s = fileTitle.getText().toString();
-                    directoryObjects.add(new File(fileID++, s, "Rune", 1, false, (int)(System.currentTimeMillis() / 1000)));
+                directoryObjects.add(new File(3, s, "Rune", 1, false, (int) (System.currentTimeMillis() / 1000)));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -151,7 +149,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String s = folderTitle.getText().toString();
-                    directoryObjects.add(new Folder(folderID++, s, "Rune", 1, false));
+                directoryObjects.add(new Folder(3, s, "Rune", 1, false));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -160,7 +158,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                 dialog.cancel();
             }
         });
-
         builder.show();
     }
 
@@ -188,7 +185,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
         @Override
         public int getItemViewType(int position) {
-            if (position < directoryObjects.size()) {
+            if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.File) {
                 return 0;
             } else {
                 return 1;
@@ -198,54 +195,28 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             if (view == null) {
-                if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.Folder) {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.folder_item, null);
-                } else {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.file_item, null);
-                }
+                view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             }
 
-            if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.Folder) {
-                view = getActivity().getLayoutInflater().inflate(R.layout.folder_item, null);
-                ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
-
-                TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
-                if (directoryObjects.get(position).getTitle().length() > 16) {
-                    folderName.setText(directoryObjects.get(position).getTitle().substring(0, 16) + "...");
-                } else {
-                    folderName.setText(directoryObjects.get(position).getTitle());
-                }
-
-//                TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-//                editor.setText(directoryObjects.get(position).getOwnerName());
-                TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-                createdAt.setText(directoryObjects.get(position).getDate());
-            } else {
-                view = getActivity().getLayoutInflater().inflate(R.layout.file_item, null);
-                ImageView img = (ImageView) view.findViewById(R.id.file_icon);
-
-                TextView fileName = (TextView) view.findViewById(R.id.projectTitle);
-                if (directoryObjects.get(position).getTitle().length() > 16) {
-                    fileName.setText(directoryObjects.get(position).getTitle().substring(0, 16) + "...");
-                } else {
-                    fileName.setText(directoryObjects.get(position).getTitle());
-                }
+            //view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
+            ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
+            if (directoryObjects.get(position).getType() == DirectoryObject.ObjectType.File) {
+                img.setImageResource(R.drawable.file_white);
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-                editor.setText(directoryObjects.get(position).getOwnerName() + " " + directoryObjects.get(position).getDate() + "Ikke rigtige dato");
-                TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-                createdAt.setText(directoryObjects.get(position).getDate());
+                editor.setText(directoryObjects.get(position).getOwnerName() + " " + directoryObjects.get(position).getDate());
             }
+
+            TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
+            folderName.setText(directoryObjects.get(position).getTitle());
+            TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
+            createdAt.setText(directoryObjects.get(position).getDate());
 
             Collections.sort(directoryObjects, new Comparator<DirectoryObject>() {
                 @Override
-                public int compare(DirectoryObject dirObject1, DirectoryObject dirObject2)
-                {
-                    if(dirObject1 instanceof Folder && dirObject2 instanceof File)
-                    {
+                public int compare(DirectoryObject dirObject1, DirectoryObject dirObject2) {
+                    if (dirObject1 instanceof Folder && dirObject2 instanceof File) {
                         return -1;
-                    }
-                    else if(dirObject1 instanceof File && dirObject2 instanceof Folder)
-                    {
+                    } else if (dirObject1 instanceof File && dirObject2 instanceof Folder) {
                         return 1;
                     }
 
