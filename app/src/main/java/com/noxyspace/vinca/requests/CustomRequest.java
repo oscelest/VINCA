@@ -14,7 +14,31 @@ import java.util.Map;
 public class CustomRequest extends Request<JSONObject>
 {
     private static final String SERVER_URL = "http://178.62.117.85:8080";
+
+    /* User URL
+     * GET = Get user object/info ('/' = admin-only/all users, '/self' = own user, '/:id' = user with given id)
+     * POST = Register user object
+     * PUT = Update user object/info ('/' and '/self' = own user, '/:id' = admin-only/user with given id)
+     * DELETE = Delete user object ('/self' = own user, '/:id' = admin-only/user with given id)
+     * */
     protected static final String USER_URL = SERVER_URL + "/api/users";
+
+    /* News URL
+     * GET = Get news object(s) ('/' = all news, '/:Id' = news with given id)
+     * POST = Create news object (admin-only)
+     * PUT = Update news object ('/:id' = admin-only/news with given id)
+     * DELETE = Delete news object ('/:id' = admin-only/news with given id)
+     * */
+    protected static final String NEWS_URL = SERVER_URL + "/api/news";
+
+    /* File/Folder URL
+     * GET = Get object(s) ('/' = all objects, '/self' = current users objects, '/:Id' = object with given id)
+     * POST = Create object
+     * PUT = Update object ('/:id' = object with given id)
+     * DELETE = Delete object ('/:id' = object with given id, '/:id/permanently' = object with given id, but permanently)
+     * */
+    protected static final String FILES_URL = SERVER_URL + "/api/files";
+    protected static final String FOLDERS_URL = SERVER_URL + "/api/folders";
 
     private Listener<JSONObject> listener;
     private Map<String, String> params;
