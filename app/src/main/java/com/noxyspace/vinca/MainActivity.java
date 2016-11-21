@@ -9,9 +9,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.noxyspace.vinca.requests.Users.RegisterRequest;
+
 import static android.graphics.Color.WHITE;
 
+import com.android.volley.*;
+import com.android.volley.toolbox.*;
+
 public class MainActivity extends AppCompatActivity {
+    RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
+                viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -51,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        this.initializeRequestQueue();
+        //this.mRequestQueue.add(new RegisterRequest("123123asda@asdasdas.com", "asdasd", "asdasd", "somename", "lastname"));
     }
 
     @Override
@@ -66,5 +75,13 @@ public class MainActivity extends AppCompatActivity {
         // One of the group items (using the onClick attribute) was clicked
         // The item parameter passed here indicates which item it is
         // All other menu item clicks are handled by onOptionsItemSelected()
+    }
+
+    private void initializeRequestQueue() {
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+        Network network = new BasicNetwork(new HurlStack());
+
+        this.mRequestQueue = new RequestQueue(cache, network);
+        this.mRequestQueue.start();
     }
 }
