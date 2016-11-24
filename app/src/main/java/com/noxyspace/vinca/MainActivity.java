@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.noxyspace.vinca.requests.Users.RegisterRequest;
+import com.noxyspace.vinca.requests.Users.LoginRequest;
 
 import static android.graphics.Color.WHITE;
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.initializeRequestQueue();
         //this.mRequestQueue.add(new RegisterRequest("123123asda@asdasdas.com", "asdasd", "asdasd", "somename", "lastname"));
+        //this.mRequestQueue.add(new LoginRequest("someding@live.com", "asdasd"));
     }
 
     @Override

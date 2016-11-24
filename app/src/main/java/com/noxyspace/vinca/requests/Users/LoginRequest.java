@@ -15,7 +15,7 @@ public class LoginRequest extends CustomRequest
     public LoginRequest(String email, String password)
     {
         /* Login is not yet added to the server's REST events */
-        super(Method.POST, USER_URL, generateParamsList(email, password),
+        super(Method.POST, USER_URL + "/login", generateParamsList(email, password),
             new Response.Listener<JSONObject>()
             {
                 @Override
