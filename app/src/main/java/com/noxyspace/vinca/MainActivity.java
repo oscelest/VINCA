@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.noxyspace.vinca.requests.Users.RegisterRequest;
 import com.noxyspace.vinca.requests.Users.LoginRequest;
 
@@ -16,6 +17,7 @@ import static android.graphics.Color.WHITE;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
     RequestQueue mRequestQueue;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
