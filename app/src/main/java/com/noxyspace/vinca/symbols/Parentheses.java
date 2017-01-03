@@ -5,6 +5,7 @@ import java.util.List;
 public class Parentheses extends Symbol {
 
     private List<Symbol> contents;
+    private boolean isColapsed;
 
     public Parentheses(int id, String title, String description) {
         super(id, title, description);
@@ -14,6 +15,8 @@ public class Parentheses extends Symbol {
         super(id, title, description);
 
         this.contents = contents;
+
+        isColapsed = false;
     }
 
     /**
@@ -34,21 +37,23 @@ public class Parentheses extends Symbol {
     }
 
     /**
-     * Placeholder method for colapsing the Process, returns this to the callee
-     * @return this
+     * Sets the isColapsed to true
      */
 
-    public Symbol colapse(){
-        return this;
+    public void colapse(){
+        isColapsed = true;
     }
 
     /**
-     * Placeholder method for expanding the Process, returns this to the callee
-     * @return this
+     * Sets the isColapsed to false
      */
 
-    public Symbol expand(){
-        return this;
+    public void expand(){
+        isColapsed = false;
+    }
+
+    public boolean isColapsed(){
+        return isColapsed;
     }
 
 }
