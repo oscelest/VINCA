@@ -16,4 +16,8 @@ public class File extends DirectoryObject {
     public String getLastUpdatedString() {
         return dateFormat.format(lastUpdated);
     }
+
+    public void onClick(){
+
+    }
 }
