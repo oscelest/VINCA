@@ -40,7 +40,7 @@
 
     <!-- Own_tab_fragment start-->
     <string name="projectTitle_columnName">Project Title</string>
-    <string name="createdAt_columnName">Created at</string>
+    <string name="createdAt_columnName">Created At</string>
     <string name="lastEditedBy_columnName">Last Edited By</string>
     <string name="newsTab">News</string>
     <string name="myProjects">My Projects</string>
