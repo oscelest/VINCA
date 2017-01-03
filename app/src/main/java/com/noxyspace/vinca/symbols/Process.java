@@ -1,16 +1,14 @@
 package com.noxyspace.vinca.symbols;
 
-public class Process extends Symbol {
+import java.util.List;
 
-    private boolean isStart;
+public class Process extends Parentheses {
 
-    public Process(int id, String title, String description, boolean isStart) {
+    public Process(int id, String title, String description) {
         super(id, title, description);
-
-        this.isStart = isStart;
     }
 
-    public boolean getIsStart(){
-        return isStart;
+    public Process(int id, String title, String description, List<Symbol> contents) {
+        super(id, title, description, contents);
     }
 }
