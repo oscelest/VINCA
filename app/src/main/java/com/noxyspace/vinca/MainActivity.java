@@ -1,8 +1,11 @@
 package com.noxyspace.vinca;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,6 +18,7 @@ import com.noxyspace.vinca.requests.Users.RegisterRequest;
 import com.noxyspace.vinca.requests.Users.LoginRequest;
 
 import static android.graphics.Color.WHITE;
+import static com.noxyspace.vinca.R.id.log_out;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -70,6 +74,45 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.app_bar_search:
+                return true;
+            case R.id.notifications:
+                return true;
+            case R.id.action_settings:
+                return true;
+            case R.id.log_out:
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setMessage("Are you sure you want to logout?");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton(
+                        "Logout",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                                startActivity(intent);
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public void onGroupItemClick(MenuItem item) {
         // custom dialog
