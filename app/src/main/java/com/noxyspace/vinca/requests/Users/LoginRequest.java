@@ -1,8 +1,8 @@
 package com.noxyspace.vinca.requests.Users;
 
 import com.android.volley.*;
-import com.noxyspace.vinca.Objects.ApplicationObject;
-import com.noxyspace.vinca.Objects.UserObject;
+import com.noxyspace.vinca.objects.ApplicationObject;
+import com.noxyspace.vinca.objects.UserObject;
 import com.noxyspace.vinca.requests.CustomRequest;
 
 import org.json.JSONException;

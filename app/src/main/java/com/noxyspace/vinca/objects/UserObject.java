@@ -1,6 +1,4 @@
-package com.noxyspace.vinca.Objects;
-
-import java.text.SimpleDateFormat;
+package com.noxyspace.vinca.objects;
 
 public class UserObject {
 
