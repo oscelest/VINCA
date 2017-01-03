@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.noxyspace.vinca.Objects.DirectoryObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

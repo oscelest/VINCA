@@ -1,5 +1,7 @@
 package com.noxyspace.vinca;
 
+import com.noxyspace.vinca.Objects.DirectoryObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
