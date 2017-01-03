@@ -1,59 +1,61 @@
-package com.noxyspace.vinca.Objects;
+package com.noxyspace.vinca.objects;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DirectoryObject {
-    public enum ObjectType {
-        File, Folder
+
+    private String title, owner_name, icon_name;
+    private int id, owner_id;
+    private boolean shared;
+    private boolean folder;
+    private String created;
+    private String updated;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+    public DirectoryObject(int id, String title, String owner_name, int owner_id, boolean folder, int created, int updated) {
+        this.id = id;
+        this.title = title;
+        this.owner_name = owner_name;
+        this.owner_id = owner_id;
+        this.shared = false;
+        this.created = dateFormat.format(new Date(created));
+        this.updated = dateFormat.format(new Date(updated));
     }
 
-    private String title, ownerName, iconName;
-    private int ID, ownerID;
-    private boolean shared;
-    private ObjectType type;
-    private String date;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy 'at' HH.mm");
+    public int getID() {
+        return id;
+    }
 
-    public DirectoryObject(int ID, String title, ObjectType type, String ownerName, int ownerID, boolean shared) {
-        this.ID = ID;
-        this.title = title;
-        this.ownerName = ownerName;
-        this.ownerID = ownerID;
-        this.shared = shared;
-        this.type = type;
-        date = dateFormat.format(new Date());
+    public int getOwnerID() {
+        return owner_id;
+    }
+
+    public String getOwnerName() {
+        return owner_name;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
-
     public String getIconName() {
-        return iconName;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public int getOwnerID() {
-        return ownerID;
+        return icon_name;
     }
 
     public boolean isShared() {
         return shared;
     }
 
-    public ObjectType getType() {
-        return type;
+    public boolean isFolder() {
+        return folder;
     }
 
-    public String getDate() {
-        return date;
+    public String getCreatedDate() {
+        return created;
+    }
+
+    public String getUpdatedDate() {
+        return updated;
     }
 }

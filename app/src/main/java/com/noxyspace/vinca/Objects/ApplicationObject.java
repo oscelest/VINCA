@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.Objects;
+package com.noxyspace.vinca.objects;
 
 import java.util.List;
 
