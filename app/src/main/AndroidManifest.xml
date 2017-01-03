@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginScreen">
+        <activity android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +20,8 @@
             android:name="io.fabric.ApiKey"
             android:value="824f94a6adf58631eb97dc52336456d13ac5c386" />
 
-       <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>

@@ -6,22 +6,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.requests.Users.LoginRequest;
 
-public class LoginScreen extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     Button register, skip;
     EditText email, password;
+    TextView login_link;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loginscreen_activity);
+        setContentView(R.layout.activity_register);
 
         ApplicationObject.getInstance().initializeRequestQueue(this);
 
@@ -30,6 +32,16 @@ public class LoginScreen extends AppCompatActivity {
 
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.pass);
+
+        login_link = (TextView)findViewById(R.id.link_login);
+
+        login_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override

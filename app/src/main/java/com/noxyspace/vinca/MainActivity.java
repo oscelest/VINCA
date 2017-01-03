@@ -14,11 +14,8 @@ import android.view.MenuItem;
 
 
 import com.crashlytics.android.Crashlytics;
-import com.noxyspace.vinca.requests.Users.RegisterRequest;
-import com.noxyspace.vinca.requests.Users.LoginRequest;
 
 import static android.graphics.Color.WHITE;
-import static com.noxyspace.vinca.R.id.log_out;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -94,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-                                Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                                 startActivity(intent);
                             }
                         });
