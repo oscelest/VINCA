@@ -10,7 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.noxyspace.vinca.Objects.DirectoryObject;
+import com.noxyspace.vinca.objects.DirectoryObject;
+import com.noxyspace.vinca.objects.DirectoryObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,11 +27,11 @@ public class RecentTab extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recent_tab_fragment, container, false);
 
-        recentList.add(new File(0, "File 1", "Rune", 1, false, (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new File(1, "File 2", "Mikkel", 2, false, (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new File(2, "File 3", "Andreas", 3, false, (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new File(3, "File 4", "Magnus", 4, false, (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new File(4, "File 5", "Oliver", 5, false, (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(0, "File 1", "Rune", 1, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(1, "File 2", "Mikkel", 2, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(2, "File 3", "Andreas", 3, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(3, "File 4", "Magnus", 4, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(4, "File 5", "Oliver", 5, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
 
         return view;
     }
@@ -78,23 +79,23 @@ public class RecentTab extends ListFragment {
 
             //view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
-            if (recentList.get(position).getType() == DirectoryObject.ObjectType.File) {
+            if (!recentList.get(position).isFolder()) {
                 img.setImageResource(R.drawable.file_white);
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-                editor.setText(recentList.get(position).getOwnerName() + " " + recentList.get(position).getDate());
+                editor.setText(recentList.get(position).getOwnerName() + " " + recentList.get(position).getCreatedDate());
             }
 
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(recentList.get(position).getTitle());
             TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-            createdAt.setText(recentList.get(position).getDate());
+            createdAt.setText(recentList.get(position).getCreatedDate());
 
             Collections.sort(recentList, new Comparator<DirectoryObject>() {
                 @Override
                 public int compare(DirectoryObject dirObject1, DirectoryObject dirObject2) {
-                    if (dirObject1 instanceof Folder && dirObject2 instanceof File) {
+                    if (dirObject1.isFolder() && !dirObject2.isFolder()) {
                         return -1;
-                    } else if (dirObject1 instanceof File && dirObject2 instanceof Folder) {
+                    } else if (!dirObject1.isFolder() && dirObject2.isFolder()) {
                         return 1;
                     }
 

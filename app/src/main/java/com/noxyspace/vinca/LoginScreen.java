@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.noxyspace.vinca.Objects.ApplicationObject;
+import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.requests.Users.LoginRequest;
 
 public class LoginScreen extends AppCompatActivity {
