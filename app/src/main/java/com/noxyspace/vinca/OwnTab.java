@@ -34,20 +34,28 @@ import java.util.Map;
 
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
-    private ArrayList<DirectoryObject> directoryObjects = new ArrayList<DirectoryObject>();
+    private ArrayList<DirectoryObject> directoryObjects = new ArrayList<>();
 
     private CustomAdapter adapter;
     private FloatingActionButton fab_plus, fab_folder, fab_file;
-    private boolean fab_plus_toggled = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
 
         fab_plus = (FloatingActionButton) view.findViewById(R.id.fab_plus);
+        fab_plus.setOnClickListener(new View.OnClickListener() {
+            private boolean toggled = false;
+            @Override
+            public void onClick(View v) {
+                fab_folder.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
+                fab_file.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
+                toggled = !toggled;
+            }
+        });
+
         fab_folder = (FloatingActionButton) view.findViewById(R.id.fab_folder);
         fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
-        fab_plus.setOnClickListener(this);
         fab_folder.setOnClickListener(this);
         fab_file.setOnClickListener(this);
 
@@ -74,46 +82,27 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
     @Override
     public void onClick(View v) {
-        if (v == fab_plus && !fab_plus_toggled) {
-            fab_folder.setVisibility(View.VISIBLE);
-            fab_file.setVisibility(View.VISIBLE);
-            fab_plus_toggled = true;
-        } else {
-            fab_folder.setVisibility(View.INVISIBLE);
-            fab_file.setVisibility(View.INVISIBLE);
-            fab_plus_toggled = false;
-        }
-        if (v == fab_folder || v == fab_file) {
-            CreateDirectoryObjectDialog(v == fab_file);
-            fab_plus_toggled = false;
-        }
-        int i = 0;
-        for (DirectoryObject s : directoryObjects) {
-            Log.d("Object" + i++, s.getName() + " Type: " + (s.isFolder() ? "Folder" : "File"));
-        }
-        Log.d("size:", "" + directoryObjects.size());
-
-        adapter.notifyDataSetChanged();
+        CreateDirectoryObjectDialog(v == fab_folder);
     }
 
-    // Dialog that asks for the title of a file or folder and creates the element
+// Dialog that asks for the title of a file or folder and creates the element
     public void CreateDirectoryObjectDialog(final boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        builder.setView(inflater.inflate(R.layout.fragment_create_folder_dialog, null));
-        builder.setTitle(R.string.filesName);
+        builder.setView(inflater.inflate(R.layout.fragment_create_directory_object_dialog, null));
+        builder.setTitle(isFolder ? R.string.foldersName : R.string.filesName);
 
-//          Set up the input
+// Set up the input
         final EditText fileTitle = new EditText(getActivity());
         fileTitle.setMaxLines(1);
-//          Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         builder.setView(fileTitle);
 
-//          Set up the buttons
+// Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Map<String, String> params = new HashMap<String, String>();
+                        Map<String, String> params = new HashMap<>();
                         params.put("name", fileTitle.getText().toString());
                         params.put("parent_id", "0");
                         params.put("folder", isFolder ? "1" : "0");
@@ -133,6 +122,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                                 newDirObj.getInt("time_created"),
                                                 newDirObj.getInt("time_updated")
                                         ));
+                                        adapter.notifyDataSetChanged();
                                     } else {
                                         Log.d("CreateDirObjFailure", response.toString());
                                 /* Do failure-stuff */

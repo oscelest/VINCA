@@ -50,6 +50,15 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="filesName">Filens navn:</string>
+    <string name="email">Email</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="skip">Skip</string>
+    <string name="login">Login</string>
+    <string name="no_account">No account yet? Create one!</string>
+    <string name="no_login">Already a member? Login!</string>
     <!-- Own_tab_fragment end-->
 
 

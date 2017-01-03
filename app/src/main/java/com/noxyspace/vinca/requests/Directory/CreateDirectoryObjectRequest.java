@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 public class CreateDirectoryObjectRequest extends CustomRequest {
-    public CreateDirectoryObjectRequest(Map<String, String> params, Response.Listener<JSONObject> reponseListener, Response.ErrorListener errorListener ) {
-        super(Method.POST, DIRECTORY_URL, params, reponseListener, errorListener);
+    public CreateDirectoryObjectRequest(Map<String, String> params, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) {
+        super(Method.POST, DIRECTORY_URL, params, responseListener, errorListener);
     }
 }

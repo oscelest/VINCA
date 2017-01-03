@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //this.mRequestQueue.add(new RegisterRequest("123123asda@asdasdas.com", "asdasd", "asdasd", "somename", "lastname"));
-        //this.mRequestQueue.add(new LoginRequest("someding@live.com", "asdasd"));
     }
 
     @Override
