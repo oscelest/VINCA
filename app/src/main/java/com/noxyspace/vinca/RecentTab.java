@@ -84,7 +84,7 @@ public class RecentTab extends ListFragment {
             }
 
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
-            folderName.setText(recentList.get(position).getTitle());
+            folderName.setText(recentList.get(position).getName());
             TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
             createdAt.setText(recentList.get(position).getCreatedDate());
 

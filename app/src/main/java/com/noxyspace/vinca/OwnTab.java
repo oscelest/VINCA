@@ -94,7 +94,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         }
         int i = 0;
         for (DirectoryObject s : directoryObjects) {
-            Log.d("Object" + i++, s.getTitle() + " Type: " + (s.isFolder() ? "Folder" : "File"));
+            Log.d("Object" + i++, s.getName() + " Type: " + (s.isFolder() ? "Folder" : "File"));
         }
         Log.d("size:", "" + directoryObjects.size());
 
@@ -117,15 +117,43 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
 //          Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-
-            // Creates a dialog box that asks for the new folders name
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String s = fileTitle.getText().toString();
-                // Create Create File DirectoryObject Request.
-                // directoryObjects.add(new DirectoryObject(ApplicationObject.nextFileId(), s, "Rune", 1, false, (int) (System.currentTimeMillis() / 1000)));
-            }
-        });
+                    public void onClick(DialogInterface dialog, int which) {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("name", fileTitle.getText().toString());
+                        params.put("parent_id", "0");
+                        params.put("folder", "0");
+                        new CreateDirectoryObjectRequest(params, new Response.Listener<JSONObject>() {
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    if (response.getBoolean("success")) {
+                                        Log.d("CreateDirObjSuccess", response.toString());
+                                        List<DirectoryObject> dir = ApplicationObject.getDirectory();
+                                        JSONObject newDirObj = response.getJSONObject("content");
+                                        dir.add(new DirectoryObject(
+                                                newDirObj.getInt("id"),
+                                                newDirObj.getString("title"),
+                                                newDirObj.getString("owner_name"),
+                                                newDirObj.getInt("owner_id"),
+                                                newDirObj.getBoolean("folder"),
+                                                newDirObj.getInt("time_created"),
+                                                newDirObj.getInt("time_updated")
+                                        ));
+                                    } else {
+                                        Log.d("CreateDirObjFailure", response.toString());
+                                /* Do failure-stuff */
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("CreateDirObjErr", error.getMessage());
+                            }
+                        });
+                    }
+                }
+        );
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -154,8 +182,9 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("title", folderTitle.getText().toString());
-                        params.put("owner_id", Integer.toString(ApplicationObject.getUser().getId()));
+                        params.put("name", folderTitle.getText().toString());
+                        params.put("parent_id", "0");
+                        params.put("folder", "1");
                         new CreateDirectoryObjectRequest(params, new Response.Listener<JSONObject>() {
                             public void onResponse(JSONObject response) {
                                 try {
@@ -168,7 +197,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                                 newDirObj.getString("title"),
                                                 newDirObj.getString("owner_name"),
                                                 newDirObj.getInt("owner_id"),
-                                                newDirObj.getInt("owner_id") == 1,
+                                                newDirObj.getBoolean("folder"),
                                                 newDirObj.getInt("time_created"),
                                                 newDirObj.getInt("time_updated")
                                         ));
@@ -187,7 +216,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                         });
                     }
                 }
-
         );
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
 
@@ -248,7 +276,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             }
 
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
-            folderName.setText(directoryObjects.get(position).getTitle());
+            folderName.setText(directoryObjects.get(position).getName());
             TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
             createdAt.setText(directoryObjects.get(position).getCreatedDate());
 

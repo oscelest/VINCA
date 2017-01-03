@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class DirectoryObject {
 
-    private String title, owner_name, icon_name;
+    private String name, owner_name, icon_name;
     private int id, owner_id;
     private boolean shared;
     private boolean folder;
@@ -13,9 +13,9 @@ public class DirectoryObject {
     private String updated;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
-    public DirectoryObject(int id, String title, String owner_name, int owner_id, boolean folder, int created, int updated) {
+    public DirectoryObject(int id, String name, String owner_name, int owner_id, boolean folder, int created, int updated) {
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.owner_name = owner_name;
         this.owner_id = owner_id;
         this.shared = false;
@@ -35,8 +35,8 @@ public class DirectoryObject {
         return owner_name;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public String getIconName() {
