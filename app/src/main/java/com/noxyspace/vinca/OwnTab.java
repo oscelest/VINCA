@@ -83,13 +83,8 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             fab_file.setVisibility(View.INVISIBLE);
             fab_plus_toggled = false;
         }
-        if (v == fab_folder) {
-            createFolderDialog();
-
-            fab_plus_toggled = false;
-        }
-        if (v == fab_file) {
-            createFileDialog();
+        if (v == fab_folder || v == fab_file) {
+            CreateDirectoryObjectDialog(v == fab_file);
             fab_plus_toggled = false;
         }
         int i = 0;
@@ -102,7 +97,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     }
 
     // Dialog that asks for the title of a file or folder and creates the element
-    public void createFileDialog() {
+    public void CreateDirectoryObjectDialog(final boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -121,7 +116,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("name", fileTitle.getText().toString());
                         params.put("parent_id", "0");
-                        params.put("folder", "0");
+                        params.put("folder", isFolder ? "1" : "0");
                         new CreateDirectoryObjectRequest(params, new Response.Listener<JSONObject>() {
                             public void onResponse(JSONObject response) {
                                 try {
@@ -161,72 +156,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             }
         });
 
-        builder.show();
-    }
-
-    // Dialog that asks for the title of a file or folder and creates the element
-    public void createFolderDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        builder.setView(inflater.inflate(R.layout.fragment_create_folder_dialog, null));
-        builder.setTitle(R.string.foldersName);
-
-//          Set up the input
-        final EditText folderTitle = new EditText(getActivity());
-        folderTitle.setMaxLines(1);
-//          Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        builder.setView(folderTitle);
-
-//          Set up the buttons
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("name", folderTitle.getText().toString());
-                        params.put("parent_id", "0");
-                        params.put("folder", "1");
-                        new CreateDirectoryObjectRequest(params, new Response.Listener<JSONObject>() {
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    if (response.getBoolean("success")) {
-                                        Log.d("CreateDirObjSuccess", response.toString());
-                                        List<DirectoryObject> dir = ApplicationObject.getDirectory();
-                                        JSONObject newDirObj = response.getJSONObject("content");
-                                        dir.add(new DirectoryObject(
-                                                newDirObj.getInt("id"),
-                                                newDirObj.getString("title"),
-                                                newDirObj.getString("owner_name"),
-                                                newDirObj.getInt("owner_id"),
-                                                newDirObj.getBoolean("folder"),
-                                                newDirObj.getInt("time_created"),
-                                                newDirObj.getInt("time_updated")
-                                        ));
-                                    } else {
-                                        Log.d("CreateDirObjFailure", response.toString());
-                                /* Do failure-stuff */
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("CreateDirObjErr", error.getMessage());
-                            }
-                        });
-                    }
-                }
-        );
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }
-
-        );
         builder.show();
     }
 
