@@ -8,10 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="13dp"
-        android:paddingBottom="13dp"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp">
+        android:paddingTop="23dp"
+        android:paddingBottom="23dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -19,8 +19,7 @@
             android:text="@string/projectTitle_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             />
 
@@ -30,10 +29,8 @@
             android:text="@string/createdAt_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            />
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,10 +38,8 @@
             android:text="@string/lastEditedBy_columnName"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:textSize="15sp"
-            android:gravity="center"
-            android:textColor="@color/black"
-            />
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 
