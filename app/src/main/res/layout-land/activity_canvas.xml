@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         class="android.support.design.widget.TextInputEditText"
-        android:id="@+id/view"
+        android:id="@+id/canvas"
         android:layout_weight="49.04" />
 
     <android.support.v7.widget.Toolbar
