@@ -1,6 +1,5 @@
 package com.noxyspace.vinca;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +29,7 @@ public class CanvasActivity extends AppCompatActivity{
         Toolbar toolbar_icons = (Toolbar) findViewById(R.id.toolbar_icons);
         setSupportActionBar(toolbar_icons);
 
-        final View canvas = (View) findViewById(R.id.canvas);
+        final View canvas = findViewById(R.id.canvas);
         canvas.bringToFront();
     }
 

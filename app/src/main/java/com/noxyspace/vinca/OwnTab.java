@@ -20,7 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
-import com.noxyspace.vinca.requests.Users.CreateDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.Directory.CreateDirectoryObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,7 +168,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                                 newDirObj.getString("title"),
                                                 newDirObj.getString("owner_name"),
                                                 newDirObj.getInt("owner_id"),
-                                                newDirObj.getInt("owner_id") == 1 ? true : false,
+                                                newDirObj.getInt("owner_id") == 1,
                                                 newDirObj.getInt("time_created"),
                                                 newDirObj.getInt("time_updated")
                                         ));

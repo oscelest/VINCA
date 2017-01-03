@@ -5,12 +5,10 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 
 import java.util.ArrayList;
