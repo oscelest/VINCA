@@ -78,7 +78,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <!-- Own_tab_fragment end-->
-
+    <!-- Strings related to CanvasActivity-->
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="share">Share</string>
 
 </resources>

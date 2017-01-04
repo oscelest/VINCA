@@ -10,7 +10,7 @@
         android:background="?attr/colorPrimary"
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar_canvas" />
+        android:id="@+id/toolbar_canvas_top" />
 
     <view
         android:layout_width="match_parent"
@@ -26,5 +26,6 @@
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/toolbar_icons"
-        android:layout_weight="3.01" />
+        android:layout_weight="3.01"
+        />
 </LinearLayout>

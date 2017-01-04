@@ -12,8 +12,11 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
 import static android.graphics.Color.WHITE;
+import static com.noxyspace.vinca.R.id.toolbar_canvas;
 
 public class CanvasActivity extends AppCompatActivity{
+
+    Toolbar toolbar_canvas_top;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -21,13 +24,12 @@ public class CanvasActivity extends AppCompatActivity{
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_canvas);
 
-        Toolbar toolbar_canvas = (Toolbar) findViewById(R.id.toolbar_canvas);
-        toolbar_canvas.setTitle("Filnavn");
-        toolbar_canvas.setTitleTextColor(WHITE);
-        setSupportActionBar(toolbar_canvas);
+        toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);
+        toolbar_canvas_top.setTitle("Filename");
+        toolbar_canvas_top.setTitleTextColor(WHITE);
+        setSupportActionBar(toolbar_canvas_top);
 
-        Toolbar toolbar_icons = (Toolbar) findViewById(R.id.toolbar_icons);
-        setSupportActionBar(toolbar_icons);
+
 
         final View canvas = findViewById(R.id.canvas);
         canvas.bringToFront();
@@ -36,7 +38,7 @@ public class CanvasActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_icons, menu); //your file name
+        inflater.inflate(R.menu.menu_canvas_top, menu); //your file name
         return super.onCreateOptionsMenu(menu);
     }
 }
