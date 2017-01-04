@@ -46,6 +46,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         fab_plus = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_plus.setOnClickListener(new View.OnClickListener() {
             private boolean toggled = false;
+
             @Override
             public void onClick(View v) {
                 fab_folder.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
@@ -85,7 +86,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         CreateDirectoryObjectDialog(v == fab_folder);
     }
 
-// Dialog that asks for the title of a file or folder and creates the element
+    // Dialog that asks for the title of a file or folder and creates the element
     public void CreateDirectoryObjectDialog(final boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -102,11 +103,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 // Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("name", fileTitle.getText().toString());
-                        params.put("parent_id", "0");
-                        params.put("folder", isFolder ? "1" : "0");
-                        new CreateDirectoryObjectRequest(params, new Response.Listener<JSONObject>() {
+                        new CreateDirectoryObjectRequest(fileTitle.getText().toString(), "0", (isFolder ? "1" : "0"), new Response.Listener<JSONObject>() {
                             public void onResponse(JSONObject response) {
                                 try {
                                     if (response.getBoolean("success")) {
@@ -125,15 +122,10 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                         adapter.notifyDataSetChanged();
                                     } else {
                                         Log.d("CreateDirObjFailure", response.toString());
-                                /* Do failure-stuff */
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                            }
-                        }, new Response.ErrorListener() {
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("CreateDirObjErr", error.getMessage());
                             }
                         });
                     }

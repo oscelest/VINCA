@@ -34,6 +34,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Preferences screen related strings -->
+    <string name="VINCA_fmt">VINCA Preferences</string>
+    <string name="VINCA_action">VINCA Account</string>
+    <string name="VINCA_summary">Changes settings related to your VINCA account here.</string>
+
     <!-- settings_dialog_fragment start-->
     <string name="settings">Settings</string>
     <!-- settings_dialog_fragment start end-->
@@ -59,6 +64,20 @@
     <string name="login">Login</string>
     <string name="no_account">No account yet? Create one!</string>
     <string name="no_login">Already a member? Login!</string>
+    <string name="title_activity_login_signup">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
     <!-- Own_tab_fragment end-->
 
 

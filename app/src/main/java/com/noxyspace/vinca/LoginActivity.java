@@ -1,5 +1,8 @@
 package com.noxyspace.vinca;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -52,6 +55,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         // ClickListener for the Register Button
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,34 +82,38 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Send request to server
                 ApplicationObject.getInstance().addRequest(new LoginRequest(email.getText().toString(), password.getText().toString(),
-                    new Response.Listener<JSONObject>() {
-                        public void onResponse(JSONObject response) {
-                            try {
-                                if (response.getBoolean("success")) {
-                                    Log.d("LoginSuccess", response.toString());
+                        new Response.Listener<JSONObject>() {
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    if (response.getBoolean("success")) {
+                                        Log.d("LoginSuccess", response.toString());
 
-                                    JSONObject content = response.getJSONObject("content");
+                                        JSONObject content = response.getJSONObject("content");
 
-                                    ApplicationObject.setUser(new UserObject(
-                                        content.getInt("id"),
-                                        content.getString("first_name"),
-                                        content.getString("last_name"),
-                                        content.getString("email"),
-                                        content.getInt("admin") != 0,
-                                        content.getString("user_token")
-                                    ));
+                                        ApplicationObject.setUser(new UserObject(
+                                                content.getInt("id"),
+                                                content.getString("first_name"),
+                                                content.getString("last_name"),
+                                                content.getString("email"),
+                                                content.getInt("admin") != 0,
+                                                content.getString("user_token")
+                                        ));
 
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                } else {
-                                    Log.d("LoginFailure", response.toString());
-                                    email_layout.setErrorEnabled(true);
-                                    email_layout.setError("Email/Password combination doesn't match.");
+                                        AccountManager ac = AccountManager.get(getApplicationContext());
+                                        final Account account = new Account("", "VINCA");
+                                        ac.addAccountExplicitly(account, "something", null);
+
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    } else {
+                                        Log.d("LoginFailure", response.toString());
+                                        email_layout.setErrorEnabled(true);
+                                        email_layout.setError("Email/Password combination doesn't match.");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
                 ));
             }
         });
