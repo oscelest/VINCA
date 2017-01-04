@@ -149,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // Disables going back to previous screen on back button.
+    // Disables going back to previous screen on back button (closes application).
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
