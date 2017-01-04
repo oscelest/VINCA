@@ -15,7 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/myEditText"
-            android:maxLength="64"
+            android:maxLength="255"
+            android:scrollHorizontally="true"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
             android:textColor="@color/White"
             android:background="@color/colorPrimary" />
     </android.support.v7.widget.Toolbar>
