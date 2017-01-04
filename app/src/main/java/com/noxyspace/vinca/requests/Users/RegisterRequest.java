@@ -3,13 +3,12 @@ package com.noxyspace.vinca.requests.Users;
 import com.android.volley.*;
 import com.android.volley.Response;
 
-import com.noxyspace.vinca.requests.CustomRequest;
-import com.noxyspace.vinca.requests.HttpParameter;
+import com.noxyspace.vinca.requests.*;
 
 import android.util.Log;
 import org.json.JSONObject;
 
-public class RegisterRequest extends CustomRequest {
+public class RegisterRequest extends HttpRequest {
     public RegisterRequest(String firstName, String lastName, String email, String password, Response.Listener<JSONObject> responseListener) {
         super(Method.POST, USER_URL, responseListener,
             new Response.ErrorListener() {

@@ -1,5 +1,7 @@
 package com.noxyspace.vinca.requests;
 
+import android.util.Log;
+
 import com.android.volley.*;
 import com.android.volley.Response.*;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -12,9 +14,10 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
-public class CustomRequest extends Request<JSONObject> {
+public class HttpRequest extends Request<JSONObject> {
     private static final String SERVER_URL = "http://178.62.117.85:8080";
 
     /* User URL
@@ -46,7 +49,7 @@ public class CustomRequest extends Request<JSONObject> {
     private Map<String, String> headers;
     private Map<String, String> parameters;
 
-    public CustomRequest(int method, String url, Listener<JSONObject> responseListener, ErrorListener errorListener, HttpParameter... params) {
+    public HttpRequest(int method, String url, Listener<JSONObject> responseListener, ErrorListener errorListener, HttpParameter... params) {
         super(method, url, errorListener);
 
         this.listener = responseListener;

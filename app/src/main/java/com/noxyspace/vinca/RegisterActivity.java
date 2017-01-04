@@ -110,6 +110,11 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                Log.d("Username", email.getText().toString());
+                Log.d("Password", password.getText().toString());
+                Log.d("Firstname", first_name.getText().toString());
+                Log.d("Lastname", last_name.getText().toString());
+
                 // Send request to server
                 ApplicationObject.getInstance().addRequest(new RegisterRequest(first_name.getText().toString(), last_name.getText().toString(), email.getText().toString(), password.getText().toString(),
                         new Response.Listener<JSONObject>() {
@@ -121,12 +126,12 @@ public class RegisterActivity extends AppCompatActivity {
                                         JSONObject content = response.getJSONObject("content");
 
                                         ApplicationObject.getInstance().setUser(new UserObject(
-                                            content.getInt("id"),
-                                            content.getString("first_name"),
-                                            content.getString("last_name"),
-                                            content.getString("email"),
-                                            content.getInt("admin") != 0,
-                                            content.getString("user_token")
+                                                content.getInt("id"),
+                                                content.getString("first_name"),
+                                                content.getString("last_name"),
+                                                content.getString("email"),
+                                                content.getInt("admin") != 0,
+                                                content.getString("user_token")
                                         ));
 
                                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

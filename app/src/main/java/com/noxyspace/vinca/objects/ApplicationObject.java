@@ -3,7 +3,7 @@ package com.noxyspace.vinca.objects;
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
 
-import com.noxyspace.vinca.requests.CustomRequest;
+import com.noxyspace.vinca.requests.*;
 
 import java.io.File;
 import java.util.Collections;
@@ -28,7 +28,7 @@ public final class ApplicationObject {
         this.requestQueue = null;
     }
 
-    public void addRequest(CustomRequest request) {
+    public void addRequest(HttpRequest request) {
         if (this.requestQueue != null) {
             this.requestQueue.add(request);
         }
