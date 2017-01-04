@@ -7,7 +7,7 @@ import com.android.volley.toolbox.*;
 
 import com.noxyspace.vinca.requests.CustomRequest;
 
-
+import java.io.File;
 import java.util.List;
 
 public final class ApplicationObject {
@@ -20,28 +20,27 @@ public final class ApplicationObject {
     private static UserObject user;
     private static List<DirectoryObject> directory;
 
-//    private RequestQueue mRequestQueue;
-//    private Context mContext; ILLEGAL AND WILL CRASH
+    private RequestQueue mRequestQueue;
 
-//    private ApplicationObject() {
-//        this.mRequestQueue = null;
-//    }
+    private ApplicationObject() {
+        this.mRequestQueue = null;
+    }
 
-//    public void addRequest(CustomRequest request) {
-//        this.mRequestQueue.add(request);
-//    }
+    public void addRequest(CustomRequest request) {
+        if (this.mRequestQueue != null) {
+            this.mRequestQueue.add(request);
+        }
+    }
 
-//    public void initializeRequestQueue(Context context) {
-//        if (this.mRequestQueue == null) {
-//            this.mContext = context;
-//
-//            Cache cache = new DiskBasedCache(mContext.getCacheDir(), 1024 * 1024);
-//            Network network = new BasicNetwork(new HurlStack());
-//
-//            this.mRequestQueue = new RequestQueue(cache, network);
-//            this.mRequestQueue.start();
-//        }
-//    }
+    public void initializeRequestQueue(File cacheDir) {
+        if (this.mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(cacheDir, 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+
+            this.mRequestQueue = new RequestQueue(cache, network);
+            this.mRequestQueue.start();
+        }
+    }
 
     public static UserObject getUser() {
         return user;
@@ -58,5 +57,4 @@ public final class ApplicationObject {
     public static void setDirectory(List<DirectoryObject> dirlist) {
         directory = dirlist;
     }
-
 }

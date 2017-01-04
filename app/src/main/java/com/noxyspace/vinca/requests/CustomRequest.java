@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CustomRequest extends Request<JSONObject> {
@@ -41,11 +42,11 @@ public class CustomRequest extends Request<JSONObject> {
     private Listener<JSONObject> listener;
     private Map<String, String> params;
 
-    public CustomRequest(int method, String url, Map<String, String> params, Listener<JSONObject> reponseListener, ErrorListener errorListener) {
+    public CustomRequest(int method, String url, Listener<JSONObject> reponseListener, ErrorListener errorListener, HttpParameter... params) {
         super(method, url, errorListener);
 
         this.listener = reponseListener;
-        this.params = params;
+        this.generateParamsList(params);
     }
 
     protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
@@ -57,9 +58,11 @@ public class CustomRequest extends Request<JSONObject> {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(new JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response));
-        } catch (UnsupportedEncodingException e) {
+        }
+        catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             return Response.error(new ParseError(e));
         }
     }
@@ -67,5 +70,17 @@ public class CustomRequest extends Request<JSONObject> {
     @Override
     protected void deliverResponse(JSONObject response) {
         listener.onResponse(response);
+    }
+
+    private void generateParamsList(HttpParameter... params) {
+        if (this.params == null) {
+            this.params = new HashMap<>();
+        }
+
+        this.params.clear();
+
+        for (HttpParameter param : params) {
+            this.params.put(param.getKey(), param.getValue());
+        }
     }
 }
