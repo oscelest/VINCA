@@ -1,6 +1,6 @@
 package com.noxyspace.vinca.symbols;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Project extends Parentheses {
 
@@ -8,7 +8,7 @@ public class Project extends Parentheses {
         super(id, title, description);
     }
 
-    public Project(int id, String title, String description, List<Symbol> contents) {
+    public Project(int id, String title, String description, ArrayList<Symbol> contents) {
         super(id, title, description, contents);
     }
 }

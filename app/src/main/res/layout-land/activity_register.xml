@@ -5,16 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_gravity="center"
     tools:context=".RegisterActivity">
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/login_container_dimension"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:layout_gravity="center_horizontal">
 
         <ImageView
             android:contentDescription=""
@@ -26,25 +27,25 @@
             android:src="@mipmap/logo" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/login_container_dimension"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_first_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_weight="1"
                 android:hint="@string/first_name">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/input_first_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:nextFocusDown="@+id/input_last_name"
                     android:nextFocusForward="@+id/input_last_name"
                     android:nextFocusRight="@+id/input_last_name" />
@@ -52,18 +53,18 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_last_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_weight="1"
                 android:hint="@string/last_name">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/input_last_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:nextFocusDown="@+id/input_email"
                     android:nextFocusForward="@+id/input_email"
                     android:nextFocusLeft="@+id/input_first_name"
@@ -77,7 +78,7 @@
             android:id="@+id/input_email_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:hint="@string/email">
@@ -86,7 +87,6 @@
                 android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:inputType="textEmailAddress"
                 android:nextFocusDown="@+id/input_password"
                 android:nextFocusForward="@+id/input_password"
@@ -96,14 +96,15 @@
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_password_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
@@ -114,7 +115,6 @@
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
                     android:inputType="textPassword"
                     android:nextFocusDown="@+id/input_confirm"
                     android:nextFocusForward="@+id/input_confirm"
@@ -125,7 +125,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_confirm_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
@@ -136,7 +137,6 @@
                     android:id="@+id/input_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
                     android:inputType="textPassword"
                     android:nextFocusLeft="@+id/input_password"
                     android:nextFocusRight="@+id/btn_register"
