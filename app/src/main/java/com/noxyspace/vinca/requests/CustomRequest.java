@@ -42,10 +42,10 @@ public class CustomRequest extends Request<JSONObject> {
     private Listener<JSONObject> listener;
     private Map<String, String> params;
 
-    public CustomRequest(int method, String url, Listener<JSONObject> reponseListener, ErrorListener errorListener, HttpParameter... params) {
+    public CustomRequest(int method, String url, Listener<JSONObject> responseListener, ErrorListener errorListener, HttpParameter... params) {
         super(method, url, errorListener);
 
-        this.listener = reponseListener;
+        this.listener = responseListener;
         this.generateParamsList(params);
     }
 
