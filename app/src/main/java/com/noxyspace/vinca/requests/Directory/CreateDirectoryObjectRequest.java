@@ -10,17 +10,17 @@ import com.noxyspace.vinca.requests.HttpParameter;
 import org.json.JSONObject;
 
 public class CreateDirectoryObjectRequest extends CustomRequest {
-    public CreateDirectoryObjectRequest(String email, String password, String something, Response.Listener<JSONObject> responseListener) {
-        super(Method.POST, DIRECTORY_URL + "/login", responseListener,
+    public CreateDirectoryObjectRequest(String name, String parent_id, String folder, Response.Listener<JSONObject> responseListener) {
+        super(Method.POST, DIRECTORY_URL, responseListener,
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("LoginRequestError", error.getMessage());
                     }
                 },
-                new HttpParameter("name", email),
-                new HttpParameter("parent_id", password),
-                new HttpParameter("folder", something)
+                new HttpParameter("name", name),
+                new HttpParameter("parent_id", parent_id),
+                new HttpParameter("folder", folder)
         );
     }
 }

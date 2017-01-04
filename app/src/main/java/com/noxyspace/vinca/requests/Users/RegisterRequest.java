@@ -21,8 +21,7 @@ public class RegisterRequest extends CustomRequest {
             new HttpParameter("first_name", firstName),
             new HttpParameter("last_name", lastName),
             new HttpParameter("email", email),
-            new HttpParameter("password", password),
-            new HttpParameter("confirm", password)
+            new HttpParameter("password", password)
         );
     }
 }

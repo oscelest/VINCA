@@ -1,31 +1,22 @@
 package com.noxyspace.vinca;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.noxyspace.vinca.objects.ApplicationObject;
-import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.objects.UserObject;
 import com.noxyspace.vinca.requests.Users.LoginRequest;
-import com.noxyspace.vinca.requests.Users.RegisterRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,9 +45,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-
-
-
 
         // ClickListener for the Register Button
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
@@ -99,9 +87,10 @@ public class LoginActivity extends AppCompatActivity {
                                                 content.getString("user_token")
                                         ));
 
-                                        AccountManager ac = AccountManager.get(getApplicationContext());
-                                        final Account account = new Account("", "VINCA");
-                                        ac.addAccountExplicitly(account, "something", null);
+                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
+                                        editor.apply();
 
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     } else {

@@ -1,7 +1,9 @@
 package com.noxyspace.vinca;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -123,6 +125,11 @@ public class RegisterActivity extends AppCompatActivity {
                                         content.getBoolean("admin"),
                                         content.getString("user_token")
                                     ));
+
+                                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
+                                    editor.apply();
 
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 } else {

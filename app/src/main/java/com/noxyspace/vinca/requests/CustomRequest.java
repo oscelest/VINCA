@@ -1,9 +1,16 @@
 package com.noxyspace.vinca.requests;
 
+import android.content.ContextWrapper;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.android.volley.*;
 import com.android.volley.Request.*;
 import com.android.volley.Response.*;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.noxyspace.vinca.objects.ApplicationObject;
+
+import android.content.Context;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +72,13 @@ public class CustomRequest extends Request<JSONObject> {
         catch (JSONException e) {
             return Response.error(new ParseError(e));
         }
+    }
+
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Basic:"+ApplicationObject.getUser().getUserToken());
+        return headers;
     }
 
     @Override
