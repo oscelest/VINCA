@@ -114,38 +114,38 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Send request to server
                 ApplicationObject.getInstance().addRequest(new RegisterRequest(first_name.getText().toString(), last_name.getText().toString(), email.getText().toString(), password.getText().toString(),
-                    new Response.Listener<JSONObject>() {
-                        public void onResponse(JSONObject response) {
-                            try {
-                                if (response.getBoolean("success")) {
-                                    Log.d("RegisterSuccess", response.toString());
+                        new Response.Listener<JSONObject>() {
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    if (response.getBoolean("success")) {
+                                        Log.d("RegisterSuccess", response.toString());
 
-                                    JSONObject content = response.getJSONObject("content");
+                                        JSONObject content = response.getJSONObject("content");
 
-                                    ApplicationObject.setUser(new UserObject(
-                                        content.getInt("id"),
-                                        content.getString("first_name"),
-                                        content.getString("last_name"),
-                                        content.getString("email"),
-                                        content.getBoolean("admin"),
-                                        content.getString("user_token")
-                                    ));
+                                        ApplicationObject.setUser(new UserObject(
+                                                content.getInt("id"),
+                                                content.getString("first_name"),
+                                                content.getString("last_name"),
+                                                content.getString("email"),
+                                                content.getBoolean("admin"),
+                                                content.getString("user_token")
+                                        ));
 
-                                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                    SharedPreferences.Editor editor = sharedPref.edit();
-                                    editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
-                                    editor.apply();
+                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
+                                        editor.apply();
 
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                } else {
-                                    Log.d("RegisterFailure", response.toString());
-                                    Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    } else {
+                                        Log.d("RegisterFailure", response.toString());
+                                        Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
                 ));
             }
         });
@@ -161,16 +161,16 @@ public class RegisterActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         }
-        return super.dispatchTouchEvent( event );
+        return super.dispatchTouchEvent(event);
     }
 }
