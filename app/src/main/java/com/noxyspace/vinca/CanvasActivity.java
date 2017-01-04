@@ -21,12 +21,9 @@ public class CanvasActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_canvas);
 
-        toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);
-        toolbar_canvas_top.setTitle("Filename");
-        toolbar_canvas_top.setTitleTextColor(WHITE);
+        toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);;
         setSupportActionBar(toolbar_canvas_top);
 
 
