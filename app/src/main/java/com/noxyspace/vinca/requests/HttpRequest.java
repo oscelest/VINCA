@@ -1,7 +1,5 @@
 package com.noxyspace.vinca.requests;
 
-import android.util.Log;
-
 import com.android.volley.*;
 import com.android.volley.Response.*;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -14,7 +12,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class HttpRequest extends Request<JSONObject> {
