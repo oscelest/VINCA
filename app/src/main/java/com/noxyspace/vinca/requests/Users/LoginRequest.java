@@ -15,7 +15,7 @@ public class LoginRequest extends CustomRequest {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("LoginRequestError", error.getMessage());
+                    Log.d("LoginRequestError", error.getMessage() != null ? error.getMessage() : "There was an error.");
                 }
             },
             new HttpParameter("email", email),

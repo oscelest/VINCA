@@ -83,17 +83,18 @@ public class LoginActivity extends AppCompatActivity {
 
                                         JSONObject content = response.getJSONObject("content");
 
-                                        ApplicationObject.setUser(new UserObject(
-                                                content.getInt("id"),
-                                                content.getString("first_name"),
-                                                content.getString("last_name"),
-                                                content.getString("email"),
-                                                content.getInt("admin") != 0,
-                                                content.getString("user_token")
+                                        ApplicationObject.getInstance().setUser(new UserObject(
+                                            content.getInt("id"),
+                                            content.getString("first_name"),
+                                            content.getString("last_name"),
+                                            content.getString("email"),
+                                            content.getInt("admin") != 0,
+                                            content.getString("user_token")
                                         ));
 
-                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+
                                         editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
                                         editor.apply();
 

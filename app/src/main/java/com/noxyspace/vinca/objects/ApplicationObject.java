@@ -1,13 +1,12 @@
 package com.noxyspace.vinca.objects;
 
-import android.content.Context;
-
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
 
 import com.noxyspace.vinca.requests.CustomRequest;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 public final class ApplicationObject {
@@ -17,44 +16,47 @@ public final class ApplicationObject {
         return singleton;
     }
 
-    private static UserObject user;
-    private static List<DirectoryObject> directory;
+    private UserObject user;
+    private List<DirectoryObject> directoryList;
 
-    private RequestQueue mRequestQueue;
+    private RequestQueue requestQueue;
 
     private ApplicationObject() {
-        this.mRequestQueue = null;
+        this.user = null;
+        this.directoryList = Collections.emptyList();
+
+        this.requestQueue = null;
     }
 
     public void addRequest(CustomRequest request) {
-        if (this.mRequestQueue != null) {
-            this.mRequestQueue.add(request);
+        if (this.requestQueue != null) {
+            this.requestQueue.add(request);
         }
     }
 
     public void initializeRequestQueue(File cacheDir) {
-        if (this.mRequestQueue == null) {
+        if (this.requestQueue == null) {
             Cache cache = new DiskBasedCache(cacheDir, 1024 * 1024);
             Network network = new BasicNetwork(new HurlStack());
 
-            this.mRequestQueue = new RequestQueue(cache, network);
-            this.mRequestQueue.start();
+            this.requestQueue = new RequestQueue(cache, network);
+            this.requestQueue.start();
         }
     }
 
-    public static UserObject getUser() {
-        return user;
+    public UserObject getUser() {
+        return this.user;
     }
 
-    public static void setUser(UserObject u) {
-        user = u;
+    public void setUser(UserObject newUser) {
+        this.user = newUser;
     }
 
-    public static List<DirectoryObject> getDirectory() {
-        return directory;
+    public List<DirectoryObject> getDirectoryList() {
+        return this.directoryList;
     }
 
-    public static void setDirectory(List<DirectoryObject> dirlist) {
-        directory = dirlist;
+    public void setDirectoryList(List<DirectoryObject> newDirectoryList) {
+        this.directoryList = newDirectoryList;
     }
 }

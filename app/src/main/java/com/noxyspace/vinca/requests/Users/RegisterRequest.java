@@ -15,7 +15,7 @@ public class RegisterRequest extends CustomRequest {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("RegisterRequestError", error.getMessage());
+                    Log.d("RegisterRequestError", error.getMessage() != null ? error.getMessage() : "There was an error.");
                 }
             },
             new HttpParameter("first_name", firstName),
