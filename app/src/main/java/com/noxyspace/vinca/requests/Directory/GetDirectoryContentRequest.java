@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class GetDirectoryContentRequest extends CustomRequest {
     public GetDirectoryContentRequest(String folder_id, Response.Listener<JSONObject> responseListener) {
-        super(Method.GET, DIRECTORY_URL + "/content/"+folder_id, responseListener,
+        super(Method.GET, DIRECTORY_URL + "/content/" + folder_id, responseListener,
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {

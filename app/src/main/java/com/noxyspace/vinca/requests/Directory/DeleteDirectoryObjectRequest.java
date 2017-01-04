@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class DeleteDirectoryObjectRequest extends CustomRequest {
     public DeleteDirectoryObjectRequest(String folder_id, Response.Listener<JSONObject> responseListener) {
-        super(Method.DELETE, DIRECTORY_URL + "/"+folder_id, responseListener,
+        super(Method.DELETE, DIRECTORY_URL + "/" + folder_id, responseListener,
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
