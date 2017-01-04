@@ -1,6 +1,8 @@
 package com.noxyspace.vinca;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
@@ -32,6 +34,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.noxyspace.vinca.R.id.fab_file;
+import static com.noxyspace.vinca.R.id.fab_folder;
+import static com.noxyspace.vinca.R.id.fab_plus;
+
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private ArrayList<DirectoryObject> directoryObjects = new ArrayList<>();
@@ -42,6 +48,12 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
+
+        directoryObjects.add(new DirectoryObject(0, "File 1", "Rune", 1, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(1, "File 2", "Mikkel", 2, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(2, "File 3", "Andreas", 3, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(3, "File 4", "Magnus", 4, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(4, "File 5", "Oliver", 5, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
 
         fab_plus = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_plus.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +88,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!directoryObjects.get(position).isFolder()) {
             Toast.makeText(getActivity(), "File: " + position, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), CanvasActivity.class));
         } else {
             Toast.makeText(getActivity(), "Folder: " + position, Toast.LENGTH_SHORT).show();
         }
