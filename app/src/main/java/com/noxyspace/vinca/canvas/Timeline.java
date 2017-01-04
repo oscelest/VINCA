@@ -1,80 +1,65 @@
 package com.noxyspace.vinca.canvas;
 
-import android.support.annotation.NonNull;
-
-import com.noxyspace.vinca.symbols.Activity;
-import com.noxyspace.vinca.symbols.Decition;
-import com.noxyspace.vinca.symbols.Method;
-import com.noxyspace.vinca.symbols.Space;
-import com.noxyspace.vinca.symbols.Symbol;
+import com.noxyspace.vinca.symbols.Parentheses;
+import com.noxyspace.vinca.symbols.Project;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Timeline {
 
-    private List<Symbol> timeline = new ArrayList<Symbol>();
+    private List<Parentheses> timeline = new ArrayList<Parentheses>();
     private int currentPosition;
 
+    /**
+     * Updates the current position in the timeline, used for a curser
+     * @param elementId
+     */
     public void updateTimelinePosition(int elementId){
-
+        currentPosition = searchForElement(elementId);
     }
 
+    /**
+     * Gets the current position set in the timeline
+     * @return Current position
+     */
     public int getCurrentPosition(){
         return currentPosition;
     }
 
+    /**
+     * Method might not work as it shuld
+     * Searches for the elements position in the timeline, if no such element is found, it returns -1
+     * @param elementId The element id that is searched for
+     * @return The element position or -1 if none are found
+     */
+    public int searchForElement(int elementId){
 
-    public List<Symbol> getTimeline(){
-        return timeline;
+        int elementPosition = 0;
+
+        for (int i = 0 ; i < timeline.size() ; i++){                                                // Each Project in the timeline
+            for (int j = 0 ; j < timeline.get(i).numberOfElements() ; j ++){                        // Each element in the Project
+
+                    if (timeline.get(i).getContents().get(j).getId() == elementId){                 // Looks at each element in the Projects contents, if the id of the element == elementId, j is returned
+                        return j;
+                    }
+                    else if (timeline.get(i).getContents().get(j) instanceof Parentheses){          // If the element is a type of Parentheses (Process or Iteration)
+
+                        int tempPos = ((Parentheses) timeline.get(i).getContents().get(j)).searchForElementPosition(elementId, -1);     // Searches the Parentheses element for the desired element
+                        if (tempPos >= 0){
+                            return j + tempPos;
+                        }
+                    }
+            }
+        }
+        return -1;
     }
 
-    public int getNumberOfElements(){
+//    public int getNumberOfElements(){
+//        return 1;
+//    }
 
-        return 1;
+    public void addProject(int id, String title, String description){
+        timeline.add(new Project(id, title, description));
     }
-
-
-
-    public void addActivity(int id, String title, String description){
-        timeline.add(new Activity(id, title, description));
-    }
-
-    public void addDecition(int id, String title, String description){
-        timeline.add(new Decition(id, title, description));
-    }
-
-    public void addSpace(int id, String title, String description){
-        timeline.add(new Space(id, title, description));
-    }
-
-    public void addMethod(int id, String title, String description, int methodId){
-        timeline.add(new Method(id, title, description, methodId));
-    }
-
-    public void addProcess(){
-    }
-
-    public void addIteration(){
-    }
-
-    public void addProject(){
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

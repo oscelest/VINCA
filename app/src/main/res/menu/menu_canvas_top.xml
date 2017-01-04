@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/undo"
+        android:icon="@drawable/canvas_undo"
+        android:title="@string/undo"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/redo"
+        android:icon="@drawable/canvas_redo"
+        android:title="@string/redo"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/notification_white"
+        android:title="@string/notifications"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/canvas_share"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
+
+</menu>

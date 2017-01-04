@@ -10,7 +10,18 @@
         android:background="?attr/colorPrimary"
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar_canvas" />
+        android:id="@+id/toolbar_canvas_top">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/myEditText"
+            android:maxLength="255"
+            android:scrollHorizontally="true"
+            android:maxLines="1"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/White"
+            android:background="@color/colorPrimary" />
+    </android.support.v7.widget.Toolbar>
 
     <view
         android:layout_width="match_parent"
@@ -26,5 +37,6 @@
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/toolbar_icons"
-        android:layout_weight="3.01" />
+        android:layout_weight="3.01"
+        />
 </LinearLayout>
