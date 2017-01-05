@@ -34,23 +34,19 @@ import java.util.List;
 
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
+    private CustomAdapter adapter;
     private ArrayList<DirectoryObject> directoryObjects = new ArrayList<>();
 
-    private CustomAdapter adapter;
-    private FloatingActionButton fab_folder, fab_file;
+    private FloatingActionButton fab_folder;
+    private FloatingActionButton fab_file;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
 
-        directoryObjects.add(new DirectoryObject(0, 1, 0, "File 1", "Rune", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(1, 2, 0, "File 2", "Mikkel", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(2, 3, 0, "File 3", "Andreas", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(3, 4, 0, "File 4", "Magnus", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(4, 5, 0, "File 5", "Oliver", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        Log.d("onCreateView", "OwnTab");
 
-        FloatingActionButton fab_plus = (FloatingActionButton) view.findViewById(R.id.fab_plus);
-        fab_plus.setOnClickListener(new View.OnClickListener() {
+        ((FloatingActionButton)view.findViewById(R.id.fab_plus)).setOnClickListener(new View.OnClickListener() {
             private boolean toggled = false;
 
             @Override
@@ -61,12 +57,27 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             }
         });
 
-        fab_folder = (FloatingActionButton) view.findViewById(R.id.fab_folder);
-        fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
+        fab_folder = (FloatingActionButton)view.findViewById(R.id.fab_folder);
         fab_folder.setOnClickListener(this);
+
+        fab_file = (FloatingActionButton)view.findViewById(R.id.fab_file);
         fab_file.setOnClickListener(this);
 
         return view;
+    }
+
+    public void onTabSelected() {
+        Log.d("onTabSelected", "OwnTab");
+
+        directoryObjects.add(new DirectoryObject(0, 1, 0, "File 1", "Rune", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(1, 2, 0, "File 2", "Mikkel", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(2, 3, 0, "File 3", "Andreas", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(3, 4, 0, "File 4", "Magnus", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        directoryObjects.add(new DirectoryObject(4, 5, 0, "File 5", "Oliver", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+
+        if (this.adapter != null) {
+            this.adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

@@ -85,6 +85,10 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
         return view;
     }
 
+    public void onTabSelected() {
+
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

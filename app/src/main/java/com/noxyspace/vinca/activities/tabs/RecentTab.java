@@ -35,6 +35,10 @@ public class RecentTab extends ListFragment {
         return view;
     }
 
+    public void onTabSelected() {
+
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -105,6 +109,4 @@ public class RecentTab extends ListFragment {
             return view;
         }
     }
-
-
 }

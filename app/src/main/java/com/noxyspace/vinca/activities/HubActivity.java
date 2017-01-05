@@ -8,12 +8,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
-import com.noxyspace.vinca.activities.adapter.PagerAdapter;
+import com.noxyspace.vinca.activities.tabs.adapter.PagerAdapter;
 import com.noxyspace.vinca.R;
 
 import static android.graphics.Color.WHITE;
@@ -21,33 +22,40 @@ import static android.graphics.Color.WHITE;
 import io.fabric.sdk.android.Fabric;
 
 public class HubActivity extends AppCompatActivity {
+    private PagerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        this.adapter = new PagerAdapter(getSupportFragmentManager());
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setTitleTextColor(WHITE);
         setSupportActionBar(toolbar);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.newsTab));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.myProjects));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.recent));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
+        viewPager.setAdapter(this.adapter);
 
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        //Sets the Own tab as the first tab to show
         viewPager.setCurrentItem(1);
+        this.adapter.notifyTabSelection(1);
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                adapter.notifyTabSelection(tab.getPosition());
             }
 
             @Override
