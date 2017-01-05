@@ -25,7 +25,7 @@
             android:background="@color/colorPrimary" />
     </android.support.v7.widget.Toolbar>
 
-    <view
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="android.support.design.widget.TextInputEditText"
