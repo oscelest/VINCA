@@ -2,19 +2,30 @@ package com.noxyspace.vinca.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.android.volley.Response;
 import com.crashlytics.android.Crashlytics;
 import com.noxyspace.vinca.activities.adapter.PagerAdapter;
 import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.objects.ApplicationObject;
+import com.noxyspace.vinca.objects.UserObject;
+import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
+import com.noxyspace.vinca.requests.users.LoginRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.graphics.Color.WHITE;
 
@@ -58,6 +69,7 @@ public class HubActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        this.getContent();
     }
 
     @Override
@@ -86,6 +98,12 @@ public class HubActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+                                ApplicationObject.getInstance().setUser(null);
+                                ApplicationObject.getInstance().setUserToken(null);
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.remove("com.noxyspace.vinca.USERTOKEN");
+                                editor.apply();
                                 startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
                             }
                         });
@@ -104,6 +122,26 @@ public class HubActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void getContent(){
+        ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest("0",
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("GetDirContentSuccess", response.toString());
+                                JSONObject content = response.getJSONObject("content");
+                                Log.d("DirContent", content.toString());
+                            } else {
+                                Log.d("GetDirContentFailure", response.toString());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ));
     }
 
     public void onGroupItemClick(MenuItem item) {
