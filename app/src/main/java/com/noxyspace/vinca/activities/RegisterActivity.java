@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,6 +33,14 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        ApplicationObject.getInstance().setUser(null);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("com.noxyspace.vinca.USERTOKEN");
+        editor.apply();
 
         // Setup for fields
         final TextInputEditText first_name = (TextInputEditText) findViewById(R.id.input_first_name);
@@ -111,11 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
                     confirm_layout.setError("Password and Confirmation do not match.");
                     return;
                 }
-
-                Log.d("Username", email.getText().toString());
-                Log.d("Password", password.getText().toString());
-                Log.d("Firstname", first_name.getText().toString());
-                Log.d("Lastname", last_name.getText().toString());
 
                 // Send request to server
                 ApplicationObject.getInstance().addRequest(new RegisterRequest(first_name.getText().toString(), last_name.getText().toString(), email.getText().toString(), password.getText().toString(),
