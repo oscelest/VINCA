@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
@@ -46,6 +47,7 @@ public class CanvasActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);
         setSupportActionBar(toolbar_canvas_top);

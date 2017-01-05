@@ -1,5 +1,6 @@
 package com.noxyspace.vinca.activities;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,31 +18,28 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.android.volley.Response;
-import com.noxyspace.vinca.activities.HubActivity;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.UserObject;
 import com.noxyspace.vinca.requests.users.LoginRequest;
+import com.noxyspace.vinca.requests.users.RefreshRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = sharedPreferences.edit();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-        ApplicationObject.getInstance().setUser(null);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.remove("com.noxyspace.vinca.USERTOKEN");
-        editor.apply();
 
         // Setup for fields
         final TextInputEditText email = (TextInputEditText) findViewById(R.id.input_email);
@@ -54,13 +52,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-            }
-        });
-
-        findViewById(R.id.btn_skip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), HubActivity.class));
             }
         });
 
@@ -86,6 +77,11 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                ApplicationObject.getInstance().setUser(null);
+                ApplicationObject.getInstance().setUserToken(null);
+                editor.remove("com.noxyspace.vinca.USERTOKEN");
+                editor.apply();
+
                 // Send request to server
                 ApplicationObject.getInstance().addRequest(new LoginRequest(email.getText().toString(), password.getText().toString(),
                         new Response.Listener<JSONObject>() {
@@ -96,18 +92,15 @@ public class LoginActivity extends AppCompatActivity {
 
                                         JSONObject content = response.getJSONObject("content");
 
+                                        ApplicationObject.getInstance().setUserToken(content.getString("user_token"));
                                         ApplicationObject.getInstance().setUser(new UserObject(
-                                            content.getInt("id"),
-                                            content.getString("first_name"),
-                                            content.getString("last_name"),
-                                            content.getString("email"),
-                                            content.getInt("admin") != 0,
-                                            content.getString("user_token")
+                                                content.getInt("id"),
+                                                content.getString("first_name"),
+                                                content.getString("last_name"),
+                                                content.getString("email"),
+                                                content.getInt("admin") != 0,
+                                                content.getString("user_token")
                                         ));
-
-                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-
                                         editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
                                         editor.apply();
 
@@ -125,6 +118,41 @@ public class LoginActivity extends AppCompatActivity {
                 ));
             }
         });
+        String user_token = sharedPreferences.getString("com.noxyspace.vinca.USERTOKEN", null);
+        if (user_token != null) {
+            ApplicationObject.getInstance().setUserToken(user_token);
+            ApplicationObject.getInstance().addRequest(new RefreshRequest(
+                    new Response.Listener<JSONObject>() {
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if (response.getBoolean("success")) {
+                                    Log.d("LoginSuccess", response.toString());
+                                    JSONObject content = response.getJSONObject("content");
+                                    ApplicationObject.getInstance().setUserToken(content.getString("user_token"));
+                                    ApplicationObject.getInstance().setUser(new UserObject(
+                                            content.getInt("id"),
+                                            content.getString("first_name"),
+                                            content.getString("last_name"),
+                                            content.getString("email"),
+                                            content.getInt("admin") != 0,
+                                            content.getString("user_token")
+                                    ));
+                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
+                                    editor.apply();
+                                    startActivity(new Intent(getApplicationContext(), HubActivity.class));
+                                } else {
+                                    Log.d("RefreshFailure", response.toString());
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+            ));
+        }
     }
 
     // Disables going back to previous screen on back button (closes application).
