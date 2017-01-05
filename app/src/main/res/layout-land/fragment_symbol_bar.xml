@@ -3,7 +3,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:focusableInTouchMode="true"
     android:background="@color/lightGrey">
 
     <ImageView
@@ -32,13 +31,13 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/question"
+        android:id="@+id/process_start"
         android:src="@mipmap/question"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/answer"
+        android:id="@+id/process_end"
         android:src="@mipmap/answer"/>
 
     <ImageView
