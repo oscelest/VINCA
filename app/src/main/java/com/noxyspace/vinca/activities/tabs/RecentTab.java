@@ -26,11 +26,11 @@ public class RecentTab extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recent_tab_fragment, container, false);
 
-        recentList.add(new DirectoryObject(0, 1, 0, "File 1", "Rune", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(1, 2, 0, "File 2", "Mikkel", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(2, 3, 0, "File 3", "Andreas", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(3, 4, 0, "File 4", "Magnus", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(4, 5, 0, "File 5", "Oliver", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+//        recentList.add(new DirectoryObject(0, 1, 0, "File 1", "Rune", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+//        recentList.add(new DirectoryObject(1, 2, 0, "File 2", "Mikkel", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+//        recentList.add(new DirectoryObject(2, 3, 0, "File 3", "Andreas", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+//        recentList.add(new DirectoryObject(3, 4, 0, "File 4", "Magnus", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+//        recentList.add(new DirectoryObject(4, 5, 0, "File 5", "Oliver", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
 
         return view;
     }
@@ -85,13 +85,13 @@ public class RecentTab extends ListFragment {
             if (!recentList.get(position).isFolder()) {
                 img.setImageResource(R.drawable.file_white);
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-                editor.setText(recentList.get(position).getOwnerName() + " " + recentList.get(position).getCreatedDate());
+                editor.setText(recentList.get(position).getOwnerFullName() + " " + recentList.get(position).getCreatedTime());
             }
 
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(recentList.get(position).getName());
             TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-            createdAt.setText(recentList.get(position).getCreatedDate());
+            createdAt.setText(recentList.get(position).getCreatedTime());
 
             Collections.sort(recentList, new Comparator<DirectoryObject>() {
                 @Override

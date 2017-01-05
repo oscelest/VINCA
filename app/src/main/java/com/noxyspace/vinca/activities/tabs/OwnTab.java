@@ -23,6 +23,7 @@ import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ import java.util.List;
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private CustomAdapter adapter;
-    private ArrayList<DirectoryObject> directoryObjects = new ArrayList<>();
+    private List<DirectoryObject> directoryObjects = new ArrayList<>();
 
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
@@ -43,8 +44,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
-
-        Log.d("onCreateView", "OwnTab");
 
         ((FloatingActionButton)view.findViewById(R.id.fab_plus)).setOnClickListener(new View.OnClickListener() {
             private boolean toggled = false;
@@ -67,17 +66,46 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     }
 
     public void onTabSelected() {
-        Log.d("onTabSelected", "OwnTab");
+        directoryObjects.clear();
 
-        directoryObjects.add(new DirectoryObject(0, 1, 0, "File 1", "Rune", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(1, 2, 0, "File 2", "Mikkel", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(2, 3, 0, "File 3", "Andreas", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(3, 4, 0, "File 4", "Magnus", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        directoryObjects.add(new DirectoryObject(4, 5, 0, "File 5", "Oliver", "{}", false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest("0",
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("GetDirectorySuccess", response.toString());
 
-        if (this.adapter != null) {
-            this.adapter.notifyDataSetChanged();
-        }
+                            JSONObject content = response.getJSONObject("content");
+
+                            /* TO DO: Enumerate content-files and add them all. */
+//                            directoryObjects.add(new DirectoryObject(
+//                                content.getInt("id"),
+//                                content.getInt("owner_id"),
+//                                content.getString("owner_first_name"),
+//                                content.getString("owner_last_name"),
+//                                content.getInt("parent_id"),
+//                                content.getString("name"),
+//                                content.getString("data"),
+//                                content.getInt("folder") == 1,
+//                                content.getInt("time_created"),
+//                                content.getInt("time_updated"),
+//                                content.getInt("time_deleted"))
+//                            );
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("GetDirectoryFailure", response.toString());
+                            //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        ));
+
     }
 
     @Override
@@ -112,45 +140,55 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         builder.setView(inflater.inflate(R.layout.fragment_create_directory_object_dialog, null));
         builder.setTitle(isFolder ? R.string.foldersName : R.string.filesName);
 
-// Set up the input
+        // Set up the input
         final EditText fileTitle = new EditText(getActivity());
         fileTitle.setMaxLines(1);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         builder.setView(fileTitle);
 
-// Set up the buttons
+        // Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        new CreateDirectoryObjectRequest(fileTitle.getText().toString(), "0", (isFolder ? "1" : "0"), new Response.Listener<JSONObject>() {
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    if (response.getBoolean("success")) {
-                                        Log.d("CreateDirObjSuccess", response.toString());
-                                        List<DirectoryObject> dir = ApplicationObject.getInstance().getDirectoryList();
-                                        JSONObject newDirObj = response.getJSONObject("content");
-                                        dir.add(new DirectoryObject(
-                                                newDirObj.getInt("id"),
-                                                newDirObj.getInt("owner_id"),
-                                                newDirObj.getInt("parent_id"),
-                                                newDirObj.getString("title"),
-                                                newDirObj.getString("owner_name"),
-                                                newDirObj.getString("data"),
-                                                newDirObj.getBoolean("folder"),
-                                                newDirObj.getInt("time_created"),
-                                                newDirObj.getInt("time_updated")
-                                        ));
+            public void onClick(DialogInterface dialog, int which) {
+                ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(fileTitle.getText().toString(), "0", (isFolder ? "1" : "0"),
+                    new Response.Listener<JSONObject>() {
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if (response.getBoolean("success")) {
+                                    Log.d("CreateDirectorySuccess", response.toString());
+
+                                    JSONObject content = response.getJSONObject("content");
+
+                                    directoryObjects.add(new DirectoryObject(
+                                        content.getInt("id"),
+                                        content.getInt("owner_id"),
+                                        content.getString("owner_first_name"),
+                                        content.getString("owner_last_name"),
+                                        content.getInt("parent_id"),
+                                        content.getString("name"),
+                                        content.getString("data"),
+                                        content.getInt("folder") == 1,
+                                        content.getInt("time_created"),
+                                        content.getInt("time_updated"),
+                                        content.getInt("time_deleted"))
+                                    );
+
+                                    if (adapter != null) {
                                         adapter.notifyDataSetChanged();
-                                    } else {
-                                        Log.d("CreateDirObjFailure", response.toString());
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                } else {
+                                    Log.d("CreateDirectoryFailure", response.toString());
+                                    //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        });
-                    }
-                }
-        );
+                        }
+                    })
+                );
+            }
+        });
+
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -162,7 +200,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     }
 
     public class CustomAdapter extends BaseAdapter {
-
         @Override
         public int getCount() {
             return directoryObjects.size();
@@ -203,13 +240,13 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             if (!directoryObjects.get(position).isFolder()) {
                 img.setImageResource(R.drawable.file_white);
                 TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-                editor.setText(directoryObjects.get(position).getOwnerName() + " " + directoryObjects.get(position).getCreatedDate());
+                editor.setText(directoryObjects.get(position).getOwnerFullName() + " " + directoryObjects.get(position).getCreatedTime());
             }
 
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(directoryObjects.get(position).getName());
             TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-            createdAt.setText(directoryObjects.get(position).getCreatedDate());
+            createdAt.setText(directoryObjects.get(position).getCreatedTime());
 
             Collections.sort(directoryObjects, new Comparator<DirectoryObject>() {
                 @Override

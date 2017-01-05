@@ -14,7 +14,7 @@ public class DeleteDirectoryObjectRequest extends HttpRequest {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("GetDirContentError", error.getMessage() != null ? error.getMessage() : "There was an error.");
+                    Log.d("DeleteDirectoryError", error.getMessage() != null ? error.getMessage() : "There was an error.");
                 }
             }
         );

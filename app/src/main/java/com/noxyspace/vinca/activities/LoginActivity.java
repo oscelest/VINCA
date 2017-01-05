@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = sharedPreferences.edit();
 
@@ -79,78 +80,81 @@ public class LoginActivity extends AppCompatActivity {
 
                 ApplicationObject.getInstance().setUser(null);
                 ApplicationObject.getInstance().setUserToken(null);
+
                 editor.remove("com.noxyspace.vinca.USERTOKEN");
                 editor.apply();
 
                 // Send request to server
                 ApplicationObject.getInstance().addRequest(new LoginRequest(email.getText().toString(), password.getText().toString(),
-                        new Response.Listener<JSONObject>() {
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    if (response.getBoolean("success")) {
-                                        Log.d("LoginSuccess", response.toString());
-
-                                        JSONObject content = response.getJSONObject("content");
-
-                                        ApplicationObject.getInstance().setUserToken(content.getString("user_token"));
-                                        ApplicationObject.getInstance().setUser(new UserObject(
-                                                content.getInt("id"),
-                                                content.getString("first_name"),
-                                                content.getString("last_name"),
-                                                content.getString("email"),
-                                                content.getInt("admin") != 0,
-                                                content.getString("user_token")
-                                        ));
-                                        editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
-                                        editor.apply();
-
-                                        startActivity(new Intent(getApplicationContext(), HubActivity.class));
-                                    } else {
-                                        Log.d("LoginFailure", response.toString());
-                                        email_layout.setErrorEnabled(true);
-                                        email_layout.setError("Email/Password combination doesn't match.");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                ));
-            }
-        });
-        String user_token = sharedPreferences.getString("com.noxyspace.vinca.USERTOKEN", null);
-        if (user_token != null) {
-            ApplicationObject.getInstance().setUserToken(user_token);
-            ApplicationObject.getInstance().addRequest(new RefreshRequest(
                     new Response.Listener<JSONObject>() {
                         public void onResponse(JSONObject response) {
                             try {
                                 if (response.getBoolean("success")) {
                                     Log.d("LoginSuccess", response.toString());
+
                                     JSONObject content = response.getJSONObject("content");
+
                                     ApplicationObject.getInstance().setUserToken(content.getString("user_token"));
                                     ApplicationObject.getInstance().setUser(new UserObject(
-                                            content.getInt("id"),
-                                            content.getString("first_name"),
-                                            content.getString("last_name"),
-                                            content.getString("email"),
-                                            content.getInt("admin") != 0,
-                                            content.getString("user_token")
+                                        content.getInt("id"),
+                                        content.getString("first_name"),
+                                        content.getString("last_name"),
+                                        content.getString("email"),
+                                        content.getInt("admin") != 0,
+                                        content.getString("user_token")
                                     ));
-                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
                                     editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
                                     editor.apply();
+
                                     startActivity(new Intent(getApplicationContext(), HubActivity.class));
                                 } else {
-                                    Log.d("RefreshFailure", response.toString());
+                                    Log.d("LoginFailure", response.toString());
+                                    email_layout.setErrorEnabled(true);
+                                    email_layout.setError("Email/Password combination doesn't match.");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     }
+                ));
+            }
+        });
 
+        String user_token = sharedPreferences.getString("com.noxyspace.vinca.USERTOKEN", null);
+
+        if (user_token != null) {
+            ApplicationObject.getInstance().setUserToken(user_token);
+            ApplicationObject.getInstance().addRequest(new RefreshRequest(
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("LoginSuccess", response.toString());
+                                JSONObject content = response.getJSONObject("content");
+                                ApplicationObject.getInstance().setUserToken(content.getString("user_token"));
+                                ApplicationObject.getInstance().setUser(new UserObject(
+                                    content.getInt("id"),
+                                    content.getString("first_name"),
+                                    content.getString("last_name"),
+                                    content.getString("email"),
+                                    content.getInt("admin") != 0,
+                                    content.getString("user_token")
+                                ));
+
+                                editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
+                                editor.apply();
+
+                                startActivity(new Intent(getApplicationContext(), HubActivity.class));
+                            } else {
+                                Log.d("RefreshFailure", response.toString());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             ));
         }
     }

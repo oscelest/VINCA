@@ -4,59 +4,74 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DirectoryObject {
+    private int id;
 
-    private String name, owner_name, icon_name;
-    private int id, owner_id, parent_id;
-    private boolean shared;
-    private boolean folder;
-    private String created;
-    private String updated;
+    private int owner_id;
+    private String owner_first_name;
+    private String owner_last_name;
+
+    private int parent_id;
+    private String name;
     private String data;
+
+    private boolean folder;
+    private boolean shared;
+
+    private String time_created;
+    private String time_updated;
+    private String time_deleted;
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
-    public DirectoryObject(int id, int owner_id, int parent_id, String name, String owner_name, String data, boolean folder, int created, int updated) {
+    public DirectoryObject(int id, int owner_id, String owner_first_name, String owner_last_name, int parent_id, String name, String data, boolean folder, int time_created, int time_updated, int time_deleted) {
         this.id = id;
+
+        this.owner_id = owner_id;
+        this.owner_first_name = owner_first_name;
+        this.owner_last_name = owner_last_name;
+
+        this.parent_id = parent_id;
         this.name = name;
         this.data = data;
-        this.owner_name = owner_name;
-        this.owner_id = owner_id;
-        this.parent_id = parent_id;
-        this.shared = false;
+
         this.folder = folder;
-        this.created = dateFormat.format(new Date(created));
-        this.updated = dateFormat.format(new Date(updated));
+        this.shared = false;
+
+        this.time_created = dateFormat.format(new Date(time_created));
+        this.time_updated = dateFormat.format(new Date(time_updated));
+        this.time_deleted = dateFormat.format(new Date(time_deleted));
     }
 
-    public int getID() {
-        return id;
+    public int getId() {
+        return this.id;
     }
 
-    public int getOwnerID() {
-        return owner_id;
+    public int getOwnerId() {
+        return this.owner_id;
+    }
+
+    public String getOwnerFirstName() {
+        return this.owner_first_name;
+    }
+
+    public String getOwnerLastName() {
+        return this.owner_last_name;
+    }
+
+    public String getOwnerFullName() {
+        return (this.owner_first_name + " " + this.owner_last_name);
     }
 
     public int getParentId() {
-        return parent_id;
-    }
-
-    public String getOwnerName() {
-        return owner_name;
+        return this.parent_id;
     }
 
     public String getName() {
-        return name;
-    }
-
-    public String getIconName() {
-        return icon_name;
-    }
-
-    public boolean isShared() {
-        return shared;
+        return this.name;
     }
 
     public String getData() {
-        return data;
+        return this.data;
     }
 
     public void setData(String data) {
@@ -64,14 +79,22 @@ public class DirectoryObject {
     }
 
     public boolean isFolder() {
-        return folder;
+        return this.folder;
     }
 
-    public String getCreatedDate() {
-        return created;
+    public boolean isShared() {
+        return this.shared;
     }
 
-    public String getUpdatedDate() {
-        return updated;
+    public String getCreatedTime() {
+        return this.time_created;
+    }
+
+    public String getUpdatedTime() {
+        return this.time_updated;
+    }
+
+    public String getDeletedTime() {
+        return this.time_deleted;
     }
 }

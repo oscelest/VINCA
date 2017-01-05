@@ -14,7 +14,7 @@ public class CreateDirectoryObjectRequest extends HttpRequest {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("LoginRequestError", error.getMessage() != null ? error.getMessage() : "There was an error.");
+                    Log.d("CreateDirectoryError", error.getMessage() != null ? error.getMessage() : "There was an error.");
                 }
             },
             new HttpParameter("name", name),

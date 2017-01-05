@@ -138,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 content.getInt("admin") != 0,
                                                 content.getString("user_token")
                                         ));
+
                                         editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
                                         editor.apply();
 

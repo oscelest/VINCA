@@ -76,7 +76,6 @@ public class HubActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        this.getContent();
     }
 
     @Override
@@ -129,26 +128,6 @@ public class HubActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void getContent(){
-        ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest("0",
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("GetDirContentSuccess", response.toString());
-                                JSONObject content = response.getJSONObject("content");
-                                Log.d("DirContent", content.toString());
-                            } else {
-                                Log.d("GetDirContentFailure", response.toString());
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        ));
     }
 
     public void onGroupItemClick(MenuItem item) {
