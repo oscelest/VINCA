@@ -35,15 +35,14 @@ public class Parentheses extends Symbol {
         }
         else {
             for (int i = 0 ; i < contents.size() ; i++){
-                if (contents.get(i).getId() == elementId){
+                if (contents.get(i).getId() == elementId) {
                     elementPosition++;
-                    break;
+                }
+                else if (contents.get(i) instanceof Parentheses){
+                        ((Parentheses) contents.get(i)).searchForElementPosition(elementId, elementPosition + 1);
                 }
                 else{
                     elementPosition++;
-                }
-                if (contents.get(i) instanceof Parentheses){
-                    ((Parentheses) contents.get(i)).searchForElementPosition(elementId, elementPosition);
                 }
             }
         }
@@ -51,7 +50,7 @@ public class Parentheses extends Symbol {
     }
 
     public int numberOfElements(){
-        int n = 0;
+        int n = 1;
         for(int i = 0 ; i < contents.size() ; i++){
             if (contents.get(i) instanceof Parentheses){
                 n = n + ((Parentheses) contents.get(i)).numberOfElements();
@@ -60,7 +59,7 @@ public class Parentheses extends Symbol {
                 n++;
             }
         }
-        return n + 2;
+        return n;
     }
 
     /**

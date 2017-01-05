@@ -7,20 +7,23 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
+        android:name="com.noxyspace.vinca.VincaApplication"
+        android:label="VINCA"
         android:allowBackup="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".RegisterActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        android:theme="@style/AppTheme" >
+        // android:logo="@drawable/ic_launcher_no_text"
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="824f94a6adf58631eb97dc52336456d13ac5c386" />
+
+        <activity android:name=".RegisterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />

@@ -1,25 +1,20 @@
 package com.noxyspace.vinca.requests;
 
-import android.content.ContextWrapper;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import com.android.volley.*;
-import com.android.volley.Request.*;
 import com.android.volley.Response.*;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.noxyspace.vinca.objects.ApplicationObject;
 
-import android.content.Context;
+import com.noxyspace.vinca.objects.ApplicationObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomRequest extends Request<JSONObject> {
+public class HttpRequest extends Request<JSONObject> {
     private static final String SERVER_URL = "http://178.62.117.85:8080";
 
     /* User URL
@@ -47,17 +42,27 @@ public class CustomRequest extends Request<JSONObject> {
     protected static final String DIRECTORY_URL = SERVER_URL + "/api/directory";
 
     private Listener<JSONObject> listener;
-    private Map<String, String> params;
 
-    public CustomRequest(int method, String url, Listener<JSONObject> responseListener, ErrorListener errorListener, HttpParameter... params) {
+    private Map<String, String> headers;
+    private Map<String, String> parameters;
+
+    public HttpRequest(int method, String url, Listener<JSONObject> responseListener, ErrorListener errorListener, HttpParameter... params) {
         super(method, url, errorListener);
 
         this.listener = responseListener;
-        this.generateParamsList(params);
+
+        this.generateHeaderList();
+        this.generateParameterList(params);
     }
 
-    protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-        return params;
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        return this.headers;
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return this.parameters;
     }
 
     @Override
@@ -65,20 +70,11 @@ public class CustomRequest extends Request<JSONObject> {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(new JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response));
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
+            return Response.error(new ParseError(e));
+        } catch (JSONException e) {
             return Response.error(new ParseError(e));
         }
-        catch (JSONException e) {
-            return Response.error(new ParseError(e));
-        }
-    }
-
-    @Override
-    public Map<String, String> getHeaders() throws AuthFailureError {
-        Map<String, String> headers = new HashMap<String, String>();
-        headers.put("Authorization", "Basic:"+ApplicationObject.getUser().getUserToken());
-        return headers;
     }
 
     @Override
@@ -86,15 +82,31 @@ public class CustomRequest extends Request<JSONObject> {
         listener.onResponse(response);
     }
 
-    private void generateParamsList(HttpParameter... params) {
-        if (this.params == null) {
-            this.params = new HashMap<>();
+    private void generateHeaderList(HttpParameter... headers) {
+        if (this.headers == null) {
+            this.headers = new HashMap<>();
         }
 
-        this.params.clear();
+        this.headers.clear();
+
+        if (ApplicationObject.getInstance().getUser() != null) {
+            this.headers.put("Authorization", "Basic:" + ApplicationObject.getInstance().getUser().getUserToken());
+        }
+
+        for (HttpParameter header : headers) {
+            this.headers.put(header.getKey(), header.getValue());
+        }
+    }
+
+    private void generateParameterList(HttpParameter... params) {
+        if (this.parameters == null) {
+            this.parameters = new HashMap<>();
+        }
+
+        this.parameters.clear();
 
         for (HttpParameter param : params) {
-            this.params.put(param.getKey(), param.getValue());
+            this.parameters.put(param.getKey(), param.getValue());
         }
     }
 }

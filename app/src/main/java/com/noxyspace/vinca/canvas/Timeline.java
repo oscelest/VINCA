@@ -35,8 +35,6 @@ public class Timeline {
      */
     public int searchForElement(int elementId){
 
-        int elementPosition = 0;
-
         for (int i = 0 ; i < timeline.size() ; i++){                                                // Each Project in the timeline
             for (int j = 0 ; j < timeline.get(i).numberOfElements() ; j ++){                        // Each element in the Project
 
@@ -58,6 +56,8 @@ public class Timeline {
 //    public int getNumberOfElements(){
 //        return 1;
 //    }
+
+
 
     public void addProject(int id, String title, String description){
         timeline.add(new Project(id, title, description));

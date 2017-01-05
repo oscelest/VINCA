@@ -17,7 +17,7 @@ import java.util.Comparator;
 
 public class RecentTab extends ListFragment {
 
-    private ArrayList<DirectoryObject> recentList = new ArrayList<DirectoryObject>();
+    private ArrayList<DirectoryObject> recentList = new ArrayList<>();
     private int fileNo = 1;
     CustomAdapter adapter;
 
@@ -25,11 +25,11 @@ public class RecentTab extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recent_tab_fragment, container, false);
 
-        recentList.add(new DirectoryObject(0, "File 1", "Rune", 1, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(1, "File 2", "Mikkel", 2, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(2, "File 3", "Andreas", 3, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(3, "File 4", "Magnus", 4, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-        recentList.add(new DirectoryObject(4, "File 5", "Oliver", 5, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(0, 1, 0, "File 1", "Rune", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(1, 2, 0, "File 2", "Mikkel", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(2, 3, 0, "File 3", "Andreas", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(3, 4, 0, "File 4", "Magnus", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
+        recentList.add(new DirectoryObject(4, 5, 0, "File 5", "Oliver", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
 
         return view;
     }

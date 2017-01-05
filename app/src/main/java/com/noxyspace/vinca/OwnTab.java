@@ -114,7 +114,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                 try {
                                     if (response.getBoolean("success")) {
                                         Log.d("CreateDirObjSuccess", response.toString());
-                                        List<DirectoryObject> dir = ApplicationObject.getDirectory();
+                                        List<DirectoryObject> dir = ApplicationObject.getInstance().getDirectoryList();
                                         JSONObject newDirObj = response.getJSONObject("content");
                                         dir.add(new DirectoryObject(
                                                 newDirObj.getInt("id"),
