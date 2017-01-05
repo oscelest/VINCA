@@ -3,31 +3,31 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
+    android:focusableInTouchMode="true"
     android:background="@color/lightGrey">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/project_start"
-        android:src="@mipmap/project_start1" />
+        android:src="@mipmap/project_start"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/project_end"
-        android:src="@mipmap/project_end2"/>
+        android:src="@mipmap/project_end" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/activity"
-        android:src="@mipmap/activity1"/>
+        android:src="@mipmap/activity"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/decision"
-        android:src="@mipmap/decision1"/>
+        android:src="@mipmap/decision"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -39,13 +39,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/answer"
-        android:src="@mipmap/answer1"/>
+        android:src="@mipmap/answer"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/pause"
-        android:src="@mipmap/pause1"/>
+        android:src="@mipmap/pause"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/iteration_start"
-        android:src="@mipmap/iteration_start1"/>
+        android:src="@mipmap/iteration_start"/>
 
     <ImageView
         android:layout_width="wrap_content"
