@@ -1,4 +1,4 @@
-package com.noxyspace.vinca;
+package com.noxyspace.vinca.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +16,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.android.volley.Response;
+import com.noxyspace.vinca.activities.HubActivity;
+import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.UserObject;
-import com.noxyspace.vinca.requests.Users.LoginRequest;
+import com.noxyspace.vinca.requests.users.LoginRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.btn_skip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), HubActivity.class));
             }
         });
 
@@ -98,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                                         editor.putString("com.noxyspace.vinca.USERTOKEN", content.getString("user_token"));
                                         editor.apply();
 
-                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), HubActivity.class));
                                     } else {
                                         Log.d("LoginFailure", response.toString());
                                         email_layout.setErrorEnabled(true);

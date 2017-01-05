@@ -1,4 +1,4 @@
-package com.noxyspace.vinca;
+package com.noxyspace.vinca.activities.tabs;
 
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.noxyspace.vinca.R;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

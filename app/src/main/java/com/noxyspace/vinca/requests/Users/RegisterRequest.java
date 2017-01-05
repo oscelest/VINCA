@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.requests.Users;
+package com.noxyspace.vinca.requests.users;
 
 import com.android.volley.*;
 import com.android.volley.Response;

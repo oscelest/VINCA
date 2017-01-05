@@ -1,4 +1,4 @@
-package com.noxyspace.vinca;
+package com.noxyspace.vinca.activities.tabs;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.DirectoryObject;
 
 import java.util.ArrayList;

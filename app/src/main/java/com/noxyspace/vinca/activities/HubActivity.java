@@ -1,4 +1,4 @@
-package com.noxyspace.vinca;
+package com.noxyspace.vinca.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,14 +12,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-
 import com.crashlytics.android.Crashlytics;
+import com.noxyspace.vinca.activities.adapter.PagerAdapter;
+import com.noxyspace.vinca.R;
 
 import static android.graphics.Color.WHITE;
 
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends AppCompatActivity {
+public class HubActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,20 +48,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
-
     }
 
     @Override
@@ -89,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-                                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                                startActivity(intent);
+                                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
                             }
                         });
 

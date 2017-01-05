@@ -1,4 +1,4 @@
-package com.noxyspace.vinca;
+package com.noxyspace.vinca.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
+import com.noxyspace.vinca.R;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -23,7 +24,7 @@ public class CanvasActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
 
-        toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);;
+        toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);
         setSupportActionBar(toolbar_canvas_top);
 
 

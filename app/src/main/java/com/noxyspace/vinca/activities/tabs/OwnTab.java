@@ -1,6 +1,5 @@
-package com.noxyspace.vinca;
+package com.noxyspace.vinca.activities.tabs;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.noxyspace.vinca.activities.CanvasActivity;
+import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
-import com.noxyspace.vinca.requests.Directory.CreateDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;

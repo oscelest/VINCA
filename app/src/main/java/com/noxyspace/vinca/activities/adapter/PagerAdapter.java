@@ -1,11 +1,15 @@
-package com.noxyspace.vinca;
+package com.noxyspace.vinca.activities.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.noxyspace.vinca.activities.tabs.NewsTab;
+import com.noxyspace.vinca.activities.tabs.OwnTab;
+import com.noxyspace.vinca.activities.tabs.RecentTab;
+
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    private int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -17,14 +21,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                NewsTab tab1 = new NewsTab();
-                return tab1;
+                return new NewsTab();
             case 1:
-                OwnTab tab2 = new OwnTab();
-                return tab2;
+                return new OwnTab();
             case 2:
-                RecentTab tab3 = new RecentTab();
-                return tab3;
+                return new RecentTab();
             default:
                 return null;
         }

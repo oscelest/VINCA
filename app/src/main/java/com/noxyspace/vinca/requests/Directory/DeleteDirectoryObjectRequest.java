@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.requests.Directory;
+package com.noxyspace.vinca.requests.directory;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
