@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -29,7 +30,14 @@
         android:layout_height="match_parent"
         class="android.support.design.widget.TextInputEditText"
         android:id="@+id/canvas"
-        android:layout_weight="49.04" />
+        android:layout_below="@id/toolbar_canvas_top"
+        />
 
+    <fragment android:name="com.noxyspace.vinca.SymbolBar"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/fragment_symbol_bar" />
 
-</LinearLayout>
+</RelativeLayout>

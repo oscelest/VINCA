@@ -1,6 +1,9 @@
 package com.noxyspace.vinca;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,6 +28,8 @@ public class CanvasActivity extends AppCompatActivity{
 
         toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);;
         setSupportActionBar(toolbar_canvas_top);
+
+
 
 
 
