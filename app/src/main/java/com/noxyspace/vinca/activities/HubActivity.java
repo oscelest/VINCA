@@ -104,7 +104,7 @@ public class HubActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.remove("com.noxyspace.vinca.USERTOKEN");
                                 editor.apply();
-                                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             }
                         });
 
