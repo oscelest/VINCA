@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".activities.HubActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.CanvasActivity"/>
     </application>
