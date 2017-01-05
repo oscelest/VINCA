@@ -34,7 +34,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        ApplicationObject.getInstance().initializeRequestQueue(this.getCacheDir());
+        ApplicationObject.getInstance().setUser(null);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("com.noxyspace.vinca.USERTOKEN");
+        editor.apply();
 
         // Setup for fields
         final TextInputEditText first_name = (TextInputEditText) findViewById(R.id.input_first_name);
