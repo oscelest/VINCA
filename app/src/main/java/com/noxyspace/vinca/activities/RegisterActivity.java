@@ -196,9 +196,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             ));
         }
-        else {
-            Log.d("UserTokenMissing", "Cannot auto-login, user_token is missing.");
-        }
     }
 
     // Disables going back to previous screen on back button (closes application).

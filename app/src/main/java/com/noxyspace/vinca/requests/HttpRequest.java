@@ -89,8 +89,8 @@ public class HttpRequest extends Request<JSONObject> {
 
         this.headers.clear();
 
-        if (ApplicationObject.getInstance().getUser() != null) {
-            this.headers.put("Authorization", "Basic:" + ApplicationObject.getInstance().getUser().getUserToken());
+        if (ApplicationObject.getInstance().getUserToken() != null) {
+            this.headers.put("Authorization", "Basic:" + ApplicationObject.getInstance().getUserToken());
         }
 
         for (HttpParameter header : headers) {
