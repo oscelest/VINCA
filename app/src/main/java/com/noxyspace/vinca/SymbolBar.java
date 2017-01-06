@@ -92,11 +92,11 @@ public class SymbolBar extends Fragment {
                         break;
 
                     case DragEvent.ACTION_DRAG_ENDED   :
-                        drawToCanvas(oldBitmap, imageViewToBitmap((ImageView) v));
+                        drawToCanvas(((CanvasActivity) getActivity()).getBitmap(), imageViewToBitmap((ImageView) v));
                         break;
 
                     case DragEvent.ACTION_DROP:
-
+                    Log.d("Drag", "DROP");
                         break;
                     default: break;
                 }
@@ -129,6 +129,9 @@ public class SymbolBar extends Fragment {
     }
 
     public Bitmap drawToCanvas(Bitmap oldBitmap, Bitmap overlayBitmap){
+        Log.d("bitmap width", "" + oldBitmap.getWidth());
+        Log.d("obitmap width", "" + overlayBitmap.getWidth());
+
         Bitmap tempBitmap = Bitmap.createBitmap(oldBitmap.getWidth(), oldBitmap.getHeight(), oldBitmap.getConfig());
         Canvas tempCanvas = new Canvas(tempBitmap);
         tempCanvas.drawBitmap(oldBitmap, 0, 0, null);
@@ -136,8 +139,5 @@ public class SymbolBar extends Fragment {
         return tempBitmap;
     }
 
-    public void preDraw(){
-        oldBitmap = ((CanvasActivity) getActivity()).getBitmap();
-    }
 
 }
