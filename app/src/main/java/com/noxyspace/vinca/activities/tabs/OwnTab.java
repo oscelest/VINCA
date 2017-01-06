@@ -15,7 +15,6 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.activities.CanvasActivity;
@@ -86,10 +85,8 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!directoryObjects.get(position).isFolder()) {
-            Toast.makeText(getActivity(), "File: " + position, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getActivity(), CanvasActivity.class));
         } else {
-            Toast.makeText(getActivity(), "Folder: " + position, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -103,7 +100,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        builder.setView(inflater.inflate(R.layout.fragment_create_directory_object_dialog, null));
+        builder.setView(inflater.inflate(R.layout.create_directory_object_dialog_fragment, null));
         builder.setTitle(isFolder ? R.string.foldersName : R.string.filesName);
 
         // Set up the input
