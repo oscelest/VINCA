@@ -99,10 +99,8 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!directoryObjects.get(position).isFolder()) {
-            Toast.makeText(getActivity(), "File: " + position, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getActivity(), CanvasActivity.class));
         } else {
-            Toast.makeText(getActivity(), "Folder: " + position, Toast.LENGTH_SHORT).show();
         }
     }
 
