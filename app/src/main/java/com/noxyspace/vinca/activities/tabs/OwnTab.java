@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
@@ -176,21 +177,28 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                             Log.d("GetDirectorySuccess", response.toString());
 
                             JSONObject content = response.getJSONObject("content");
+                            Iterator<String> iterator = content.keys();
 
-                            /* TO DO: Enumerate content-files and add them all. */
-//                            directoryObjects.add(new DirectoryObject(
-//                                content.getInt("id"),
-//                                content.getInt("owner_id"),
-//                                content.getString("owner_first_name"),
-//                                content.getString("owner_last_name"),
-//                                content.getInt("parent_id"),
-//                                content.getString("name"),
-//                                content.getString("data"),
-//                                content.getInt("folder") == 1,
-//                                content.getInt("time_created"),
-//                                content.getInt("time_updated"),
-//                                content.getInt("time_deleted"))
-//                            );
+                            while (iterator.hasNext()) {
+                                String key = iterator.next();
+                                JSONObject directoryContent = content.getJSONObject(key);
+
+                                directoryObjects.add(new DirectoryObject(
+                                    directoryContent.getInt("id"),
+                                    directoryContent.getInt("owner_id"),
+                                    directoryContent.getString("owner_first_name"),
+                                    directoryContent.getString("owner_last_name"),
+                                    directoryContent.getInt("parent_id"),
+                                    directoryContent.getString("name"),
+                                    directoryContent.getString("data"),
+                                    directoryContent.getBoolean("folder"),
+                                    directoryContent.getInt("time_created"),
+                                    directoryContent.getInt("time_updated"),
+                                    directoryContent.getInt("time_deleted"))
+                                );
+
+                                iterator.remove();
+                            }
 
                             if (adapter != null) {
                                 adapter.notifyDataSetChanged();
