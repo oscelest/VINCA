@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -51,6 +52,9 @@ public class CanvasActivity extends AppCompatActivity{
 
         toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);
         setSupportActionBar(toolbar_canvas_top);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
 
         myImageView = (ImageView) findViewById(R.id.canvas);
         myImageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
