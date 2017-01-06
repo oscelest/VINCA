@@ -26,6 +26,7 @@ import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.DeleteDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
+import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,7 +87,10 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!directoryObjects.get(position).isFolder()) {
-            startActivity(new Intent(getActivity(), CanvasActivity.class));
+            int intentId = directoryObjects.get(position).getId();
+            Intent intent = new Intent(getActivity(), CanvasActivity.class);
+            intent.putExtra("FILE_ID", intentId);
+            startActivity(intent);
         } else {
             this.getDirectoryContent(directoryObjects.get(position).getId());
         }
@@ -203,6 +207,42 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             })
         );
     }
+
+    private void getDirectoryObject(int object_id) {
+        ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("GetDirectorySuccess", response.toString());
+
+                                ApplicationObject.getInstance().setCurrentFolderId(response.getInt("id"));
+
+                                JSONObject content = response.getJSONObject("content");
+
+                                content.getInt("id");
+                                        content.getInt("owner_id");
+                                        content.getString("owner_first_name");
+                                        content.getString("owner_last_name");
+                                        content.getInt("parent_id");
+                                        content.getString("name");
+                                        content.getBoolean("folder");
+                                        content.getInt("time_created");
+                                        content.getInt("time_updated");
+                                        content.getInt("time_deleted");
+
+                            } else {
+                                Log.d("GetDirectoryFailure", response.toString());
+                                //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ));
+    }
+
 
     private void getDirectoryContent(int folder_id) {
         directoryObjects.clear();
