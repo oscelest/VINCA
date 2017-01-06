@@ -36,6 +36,8 @@ import java.util.List;
 public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private CustomAdapter adapter;
+
+    private int currentDirectoryId;
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
 
     private FloatingActionButton fab_folder;
@@ -62,29 +64,14 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         fab_file = (FloatingActionButton)view.findViewById(R.id.fab_file);
         fab_file.setOnClickListener(this);
 
+        this.currentDirectoryId = 0;
+
         return view;
     }
 
     public void onTabSelected() {
-        // this.fetchFolderContent(0);
-
-        directoryObjects.add(new DirectoryObject(
-            0,
-            1,
-            "Valdemar",
-            "Carøe",
-            3,
-            "Filnavn",
-            "....",
-            false,
-            (int) (System.currentTimeMillis() / 1000),
-            (int) (System.currentTimeMillis() / 1000),
-            (int) (System.currentTimeMillis() / 1000))
-        );
-
-        if (this.adapter != null) {
-            this.adapter.notifyDataSetChanged();
-        }
+        this.currentDirectoryId = 0;
+        this.fetchFolderContent(0);
     }
 
     @Override
@@ -112,7 +99,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     }
 
     // Dialog that asks for the title of a file or folder and creates the element
-    public void CreateDirectoryObjectDialog(final boolean isFolder) {
+    public void CreateDirectoryObjectDialog(boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -123,13 +110,16 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         final EditText fileTitle = new EditText(getActivity());
         fileTitle.setMaxLines(1);
 
+        final boolean folder;
+        folder = isFolder;
+
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         builder.setView(fileTitle);
 
         // Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(fileTitle.getText().toString(), "0", (isFolder ? "1" : "0"),
+                ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(fileTitle.getText().toString(), currentDirectoryId, folder,
                     new Response.Listener<JSONObject>() {
                         public void onResponse(JSONObject response) {
                             try {
@@ -146,7 +136,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                         content.getInt("parent_id"),
                                         content.getString("name"),
                                         content.getString("data"),
-                                        content.getInt("folder") == 1,
+                                        content.getBoolean("folder"),
                                         content.getInt("time_created"),
                                         content.getInt("time_updated"),
                                         content.getInt("time_deleted"))

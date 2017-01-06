@@ -9,7 +9,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class CreateDirectoryObjectRequest extends HttpRequest {
-    public CreateDirectoryObjectRequest(String name, String parent_id, String folder, Response.Listener<JSONObject> responseListener) {
+    public CreateDirectoryObjectRequest(String name, int parent_id, boolean folder, Response.Listener<JSONObject> responseListener) {
         super(Method.POST, DIRECTORY_URL, responseListener,
             new Response.ErrorListener() {
                 @Override
@@ -18,8 +18,8 @@ public class CreateDirectoryObjectRequest extends HttpRequest {
                 }
             },
             new HttpParameter("name", name),
-            new HttpParameter("parent_id", parent_id),
-            new HttpParameter("folder", folder)
+            new HttpParameter("parent_id", Integer.toString(parent_id)),
+            new HttpParameter("folder", Integer.toString(folder ? 1 : 0))
         );
     }
 }
