@@ -6,8 +6,6 @@ import com.android.volley.toolbox.*;
 import com.noxyspace.vinca.requests.*;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
 public final class ApplicationObject {
     private static ApplicationObject singleton = new ApplicationObject();
@@ -20,12 +18,14 @@ public final class ApplicationObject {
 
     private UserObject user;
     private String user_token;
+    private DirectoryObject current_file;
 
     private int currentFolderId;
 
     private ApplicationObject() {
         this.user = null;
         this.user_token = null;
+        this.current_file = null;
 
         this.currentFolderId = 0;
 
@@ -62,6 +62,14 @@ public final class ApplicationObject {
 
     public void setUserToken(String token) {
         this.user_token = token;
+    }
+
+    public DirectoryObject getCurrenctFile() {
+        return this.current_file;
+    }
+
+    public void setCurrenctFile(DirectoryObject current_file) {
+        this.current_file = current_file;
     }
 
     public int getCurrentFolderId() {

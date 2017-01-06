@@ -68,6 +68,10 @@ public class DirectoryObject {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public boolean isFolder() {
         return this.folder;
     }
