@@ -112,4 +112,10 @@ public class CanvasActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_canvas_top, menu); //your file name
         return super.onCreateOptionsMenu(menu);
     }
+
+
+
+
+
+
 }

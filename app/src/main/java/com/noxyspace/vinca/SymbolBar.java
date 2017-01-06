@@ -1,11 +1,17 @@
 package com.noxyspace.vinca;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 
 public class SymbolBar extends Fragment {
@@ -28,70 +34,86 @@ public class SymbolBar extends Fragment {
         decision  = (ImageView) view.findViewById(R.id.decision);
         method = (ImageView) view.findViewById(R.id.method);
 
-        projectStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startDrag();
-            }
-        });
-        projectEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        activity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        iterationStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        iterationEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        processStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        processEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        decision.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        method.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
-
+        setListeners(projectStart);
+        setListeners(projectEnd);
+        setListeners(activity);
+        setListeners(decision);
+        setListeners(processStart);
+        setListeners(processEnd);
+        setListeners(pause);
+        setListeners(iterationStart);
+        setListeners(iterationEnd);
+        setListeners(method);
 
         return view;
-    }
+    }//End of onCreate()
+
+    public void setListeners(ImageView view){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipData.Item item = new ClipData.Item((CharSequence)v.getTag());
+                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+
+                ClipData dragData = new ClipData(v.getTag().toString(),mimeTypes, item);
+                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
+
+                v.startDrag(dragData,myShadow,null,0);
+            }
+        });
+
+        view.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch(event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        // Do nothing
+                        break;
+
+                    case DragEvent.ACTION_DRAG_ENTERED:
+
+                        break;
+
+                    case DragEvent.ACTION_DRAG_EXITED :
+
+                        break;
+
+                    case DragEvent.ACTION_DRAG_LOCATION  :
+
+                        break;
+
+                    case DragEvent.ACTION_DRAG_ENDED   :
+
+                        break;
+
+                    case DragEvent.ACTION_DROP:
+
+                        break;
+                    default: break;
+                }
+                return true;
+            }
+        });
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+
+                    v.startDrag(data, shadowBuilder, v, 0);
+                    v.setVisibility(View.VISIBLE);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+
+    }//End of setlisteners
+
+
+
 }
