@@ -87,6 +87,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         if (!directoryObjects.get(position).isFolder()) {
             startActivity(new Intent(getActivity(), CanvasActivity.class));
         } else {
+            this.getDirectoryContent(directoryObjects.get(position).getId());
         }
     }
 
