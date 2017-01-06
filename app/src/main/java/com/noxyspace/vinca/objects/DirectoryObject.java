@@ -12,7 +12,6 @@ public class DirectoryObject {
 
     private int parent_id;
     private String name;
-    private String data;
 
     private boolean folder;
     private boolean shared;
@@ -23,7 +22,7 @@ public class DirectoryObject {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
-    public DirectoryObject(int id, int owner_id, String owner_first_name, String owner_last_name, int parent_id, String name, String data, boolean folder, int time_created, int time_updated, int time_deleted) {
+    public DirectoryObject(int id, int owner_id, String owner_first_name, String owner_last_name, int parent_id, String name, boolean folder, int time_created, int time_updated, int time_deleted) {
         this.id = id;
 
         this.owner_id = owner_id;
@@ -32,7 +31,6 @@ public class DirectoryObject {
 
         this.parent_id = parent_id;
         this.name = name;
-        this.data = data;
 
         this.folder = folder;
         this.shared = false;
@@ -68,14 +66,6 @@ public class DirectoryObject {
 
     public String getName() {
         return this.name;
-    }
-
-    public String getData() {
-        return this.data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 
     public boolean isFolder() {

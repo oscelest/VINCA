@@ -16,14 +16,18 @@ public final class ApplicationObject {
         return singleton;
     }
 
+    private RequestQueue requestQueue;
+
     private UserObject user;
     private String user_token;
 
-    private RequestQueue requestQueue;
+    private int currentFolderId;
 
     private ApplicationObject() {
         this.user = null;
         this.user_token = null;
+
+        this.currentFolderId = 0;
 
         this.requestQueue = null;
     }
@@ -58,5 +62,13 @@ public final class ApplicationObject {
 
     public void setUserToken(String token) {
         this.user_token = token;
+    }
+
+    public int getCurrentFolderId() {
+        return this.currentFolderId;
+    }
+
+    public void setCurrentFolderId(int directoryId) {
+        this.currentFolderId = directoryId;
     }
 }

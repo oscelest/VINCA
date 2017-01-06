@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class UpdateDirectoryObjectRequest extends HttpRequest {
     public UpdateDirectoryObjectRequest(DirectoryObject directoryObject, Response.Listener<JSONObject> responseListener) {
-        super(Method.GET, DIRECTORY_URL + "/" + directoryObject.getId(), responseListener,
+        super(Method.PUT, DIRECTORY_URL + "/" + directoryObject.getId(), responseListener,
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -20,8 +20,7 @@ public class UpdateDirectoryObjectRequest extends HttpRequest {
             },
             new HttpParameter("name", directoryObject.getName()),
             new HttpParameter("owner_id", Integer.toString(directoryObject.getOwnerId())),
-            new HttpParameter("parent_id", Integer.toString(directoryObject.getParentId())),
-            new HttpParameter("data", directoryObject.getData())
+            new HttpParameter("parent_id", Integer.toString(directoryObject.getParentId()))
         );
     }
 }
