@@ -75,7 +75,7 @@ public class CanvasActivity extends AppCompatActivity {
 
         ((EditText) findViewById(R.id.text_canvas_name)).setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
-                    DirectoryObject current_file = ApplicationObject.getInstance().getCurrenctFile();
+                    DirectoryObject current_file = ApplicationObject.getInstance().getCurrentFile();
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {

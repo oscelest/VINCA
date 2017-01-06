@@ -64,11 +64,11 @@ public final class ApplicationObject {
         this.user_token = token;
     }
 
-    public DirectoryObject getCurrenctFile() {
+    public DirectoryObject getCurrentFile() {
         return this.current_file;
     }
 
-    public void setCurrenctFile(DirectoryObject current_file) {
+    public void setCurrentFile(DirectoryObject current_file) {
         this.current_file = current_file;
     }
 
