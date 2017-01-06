@@ -10,17 +10,17 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class UpdateDirectoryObjectRequest extends HttpRequest {
-    public UpdateDirectoryObjectRequest(DirectoryObject directoryObject, Response.Listener<JSONObject> responseListener) {
-        super(Method.PUT, DIRECTORY_URL + "/" + directoryObject.getId(), responseListener,
+    public UpdateDirectoryObjectRequest(int directoryId, String name, int ownerId, int parentId, Response.Listener<JSONObject> responseListener) {
+        super(Method.PUT, DIRECTORY_URL + "/" + directoryId, responseListener,
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("UpdateDirectoryError", error.getMessage() != null ? error.getMessage() : "There was an error.");
                 }
             },
-            new HttpParameter("name", directoryObject.getName()),
-            new HttpParameter("owner_id", Integer.toString(directoryObject.getOwnerId())),
-            new HttpParameter("parent_id", Integer.toString(directoryObject.getParentId()))
+            new HttpParameter("name", name == null ? "" : name),
+            new HttpParameter("owner_id", ownerId == -1 ? "" : Integer.toString(ownerId)),
+            new HttpParameter("parent_id", parentId == -1 ? "" : Integer.toString(parentId))
         );
     }
 }

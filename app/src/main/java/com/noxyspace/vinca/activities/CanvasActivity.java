@@ -80,24 +80,24 @@ public class CanvasActivity extends AppCompatActivity {
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
-                                ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(current_file,
-                                        new Response.Listener<JSONObject>() {
-                                            public void onResponse(JSONObject response) {
-                                                try {
-                                                    if (response.getBoolean("success")) {
-
-                                                        Log.d("UpdateCanvasNameSuccess", response.toString());
-                                                        JSONObject content = response.getJSONObject("content");
-                                                        current_file.setName(content.getString("name"));
-
-                                                    } else {
-                                                        Log.d("UpdateCanvasNameFailure", response.toString());
-                                                    }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }));
+//                                ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(current_file,
+//                                        new Response.Listener<JSONObject>() {
+//                                            public void onResponse(JSONObject response) {
+//                                                try {
+//                                                    if (response.getBoolean("success")) {
+//
+//                                                        Log.d("UpdateCanvasNameSuccess", response.toString());
+//                                                        JSONObject content = response.getJSONObject("content");
+//                                                        current_file.setName(content.getString("name"));
+//
+//                                                    } else {
+//                                                        Log.d("UpdateCanvasNameFailure", response.toString());
+//                                                    }
+//                                                } catch (JSONException e) {
+//                                                    e.printStackTrace();
+//                                                }
+//                                            }
+//                                        }));
                                 return true;
                             }
                         }

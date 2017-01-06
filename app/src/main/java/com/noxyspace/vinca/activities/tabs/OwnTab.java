@@ -26,6 +26,7 @@ import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.DeleteDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
+import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,6 +90,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             startActivity(new Intent(getActivity(), CanvasActivity.class));
         } else {
             this.getDirectoryContent(directoryObjects.get(position).getId());
+            //this.renameDirectoryObject(directoryObjects.get(position).getId(), "Sup bro?");
         }
     }
 
@@ -132,6 +134,18 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         builder.show();
     }
 
+    private void renameDirectoryObject(int directoryId, String name) {
+        this.updateDirectoryObject(directoryId, name, -1, -1);
+    }
+
+    private void resetOwnerDirectoryObject(int directoryId, int ownerId) {
+        this.updateDirectoryObject(directoryId, null, ownerId, -1);
+    }
+
+    private void resetParentDirectoryObject(int directoryId, int parentId) {
+        this.updateDirectoryObject(directoryId, null, -1, parentId);
+    }
+
     private void createDirectoryObject(String directoryName, boolean isFolder) {
         ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(directoryName, ApplicationObject.getInstance().getCurrentFolderId(), isFolder,
             new Response.Listener<JSONObject>() {
@@ -160,6 +174,42 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                             }
                         } else {
                             Log.d("CreateDirectoryFailure", response.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
+    }
+
+    private void updateDirectoryObject(int directoryId, String name, int ownerId, int parentId) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, ownerId, parentId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("UpdateDirectorySuccess", response.toString());
+
+                            JSONObject content = response.getJSONObject("content");
+                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+
+                            while (iterator.hasNext()) {
+                                DirectoryObject directoryObject = iterator.next();
+
+                                if (directoryObject.getId() == response.getInt("folder_id")) {
+                                    directoryObject.setName(content.getString("name"));
+                                    directoryObject.setOwnerId(content.getInt("owner_id"));
+                                    directoryObject.setParentId(content.getInt("parent_id"));
+                                    break;
+                                }
+                            }
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("UpdateDirectoryFailure", response.toString());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -239,8 +289,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                     directoryContent.getInt("time_updated"),
                                     directoryContent.getInt("time_deleted"))
                                 );
-
-                                iterator.remove();
                             }
 
                             if (adapter != null) {
