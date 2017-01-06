@@ -96,11 +96,46 @@ public class CanvasActivity extends AppCompatActivity {
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
-                                ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(current_file,
-                                        new Response.Listener<JSONObject>() {
-                                            public void onResponse(JSONObject response) {
-                                                try {
-                                                    if (response.getBoolean("success")) {
+//                                ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(current_file,
+//                                        new Response.Listener<JSONObject>() {
+//                                            public void onResponse(JSONObject response) {
+//                                                try {
+//                                                    if (response.getBoolean("success")) {
+//
+//                                                        Log.d("UpdateCanvasNameSuccess", response.toString());
+//                                                        JSONObject content = response.getJSONObject("content");
+//                                                        current_file.setName(content.getString("name"));
+//
+//                                                    } else {
+//                                                        Log.d("UpdateCanvasNameFailure", response.toString());
+//                                                    }
+//                                                } catch (JSONException e) {
+//                                                    e.printStackTrace();
+//                                                }
+//                                            }
+//                                        }));
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_canvas_top, menu); //your file name
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void getDirectoryObject(int object_id) {
+        ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("CreateDirectorySuccess", response.toString());
 
                                 JSONObject content = response.getJSONObject("content");
 
@@ -128,20 +163,7 @@ public class CanvasActivity extends AppCompatActivity {
                 })
         );
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_canvas_top, menu); //your file name
-        return super.onCreateOptionsMenu(menu);
-    }
-
     public Bitmap getBitmap(){
         return tempBitmap;
     }
-
-
-
-
-
 }
