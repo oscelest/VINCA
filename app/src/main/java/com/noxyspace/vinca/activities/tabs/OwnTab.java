@@ -24,6 +24,7 @@ import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.directory.DeleteDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
 
 import org.json.JSONException;
@@ -159,7 +160,41 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                             }
                         } else {
                             Log.d("CreateDirectoryFailure", response.toString());
-                            //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
+    }
+
+    private void deleteDirectoryObject(int directoryId) {
+        ApplicationObject.getInstance().addRequest(new DeleteDirectoryObjectRequest(directoryId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("DeleteDirectorySuccess", response.toString());
+
+                            if (response.getBoolean("content")) {
+                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+
+                                while (iterator.hasNext()) {
+                                    DirectoryObject directoryObject = iterator.next();
+
+                                    if (directoryObject.getId() == response.getInt("folder_id")) {
+                                        iterator.remove();
+                                        break;
+                                    }
+                                }
+
+                                if (adapter != null) {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            Log.d("DeleteDirectoryFailure", response.toString());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -171,6 +206,10 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
     private void getDirectoryContent(int folder_id) {
         directoryObjects.clear();
+
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
 
         ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest(folder_id,
             new Response.Listener<JSONObject>() {
@@ -209,7 +248,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                             }
                         } else {
                             Log.d("GetDirectoryFailure", response.toString());
-                            //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
