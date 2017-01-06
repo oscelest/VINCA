@@ -26,9 +26,13 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.SymbolBar;
+import com.noxyspace.vinca.activities.tabs.OwnTab;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.objects.UserObject;
+import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
+import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 
 import org.json.JSONException;
@@ -38,8 +42,10 @@ public class CanvasActivity extends AppCompatActivity {
 
     Toolbar toolbar_canvas_top;
     ImageView myImageView;
+    EditText fileName;
     Bitmap tempBitmap;
     SymbolBar symbolbar;
+    DirectoryObject directoryObject;
 
     Rect boundary;
 
@@ -53,6 +59,11 @@ public class CanvasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar_canvas_top);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+        fileName = (EditText) findViewById(R.id.text_canvas_name);
+
+        int file_id = getIntent().getIntExtra("FILE_ID", -1);
+        getDirectoryObject(file_id);
 
 
         myImageView = (ImageView) findViewById(R.id.canvas);
@@ -73,8 +84,7 @@ public class CanvasActivity extends AppCompatActivity {
                 //Draw the image bitmap into the canvas
                 Canvas tempCanvas = new Canvas(tempBitmap);
 
-                //used to call Symbolbars preDraw() function
-                //tempCanvas.drawBitmap(tempBitmap, 0, 0, null);
+                tempCanvas.drawBitmap(tempBitmap, 0, 0, null);
                 return false;
             }
         });
@@ -92,24 +102,31 @@ public class CanvasActivity extends AppCompatActivity {
                                                 try {
                                                     if (response.getBoolean("success")) {
 
-                                                        Log.d("UpdateCanvasNameSuccess", response.toString());
-                                                        JSONObject content = response.getJSONObject("content");
-                                                        current_file.setName(content.getString("name"));
+                                JSONObject content = response.getJSONObject("content");
 
-                                                    } else {
-                                                        Log.d("UpdateCanvasNameFailure", response.toString());
-                                                    }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }));
-                                return true;
+                                directoryObject = new DirectoryObject(
+                                        content.getInt("id"),
+                                        content.getInt("owner_id"),
+                                        content.getString("owner_first_name"),
+                                        content.getString("owner_last_name"),
+                                        content.getInt("parent_id"),
+                                        content.getString("name"),
+                                        content.getBoolean("folder"),
+                                        content.getInt("time_created"),
+                                        content.getInt("time_updated"),
+                                        content.getInt("time_deleted"));
+
+                                fileName.setText(directoryObject.getName());
+                            } else {
+                                Log.d("GetDirectoryFailure", response.toString());
+                                //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        return false;
                     }
-                });
+                })
+        );
     }
 
     @Override

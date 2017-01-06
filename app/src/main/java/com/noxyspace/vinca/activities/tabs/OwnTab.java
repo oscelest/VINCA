@@ -24,7 +24,10 @@ import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.directory.DeleteDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
+import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,9 +88,13 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!directoryObjects.get(position).isFolder()) {
-            startActivity(new Intent(getActivity(), CanvasActivity.class));
+            int intentId = directoryObjects.get(position).getId();
+            Intent intent = new Intent(getActivity(), CanvasActivity.class);
+            intent.putExtra("FILE_ID", intentId);
+            startActivity(intent);
         } else {
             this.getDirectoryContent(directoryObjects.get(position).getId());
+            //this.renameDirectoryObject(directoryObjects.get(position).getId(), "Sup bro?");
         }
     }
 
@@ -131,6 +138,50 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         builder.show();
     }
 
+    private void renameDirectoryObject(int directoryId, String name) {
+        this.updateDirectoryObject(directoryId, name, -1, -1);
+    }
+
+    private void resetOwnerDirectoryObject(int directoryId, int ownerId) {
+        this.updateDirectoryObject(directoryId, null, ownerId, -1);
+    }
+
+    private void resetParentDirectoryObject(int directoryId, int parentId) {
+        this.updateDirectoryObject(directoryId, null, -1, parentId);
+    }
+
+    private void getDirectoryObject(int directoryId) {
+        ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(directoryId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("GetDirectorySuccess", response.toString());
+
+                            JSONObject content = response.getJSONObject("content");
+
+                            content.getInt("id");
+                            content.getInt("owner_id");
+                            content.getString("owner_first_name");
+                            content.getString("owner_last_name");
+                            content.getInt("parent_id");
+                            content.getString("name");
+                            content.getBoolean("folder");
+                            content.getInt("time_created");
+                            content.getInt("time_updated");
+                            content.getInt("time_deleted");
+
+                        } else {
+                            Log.d("GetDirectoryFailure", response.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        ));
+    }
+
     private void createDirectoryObject(String directoryName, boolean isFolder) {
         ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(directoryName, ApplicationObject.getInstance().getCurrentFolderId(), isFolder,
             new Response.Listener<JSONObject>() {
@@ -159,7 +210,77 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                             }
                         } else {
                             Log.d("CreateDirectoryFailure", response.toString());
-                            //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
+    }
+
+    private void updateDirectoryObject(int directoryId, String name, int ownerId, int parentId) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, ownerId, parentId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("UpdateDirectorySuccess", response.toString());
+
+                            JSONObject content = response.getJSONObject("content");
+                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+
+                            while (iterator.hasNext()) {
+                                DirectoryObject directoryObject = iterator.next();
+
+                                if (directoryObject.getId() == response.getInt("folder_id")) {
+                                    directoryObject.setName(content.getString("name"));
+                                    directoryObject.setOwnerId(content.getInt("owner_id"));
+                                    directoryObject.setParentId(content.getInt("parent_id"));
+                                    break;
+                                }
+                            }
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("UpdateDirectoryFailure", response.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
+    }
+
+    private void deleteDirectoryObject(int directoryId) {
+        ApplicationObject.getInstance().addRequest(new DeleteDirectoryObjectRequest(directoryId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("DeleteDirectorySuccess", response.toString());
+
+                            if (response.getBoolean("content")) {
+                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+
+                                while (iterator.hasNext()) {
+                                    DirectoryObject directoryObject = iterator.next();
+
+                                    if (directoryObject.getId() == response.getInt("folder_id")) {
+                                        iterator.remove();
+                                        break;
+                                    }
+                                }
+
+                                if (adapter != null) {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            Log.d("DeleteDirectoryFailure", response.toString());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -172,12 +293,16 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private void getDirectoryContent(int folder_id) {
         directoryObjects.clear();
 
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+
         ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest(folder_id,
             new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject response) {
                     try {
                         if (response.getBoolean("success")) {
-                            Log.d("GetDirectorySuccess", response.toString());
+                            Log.d("GetDirContentSuccess", response.toString());
 
                             ApplicationObject.getInstance().setCurrentFolderId(response.getInt("folder_id"));
 
@@ -200,16 +325,13 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                     directoryContent.getInt("time_updated"),
                                     directoryContent.getInt("time_deleted"))
                                 );
-
-                                iterator.remove();
                             }
 
                             if (adapter != null) {
                                 adapter.notifyDataSetChanged();
                             }
                         } else {
-                            Log.d("GetDirectoryFailure", response.toString());
-                            //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                            Log.d("GetDirContentFailure", response.toString());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

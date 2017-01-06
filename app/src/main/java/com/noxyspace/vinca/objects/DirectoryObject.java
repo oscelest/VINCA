@@ -48,6 +48,10 @@ public class DirectoryObject {
         return this.owner_id;
     }
 
+    public void setOwnerId(int ownerId) {
+        this.owner_id = ownerId;
+    }
+
     public String getOwnerFirstName() {
         return this.owner_first_name;
     }
@@ -62,6 +66,10 @@ public class DirectoryObject {
 
     public int getParentId() {
         return this.parent_id;
+    }
+
+    public void setParentId(int parentId) {
+        this.parent_id = parentId;
     }
 
     public String getName() {
