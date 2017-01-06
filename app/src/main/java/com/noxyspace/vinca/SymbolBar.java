@@ -34,20 +34,35 @@ public class SymbolBar extends Fragment {
         decision  = (ImageView) view.findViewById(R.id.decision);
         method = (ImageView) view.findViewById(R.id.method);
 
-        projectStart.setOnClickListener(new View.OnClickListener() {
+        setListeners(projectStart);
+        setListeners(projectEnd);
+        setListeners(activity);
+        setListeners(decision);
+        setListeners(processStart);
+        setListeners(processEnd);
+        setListeners(pause);
+        setListeners(iterationStart);
+        setListeners(iterationEnd);
+        setListeners(method);
+
+        return view;
+    }//End of onCreate()
+
+    public void setListeners(ImageView view){
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClipData.Item item = new ClipData.Item((CharSequence)v.getTag());
                 String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
 
                 ClipData dragData = new ClipData(v.getTag().toString(),mimeTypes, item);
-                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(projectStart);
+                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
 
                 v.startDrag(dragData,myShadow,null,0);
             }
         });
 
-        projectStart.setOnDragListener(new View.OnDragListener() {
+        view.setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
                 switch(event.getAction()) {
@@ -80,15 +95,15 @@ public class SymbolBar extends Fragment {
             }
         });
 
-        projectStart.setOnTouchListener(new View.OnTouchListener() {
+        view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(projectStart);
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
 
-                    projectStart.startDrag(data, shadowBuilder, processStart, 0);
-                    projectStart.setVisibility(View.VISIBLE);
+                    v.startDrag(data, shadowBuilder, v, 0);
+                    v.setVisibility(View.VISIBLE);
                     return true;
                 } else {
                     return false;
@@ -96,14 +111,9 @@ public class SymbolBar extends Fragment {
             }
         });
 
-        projectEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
-        return view;
-    }
+    }//End of setlisteners
+
 
 
 }
