@@ -162,7 +162,7 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
         public View getView(int position, View view, ViewGroup parent) {
             int type = getItemViewType(position);
             if (view == null) {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.news_element, null);
+                    view = getActivity().getLayoutInflater().inflate(R.layout.news_element_fragment, null);
             }
                 ImageView img = (ImageView) view.findViewById(R.id.newsImage);
                 TextView title = (TextView) view.findViewById(R.id.newsTitle);

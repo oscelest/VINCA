@@ -2,7 +2,6 @@ package com.noxyspace.vinca;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ public class SymbolBar extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_symbol_bar, container, false);
+        View view = inflater.inflate(R.layout.symbol_bar_fragment, container, false);
 
         projectStart = (ImageView) view.findViewById(R.id.project_start);
         projectEnd = (ImageView) view.findViewById(R.id.project_end);

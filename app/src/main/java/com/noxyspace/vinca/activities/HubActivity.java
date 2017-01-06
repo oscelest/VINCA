@@ -10,22 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.android.volley.Response;
 import com.crashlytics.android.Crashlytics;
 import com.noxyspace.vinca.activities.tabs.adapter.PagerAdapter;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
-import com.noxyspace.vinca.objects.UserObject;
-import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
-import com.noxyspace.vinca.requests.users.LoginRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import static android.graphics.Color.WHITE;
 
@@ -38,7 +30,7 @@ public class HubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.hub_activity);
 
         this.adapter = new PagerAdapter(getSupportFragmentManager());
 
