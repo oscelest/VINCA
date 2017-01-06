@@ -1,11 +1,17 @@
 package com.noxyspace.vinca;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 
 public class SymbolBar extends Fragment {
@@ -31,67 +37,73 @@ public class SymbolBar extends Fragment {
         projectStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startDrag();
+                ClipData.Item item = new ClipData.Item((CharSequence)v.getTag());
+                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+
+                ClipData dragData = new ClipData(v.getTag().toString(),mimeTypes, item);
+                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(projectStart);
+
+                v.startDrag(dragData,myShadow,null,0);
             }
         });
+
+        projectStart.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch(event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        // Do nothing
+                        break;
+
+                    case DragEvent.ACTION_DRAG_ENTERED:
+
+                        break;
+
+                    case DragEvent.ACTION_DRAG_EXITED :
+
+                        break;
+
+                    case DragEvent.ACTION_DRAG_LOCATION  :
+
+                        break;
+
+                    case DragEvent.ACTION_DRAG_ENDED   :
+
+                        break;
+
+                    case DragEvent.ACTION_DROP:
+
+                        break;
+                    default: break;
+                }
+                return true;
+            }
+        });
+
+        projectStart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(projectStart);
+
+                    projectStart.startDrag(data, shadowBuilder, processStart, 0);
+                    projectStart.setVisibility(View.VISIBLE);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
         projectEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        activity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        iterationStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        iterationEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        processStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        processEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        decision.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        method.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
-
-
         return view;
     }
+
+
 }
