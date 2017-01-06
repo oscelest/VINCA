@@ -2,6 +2,9 @@ package com.noxyspace.vinca;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,10 +16,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.noxyspace.vinca.activities.CanvasActivity;
+
+import static android.R.attr.bitmap;
+import static com.noxyspace.vinca.R.id.canvas;
+
 
 public class SymbolBar extends Fragment {
 
     private ImageView projectStart, projectEnd, activity, pause, iterationStart, iterationEnd, processStart, processEnd, decision, method;
+    private Bitmap oldBitmap;
 
 
     @Override
@@ -83,7 +92,7 @@ public class SymbolBar extends Fragment {
                         break;
 
                     case DragEvent.ACTION_DRAG_ENDED   :
-
+                        drawToCanvas(oldBitmap, imageViewToBitmap((ImageView) v));
                         break;
 
                     case DragEvent.ACTION_DROP:
@@ -114,6 +123,21 @@ public class SymbolBar extends Fragment {
 
     }//End of setlisteners
 
+    public Bitmap imageViewToBitmap(ImageView view){
+        view.buildDrawingCache();
+        return view.getDrawingCache();
+    }
 
+    public Bitmap drawToCanvas(Bitmap oldBitmap, Bitmap overlayBitmap){
+        Bitmap tempBitmap = Bitmap.createBitmap(oldBitmap.getWidth(), oldBitmap.getHeight(), oldBitmap.getConfig());
+        Canvas tempCanvas = new Canvas(tempBitmap);
+        tempCanvas.drawBitmap(oldBitmap, 0, 0, null);
+        tempCanvas.drawBitmap(overlayBitmap, 0, 0, null);
+        return tempBitmap;
+    }
+
+    public void preDraw(){
+        oldBitmap = ((CanvasActivity) getActivity()).getBitmap();
+    }
 
 }

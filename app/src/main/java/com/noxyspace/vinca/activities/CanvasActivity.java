@@ -1,5 +1,7 @@
 package com.noxyspace.vinca.activities;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.SymbolBar;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.objects.UserObject;
@@ -35,6 +39,7 @@ public class CanvasActivity extends AppCompatActivity {
     Toolbar toolbar_canvas_top;
     ImageView myImageView;
     Bitmap tempBitmap;
+    SymbolBar symbolbar;
 
     Rect boundary;
 
@@ -68,7 +73,8 @@ public class CanvasActivity extends AppCompatActivity {
                 //Draw the image bitmap into the canvas
                 Canvas tempCanvas = new Canvas(tempBitmap);
 
-                tempCanvas.drawBitmap(tempBitmap, 0, 0, null);
+                //used to call Symbolbars preDraw() function
+                //tempCanvas.drawBitmap(tempBitmap, 0, 0, null);
                 return false;
             }
         });
@@ -113,6 +119,9 @@ public class CanvasActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public Bitmap getBitmap(){
+        return tempBitmap;
+    }
 
 
 
