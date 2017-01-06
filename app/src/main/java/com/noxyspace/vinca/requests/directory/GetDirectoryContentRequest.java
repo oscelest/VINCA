@@ -9,8 +9,8 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class GetDirectoryContentRequest extends HttpRequest {
-    public GetDirectoryContentRequest(String parent_id, Response.Listener<JSONObject> responseListener) {
-        super(Method.GET, DIRECTORY_URL + "/content/" + parent_id, responseListener,
+    public GetDirectoryContentRequest(int folder_id, Response.Listener<JSONObject> responseListener) {
+        super(Method.GET, DIRECTORY_URL + "/content/" + folder_id, responseListener,
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
