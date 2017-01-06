@@ -150,6 +150,38 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         this.updateDirectoryObject(directoryId, null, -1, parentId);
     }
 
+    private void getDirectoryObject(int directoryId) {
+        ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(directoryId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("GetDirectorySuccess", response.toString());
+
+                            JSONObject content = response.getJSONObject("content");
+
+                            content.getInt("id");
+                            content.getInt("owner_id");
+                            content.getString("owner_first_name");
+                            content.getString("owner_last_name");
+                            content.getInt("parent_id");
+                            content.getString("name");
+                            content.getBoolean("folder");
+                            content.getInt("time_created");
+                            content.getInt("time_updated");
+                            content.getInt("time_deleted");
+
+                        } else {
+                            Log.d("GetDirectoryFailure", response.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        ));
+    }
+
     private void createDirectoryObject(String directoryName, boolean isFolder) {
         ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(directoryName, ApplicationObject.getInstance().getCurrentFolderId(), isFolder,
             new Response.Listener<JSONObject>() {
@@ -258,42 +290,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         );
     }
 
-    private void getDirectoryObject(int object_id) {
-        ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("GetDirectorySuccess", response.toString());
-
-                                ApplicationObject.getInstance().setCurrentFolderId(response.getInt("id"));
-
-                                JSONObject content = response.getJSONObject("content");
-
-                                content.getInt("id");
-                                        content.getInt("owner_id");
-                                        content.getString("owner_first_name");
-                                        content.getString("owner_last_name");
-                                        content.getInt("parent_id");
-                                        content.getString("name");
-                                        content.getBoolean("folder");
-                                        content.getInt("time_created");
-                                        content.getInt("time_updated");
-                                        content.getInt("time_deleted");
-
-                            } else {
-                                Log.d("GetDirectoryFailure", response.toString());
-                                //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        ));
-    }
-
-
     private void getDirectoryContent(int folder_id) {
         directoryObjects.clear();
 
@@ -306,7 +302,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                 public void onResponse(JSONObject response) {
                     try {
                         if (response.getBoolean("success")) {
-                            Log.d("GetDirectorySuccess", response.toString());
+                            Log.d("GetDirContentSuccess", response.toString());
 
                             ApplicationObject.getInstance().setCurrentFolderId(response.getInt("folder_id"));
 
@@ -335,7 +331,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                 adapter.notifyDataSetChanged();
                             }
                         } else {
-                            Log.d("GetDirectoryFailure", response.toString());
+                            Log.d("GetDirContentFailure", response.toString());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
