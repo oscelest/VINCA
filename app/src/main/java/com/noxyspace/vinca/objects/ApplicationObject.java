@@ -18,14 +18,12 @@ public final class ApplicationObject {
 
     private UserObject user;
     private String user_token;
-    private List<DirectoryObject> directoryList;
 
     private RequestQueue requestQueue;
 
     private ApplicationObject() {
         this.user = null;
         this.user_token = null;
-        this.directoryList = Collections.emptyList();
 
         this.requestQueue = null;
     }
@@ -60,13 +58,5 @@ public final class ApplicationObject {
 
     public void setUserToken(String token) {
         this.user_token = token;
-    }
-
-    public List<DirectoryObject> getDirectoryList() {
-        return this.directoryList;
-    }
-
-    public void setDirectoryList(List<DirectoryObject> newDirectoryList) {
-        this.directoryList = newDirectoryList;
     }
 }

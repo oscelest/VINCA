@@ -66,46 +66,25 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     }
 
     public void onTabSelected() {
-        directoryObjects.clear();
+        // this.fetchFolderContent(0);
 
-        ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest("0",
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("GetDirectorySuccess", response.toString());
+        directoryObjects.add(new DirectoryObject(
+            0,
+            1,
+            "Valdemar",
+            "Carøe",
+            3,
+            "Filnavn",
+            "....",
+            false,
+            (int) (System.currentTimeMillis() / 1000),
+            (int) (System.currentTimeMillis() / 1000),
+            (int) (System.currentTimeMillis() / 1000))
+        );
 
-                            JSONObject content = response.getJSONObject("content");
-
-                            /* TO DO: Enumerate content-files and add them all. */
-//                            directoryObjects.add(new DirectoryObject(
-//                                content.getInt("id"),
-//                                content.getInt("owner_id"),
-//                                content.getString("owner_first_name"),
-//                                content.getString("owner_last_name"),
-//                                content.getInt("parent_id"),
-//                                content.getString("name"),
-//                                content.getString("data"),
-//                                content.getInt("folder") == 1,
-//                                content.getInt("time_created"),
-//                                content.getInt("time_updated"),
-//                                content.getInt("time_deleted"))
-//                            );
-
-                            if (adapter != null) {
-                                adapter.notifyDataSetChanged();
-                            }
-                        } else {
-                            Log.d("GetDirectoryFailure", response.toString());
-                            //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        ));
-
+        if (this.adapter != null) {
+            this.adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -197,6 +176,48 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         });
 
         builder.show();
+    }
+
+    private void fetchFolderContent(int folder_id) {
+        directoryObjects.clear();
+
+        ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest(Integer.toString(folder_id),
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("GetDirectorySuccess", response.toString());
+
+                            JSONObject content = response.getJSONObject("content");
+
+                            /* TO DO: Enumerate content-files and add them all. */
+//                            directoryObjects.add(new DirectoryObject(
+//                                content.getInt("id"),
+//                                content.getInt("owner_id"),
+//                                content.getString("owner_first_name"),
+//                                content.getString("owner_last_name"),
+//                                content.getInt("parent_id"),
+//                                content.getString("name"),
+//                                content.getString("data"),
+//                                content.getInt("folder") == 1,
+//                                content.getInt("time_created"),
+//                                content.getInt("time_updated"),
+//                                content.getInt("time_deleted"))
+//                            );
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("GetDirectoryFailure", response.toString());
+                            //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        ));
     }
 
     public class CustomAdapter extends BaseAdapter {
