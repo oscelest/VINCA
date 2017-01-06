@@ -1,5 +1,6 @@
 package com.noxyspace.vinca.activities;
 
+import android.content.Context;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -16,9 +17,12 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -89,7 +93,37 @@ public class CanvasActivity extends AppCompatActivity {
             }
         });
 
-        ((EditText) findViewById(R.id.text_canvas_name)).setOnEditorActionListener(
+        // Change update the name of the file, when focus from EditText is moved
+        fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    directoryObject.setName(fileName.getText().toString());
+                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject,
+                            new Response.Listener<JSONObject>() {
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        if (response.getBoolean("success")) {
+
+                                            Log.d("UpdateCanvasNameSuccess", response.toString());
+                                            JSONObject content = response.getJSONObject("content");
+                                            directoryObject.setName(content.getString("name"));
+                                            Log.d("Updated?", directoryObject.getName());
+
+                                        } else {
+                                            Log.d("UpdateCanvasNameFailure", response.toString());
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }));
+                }
+            }
+        });
+
+
+        fileName.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     DirectoryObject current_file = ApplicationObject.getInstance().getCurrentFile();
                     @Override
@@ -162,6 +196,26 @@ public class CanvasActivity extends AppCompatActivity {
                     }
                 })
         );
+    }
+
+
+
+    // Removes focus when clicked outside EditText
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
     public Bitmap getBitmap(){
         return tempBitmap;

@@ -1,115 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="23dp"
-        android:paddingBottom="23dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="23dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:paddingTop="23dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/projectTitle_columnName"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createdAt_columnName"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/lastEditedBy_columnName"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@android:color/darker_gray" />
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+
+        </LinearLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/projectTitle_columnName"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
+            android:layout_marginBottom="3dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/createdAt_columnName"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="3dp"
+                android:layout_marginEnd="3dp"
+                android:clickable="true"
+                android:src="@drawable/plus_button"
+                app:backgroundTint="@color/colorPrimary" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lastEditedBy_columnName"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/fab_plus"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="3dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/folder_blue"
+                android:visibility="invisible"
+                app:backgroundTint="@color/White"
+                app:layout_anchor="@id/fab_plus"
+                app:layout_anchorGravity="top" />
 
-    </LinearLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/fab_folder"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="3dp"
+                android:layout_marginEnd="3dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/file_blue"
+                android:visibility="invisible"
+                app:backgroundTint="@color/White"
+                app:layout_anchor="@id/fab_folder"
+                app:layout_anchorGravity="top" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@android:color/darker_gray"
-        />
+        </RelativeLayout>
+    </FrameLayout>
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_plus"
-            app:backgroundTint="@color/colorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="3dp"
-            android:src="@drawable/plus_button"
-            android:clickable="true" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_folder"
-            android:scaleY="0.8"
-            android:scaleX="0.8"
-            app:backgroundTint="@color/White"
-            android:layout_above="@+id/fab_plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginEnd="3dp"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/folder_blue"
-            android:visibility="invisible"
-            app:layout_anchor="@id/fab_plus"
-            app:layout_anchorGravity="top" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_file"
-            android:scaleY="0.8"
-            android:scaleX="0.8"
-            app:backgroundTint="@color/White"
-            android:layout_above="@+id/fab_folder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginEnd="3dp"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/file_blue"
-            android:visibility="invisible"
-            app:layout_anchor="@id/fab_folder"
-            app:layout_anchorGravity="top" />
-
-    </RelativeLayout>
-</FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

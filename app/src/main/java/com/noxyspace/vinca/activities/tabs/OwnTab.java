@@ -6,10 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.test.ApplicationTestCase;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,6 +48,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private CustomAdapter adapter;
 
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
+    private int previousFolder = 0;
 
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
@@ -50,6 +56,9 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
+
+        setHasOptionsMenu(true);
+
 
         ((FloatingActionButton)view.findViewById(R.id.fab_plus)).setOnClickListener(new View.OnClickListener() {
             private boolean toggled = false;
@@ -77,6 +86,16 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getDirectoryContent(previousFolder);
+                return true;
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         adapter = new CustomAdapter();
@@ -93,6 +112,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             intent.putExtra("FILE_ID", intentId);
             startActivity(intent);
         } else {
+            previousFolder = ApplicationObject.getInstance().getCurrentFolderId();
             this.getDirectoryContent(directoryObjects.get(position).getId());
             //this.renameDirectoryObject(directoryObjects.get(position).getId(), "Sup bro?");
         }
@@ -328,6 +348,10 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                             }
 
                             if (adapter != null) {
+                                ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                                if (ApplicationObject.getInstance().getCurrentFolderId() != 0) {
+                                    ab.setDisplayHomeAsUpEnabled(true);
+                                }
                                 adapter.notifyDataSetChanged();
                             }
                         } else {

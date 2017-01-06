@@ -199,6 +199,8 @@ public class RegisterActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
+
+    // Removes focus when clicked outside EditText
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
