@@ -31,13 +31,27 @@
             android:selectAllOnFocus="true" />
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="android.support.design.widget.TextInputEditText"
         android:id="@+id/canvas"
-        android:layout_below="@id/toolbar_canvas_top"
-        />
+        android:layout_below="@id/toolbar_canvas_top">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/scroll">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/figure_list">
+                </LinearLayout>
+            </HorizontalScrollView>
+    </LinearLayout>
 
     <fragment android:name="com.noxyspace.vinca.SymbolBar"
         android:id="@+id/list"

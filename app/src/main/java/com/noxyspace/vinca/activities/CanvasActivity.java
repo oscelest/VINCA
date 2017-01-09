@@ -1,11 +1,7 @@
 package com.noxyspace.vinca.activities;
 
 import android.content.Context;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -16,26 +12,23 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.SymbolBar;
-import com.noxyspace.vinca.activities.tabs.OwnTab;
+import com.noxyspace.vinca.canvas.CanvasManager;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
-import com.noxyspace.vinca.objects.UserObject;
-import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
-import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 
@@ -50,12 +43,24 @@ public class CanvasActivity extends AppCompatActivity {
     Bitmap tempBitmap;
     SymbolBar symbolbar;
     DirectoryObject directoryObject;
+    //HorizontalScrollView figureList;
+    LinearLayout figureList;
+    CanvasManager canvasManager;
+
 
     Rect boundary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Button mb = new Button(this);
+        mb.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        ));
+
+        ((LinearLayout)findViewById(R.id.canvas)).addView(mb);
         setContentView(R.layout.canvas_activity);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -68,8 +73,15 @@ public class CanvasActivity extends AppCompatActivity {
 
         int file_id = getIntent().getIntExtra("FILE_ID", -1);
         getDirectoryObject(file_id);
+        ImageView project = (ImageView) findViewById(R.id.project_start);
 
+        figureList = (LinearLayout) findViewById(R.id.figure_list);
+        figureList.setBackgroundColor(Color.BLACK);
+        figureList.invalidate();
 
+        canvasManager = new CanvasManager(this, figureList);
+
+        /**
         myImageView = (ImageView) findViewById(R.id.canvas);
         myImageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -92,6 +104,7 @@ public class CanvasActivity extends AppCompatActivity {
                 return false;
             }
         });
+         */
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -217,7 +230,9 @@ public class CanvasActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(event);
     }
-    public Bitmap getBitmap(){
-        return tempBitmap;
+    public LinearLayout getFigureList(){
+        return this.figureList;
     }
+
+
 }
