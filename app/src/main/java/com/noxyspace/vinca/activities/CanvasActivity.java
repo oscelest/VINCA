@@ -99,7 +99,7 @@ public class CanvasActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     directoryObject.setName(fileName.getText().toString());
-                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject,
+                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), directoryObject.getOwnerId(), directoryObject.getParentId(),
                             new Response.Listener<JSONObject>() {
                                 public void onResponse(JSONObject response) {
                                     try {
