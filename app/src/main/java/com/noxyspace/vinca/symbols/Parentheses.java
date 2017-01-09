@@ -28,25 +28,24 @@ public class Parentheses extends Symbol {
      */
 
     public int searchForElementPosition(int elementId, int lastElementPosition){
+
         int elementPosition = lastElementPosition;
 
-        if (this.getId() == elementId){
-            return elementPosition;
-        }
-        else {
             for (int i = 0 ; i < contents.size() ; i++){
                 if (contents.get(i).getId() == elementId) {
                     elementPosition++;
+
+                    return elementPosition;
                 }
                 else if (contents.get(i) instanceof Parentheses){
-                        ((Parentheses) contents.get(i)).searchForElementPosition(elementId, elementPosition + 1);
+
+                        return ((Parentheses) contents.get(i)).searchForElementPosition(elementId, elementPosition + 1);
                 }
                 else{
                     elementPosition++;
                 }
             }
-        }
-        return elementPosition;
+        return -1000000;
     }
 
     public int numberOfElements(){
