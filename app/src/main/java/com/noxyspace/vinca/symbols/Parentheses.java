@@ -66,8 +66,10 @@ public class Parentheses extends Symbol {
      * @param symbol
      */
 
-    public void addSymbolToContents(Symbol symbol){
-        contents.add(symbol);
+    // TODO : Not finished
+    public void addSymbolToContents(Symbol symbol, int placement){
+
+
     }
 
     /**

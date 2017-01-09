@@ -43,7 +43,7 @@ public class Timeline {
                         return j;
                     }
 
-                    else if (timeline.get(i).getContents().get(j).getId() == elementId){                 // Looks at each element in the Projects contents, if the id of the element == elementId, j is returned
+                    else if (timeline.get(i).getContents().get(j).getId() == elementId){            // Looks at each element in the Projects contents, if the id of the element == elementId, j is returned
                         return j;
                     }
                     else if (timeline.get(i).getContents().get(j) instanceof Parentheses){          // If the element is a type of Parentheses (Process or Iteration)
@@ -71,8 +71,33 @@ public class Timeline {
         timeline.add(project);
     }
 
+    // TODO : Not finished
     public void addSymbol(Symbol symbol, int placement){
-        timeline.get(placement).addSymbolToContents(symbol);
+
+        for (int i = 0 ; i < timeline.size() ; i++){
+
+            if (placement < timeline.get(i).numberOfElements()){
+
+                timeline.get(i).addSymbolToContents(symbol, placement);
+
+            }
+
+            else {
+                placement = placement - timeline.get(i).numberOfElements();
+            }
+
+
+
+
+
+
+
+        }
+        timeline.get(placement).addSymbolToContents(symbol, placement);
+
+
     }
+
+
 
 }
