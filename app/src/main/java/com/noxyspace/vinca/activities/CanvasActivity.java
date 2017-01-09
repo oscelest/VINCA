@@ -19,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,7 +27,6 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.SymbolBar;
-import com.noxyspace.vinca.canvas.CanvasManager;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
@@ -45,7 +45,6 @@ public class CanvasActivity extends AppCompatActivity {
     DirectoryObject directoryObject;
     //HorizontalScrollView figureList;
     LinearLayout figureList;
-    CanvasManager canvasManager;
 
 
     Rect boundary;
@@ -53,33 +52,77 @@ public class CanvasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Button mb = new Button(this);
-        mb.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        ));
-
-        ((LinearLayout)findViewById(R.id.canvas)).addView(mb);
         setContentView(R.layout.canvas_activity);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);
-        setSupportActionBar(toolbar_canvas_top);
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
 
-        fileName = (EditText) findViewById(R.id.text_canvas_name);
+        System.out.println("trying to fetch shit..");
+        if (toolbar_canvas_top != null) {
+            System.out.println("toolbar != null");
+        }
+//        setSupportActionBar(toolbar_canvas_top);
+//        ActionBar ab = getSupportActionBar();
+//        ab.setDisplayHomeAsUpEnabled(true);
+//
+//        fileName = (EditText) findViewById(R.id.text_canvas_name);
+//
+//        int file_id = getIntent().getIntExtra("FILE_ID", -1);
+//        getDirectoryObject(file_id);
+//        ImageView project = (ImageView) findViewById(R.id.project_start);
+//
+        ImageView mb = new ImageView(this);
 
-        int file_id = getIntent().getIntExtra("FILE_ID", -1);
-        getDirectoryObject(file_id);
-        ImageView project = (ImageView) findViewById(R.id.project_start);
+        mb.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        ));
 
-        figureList = (LinearLayout) findViewById(R.id.figure_list);
-        figureList.setBackgroundColor(Color.BLACK);
-        figureList.invalidate();
+        mb.setImageResource(R.mipmap.activity);
 
-        canvasManager = new CanvasManager(this, figureList);
+        figureList = (LinearLayout)findViewById(R.id.canvas_layout);
+        figureList.setBackgroundColor(Color.WHITE);
+
+        HorizontalScrollView sview = (HorizontalScrollView) findViewById(R.id.scroll);
+
+        if (sview != null) {
+            System.out.println("Canvas Layout != null");
+            sview.setBackgroundColor(Color.BLACK);
+        }
+
+        figureList = (LinearLayout)findViewById(R.id.figure_list);
+        figureList.setBackgroundColor(Color.BLUE);
+
+        figureList.addView(mb);
+        /*
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/canvas"
+        android:layout_below="@id/toolbar_canvas_top">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/scroll">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/figure_list">
+                </LinearLayout>
+            </HorizontalScrollView>
+    </LinearLayout>
+
+
+         */
+//        figureList.setBackgroundColor(Color.BLACK);
+//        figureList.invalidate();
 
         /**
         myImageView = (ImageView) findViewById(R.id.canvas);
@@ -107,66 +150,65 @@ public class CanvasActivity extends AppCompatActivity {
          */
 
         // Change update the name of the file, when focus from EditText is moved
-        fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    directoryObject.setName(fileName.getText().toString());
-                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), directoryObject.getOwnerId(), directoryObject.getParentId(),
-                            new Response.Listener<JSONObject>() {
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        if (response.getBoolean("success")) {
-
-                                            Log.d("UpdateCanvasNameSuccess", response.toString());
-                                            JSONObject content = response.getJSONObject("content");
-                                            directoryObject.setName(content.getString("name"));
-                                            Log.d("Updated?", directoryObject.getName());
-
-                                        } else {
-                                            Log.d("UpdateCanvasNameFailure", response.toString());
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }));
-                }
-            }
-        });
-
-
-        fileName.setOnEditorActionListener(
-                new EditText.OnEditorActionListener() {
-                    DirectoryObject current_file = ApplicationObject.getInstance().getCurrentFile();
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                            if (!event.isShiftPressed()) {
-//                                ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(current_file,
-//                                        new Response.Listener<JSONObject>() {
-//                                            public void onResponse(JSONObject response) {
-//                                                try {
-//                                                    if (response.getBoolean("success")) {
+//        fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    directoryObject.setName(fileName.getText().toString());
+//                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), directoryObject.getOwnerId(), directoryObject.getParentId(),
+//                            new Response.Listener<JSONObject>() {
+//                                public void onResponse(JSONObject response) {
+//                                    try {
+//                                        if (response.getBoolean("success")) {
 //
-//                                                        Log.d("UpdateCanvasNameSuccess", response.toString());
-//                                                        JSONObject content = response.getJSONObject("content");
-//                                                        current_file.setName(content.getString("name"));
+//                                            Log.d("UpdateCanvasNameSuccess", response.toString());
+//                                            JSONObject content = response.getJSONObject("content");
+//                                            directoryObject.setName(content.getString("name"));
+//                                            Log.d("Updated?", directoryObject.getName());
 //
-//                                                    } else {
-//                                                        Log.d("UpdateCanvasNameFailure", response.toString());
-//                                                    }
-//                                                } catch (JSONException e) {
-//                                                    e.printStackTrace();
-//                                                }
-//                                            }
-//                                        }));
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                });
+//                                        } else {
+//                                            Log.d("UpdateCanvasNameFailure", response.toString());
+//                                        }
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }));
+//                }
+//            }
+//        });
+//
+//        fileName.setOnEditorActionListener(
+//                new EditText.OnEditorActionListener() {
+//                    DirectoryObject current_file = ApplicationObject.getInstance().getCurrentFile();
+//                    @Override
+//                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                        if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+//                            if (!event.isShiftPressed()) {
+////                                ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(current_file,
+////                                        new Response.Listener<JSONObject>() {
+////                                            public void onResponse(JSONObject response) {
+////                                                try {
+////                                                    if (response.getBoolean("success")) {
+////
+////                                                        Log.d("UpdateCanvasNameSuccess", response.toString());
+////                                                        JSONObject content = response.getJSONObject("content");
+////                                                        current_file.setName(content.getString("name"));
+////
+////                                                    } else {
+////                                                        Log.d("UpdateCanvasNameFailure", response.toString());
+////                                                    }
+////                                                } catch (JSONException e) {
+////                                                    e.printStackTrace();
+////                                                }
+////                                            }
+////                                        }));
+//                                return true;
+//                            }
+//                        }
+//                        return false;
+//                    }
+//                });
     }
 
     @Override
@@ -211,8 +253,6 @@ public class CanvasActivity extends AppCompatActivity {
         );
     }
 
-
-
     // Removes focus when clicked outside EditText
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -230,9 +270,8 @@ public class CanvasActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(event);
     }
+
     public LinearLayout getFigureList(){
         return this.figureList;
     }
-
-
 }
