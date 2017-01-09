@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -58,6 +59,10 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
 
         setHasOptionsMenu(true);
+
+
+        directoryObjects.add(new DirectoryObject(1, 1, "Rune", "Thode", 1, "File 1", false, 2000, 2000, 2000));
+        directoryObjects.add(new DirectoryObject(2, 1, "Rune", "Thode", 0, "Folder 1", true, 2000, 2000, 2000));
 
 
         ((FloatingActionButton)view.findViewById(R.id.fab_plus)).setOnClickListener(new View.OnClickListener() {
