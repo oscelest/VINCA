@@ -53,14 +53,6 @@ public class CanvasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Button mb = new Button(this);
-        mb.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        ));
-
-        ((LinearLayout)findViewById(R.id.canvas)).addView(mb);
         setContentView(R.layout.canvas_activity);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -77,34 +69,10 @@ public class CanvasActivity extends AppCompatActivity {
 
         figureList = (LinearLayout) findViewById(R.id.figure_list);
         figureList.setBackgroundColor(Color.BLACK);
-        figureList.invalidate();
+        //figureList.invalidate();
 
         canvasManager = new CanvasManager(this, figureList);
 
-        /**
-        myImageView = (ImageView) findViewById(R.id.canvas);
-        myImageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                myImageView.getViewTreeObserver().removeOnPreDrawListener(this);
-                int height = myImageView.getHeight();
-                int width = myImageView.getWidth();
-
-                //Create a new image bitmap and attach a brand new canvas to it
-                tempBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-                tempBitmap.eraseColor(Color.WHITE);
-
-                //Attach the canvas to the ImageView
-                myImageView.setImageBitmap(tempBitmap);
-
-                //Draw the image bitmap into the canvas
-                Canvas tempCanvas = new Canvas(tempBitmap);
-
-                tempCanvas.drawBitmap(tempBitmap, 0, 0, null);
-                return false;
-            }
-        });
-         */
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {

@@ -36,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/canvas"
+        android:backgroundTint="@color/blue"
         android:layout_below="@id/toolbar_canvas_top">
 
             <HorizontalScrollView
@@ -48,6 +49,7 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:backgroundTint="@color/black"
                     android:id="@+id/figure_list">
                 </LinearLayout>
             </HorizontalScrollView>
