@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +21,14 @@ import com.noxyspace.vinca.activities.tabs.adapter.PagerAdapter;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 
+import java.net.URISyntaxException;
+
 import static android.graphics.Color.WHITE;
 
 import io.fabric.sdk.android.Fabric;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class HubActivity extends AppCompatActivity {
     private PagerAdapter adapter;
@@ -35,19 +41,50 @@ public class HubActivity extends AppCompatActivity {
 
         this.adapter = new PagerAdapter(getSupportFragmentManager());
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setTitleTextColor(WHITE);
         setSupportActionBar(toolbar);
 
+        final Socket socket;
+        try {
+            socket = IO.socket("http://localhost/projects");
+            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
+                @Override
+                public void call(Object... args) {
+                    Log.d("SocketIO", "Connected");
+                    socket.emit("foo", "hi");
+                    socket.disconnect();
+                }
+
+            }).on("event", new Emitter.Listener() {
+
+                @Override
+                public void call(Object... args) {
+                }
+
+            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+
+                @Override
+                public void call(Object... args) {
+                    Log.d("SocketIO", "Disconnected");
+                }
+
+            });
+            socket.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.newsTab));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.myProjects));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.recent));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(this.adapter);
 
         viewPager.setCurrentItem(1);
