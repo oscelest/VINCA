@@ -2,6 +2,7 @@ package com.noxyspace.vinca.canvas;
 
 import com.noxyspace.vinca.symbols.Parentheses;
 import com.noxyspace.vinca.symbols.Project;
+import com.noxyspace.vinca.symbols.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +39,18 @@ public class Timeline {
         for (int i = 0 ; i < timeline.size() ; i++){                                                // Each Project in the timeline
             for (int j = 0 ; j < timeline.get(i).numberOfElements() ; j ++){                        // Each element in the Project
 
-                    if (timeline.get(i).getContents().get(j).getId() == elementId){                 // Looks at each element in the Projects contents, if the id of the element == elementId, j is returned
+                    if (timeline.get(i).getId() == elementId){
+                        return j;
+                    }
+
+                    else if (timeline.get(i).getContents().get(j).getId() == elementId){                 // Looks at each element in the Projects contents, if the id of the element == elementId, j is returned
                         return j;
                     }
                     else if (timeline.get(i).getContents().get(j) instanceof Parentheses){          // If the element is a type of Parentheses (Process or Iteration)
 
-                        int tempPos = ((Parentheses) timeline.get(i).getContents().get(j)).searchForElementPosition(elementId, -1);     // Searches the Parentheses element for the desired element
-                        if (tempPos >= 0){
-                            return j + tempPos;
-                        }
+                        ((Parentheses) timeline.get(i).getContents().get(j)).searchForElementPosition(elementId, j);
+
+
                     }
             }
         }
@@ -62,4 +66,13 @@ public class Timeline {
     public void addProject(int id, String title, String description){
         timeline.add(new Project(id, title, description));
     }
+
+    public void addProject(Project project){
+        timeline.add(project);
+    }
+
+    public void addSymbol(Symbol symbol, int placement){
+        timeline.get(placement).addSymbolToContents(symbol);
+    }
+
 }
