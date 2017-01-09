@@ -90,20 +90,23 @@ public class SymbolBar extends Fragment {
                         break;
 
                     case DragEvent.ACTION_DROP:
-                        View view = (View)event.getLocalState();
-                        canvasManger.addFigure(view);
+                        View view = (View)event.getLocalState(); // Symbol from symbolBar
+                        System.out.println("SymbolBar DragDrop");
+                        //canvasManger.addFigure(view);
 
 
                         view.setVisibility(View.VISIBLE);
 
                         //View figure = new View(getActivity());
                         //figure.setLayoutParams(v.getLayoutParams());
-                    Log.d("Drag", "DROP");
+                        Log.d("Drag", "DROP");
                         //canvasManger.addFigure(figure);
                         //canvasManger.addFigure(v);
 
                         break;
-                    default: break;
+
+                    default:
+                        break;
                 }
                 return true;
             }

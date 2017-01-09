@@ -35,7 +35,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/canvas_layout"
+        android:id="@+id/canvas"
         android:layout_below="@id/toolbar_canvas_top">
 
             <HorizontalScrollView
@@ -48,6 +48,8 @@
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="50dp"
+                    android:minHeight="50dp"
                     android:layout_gravity="center"
                     android:id="@+id/figure_list" />
             </HorizontalScrollView>

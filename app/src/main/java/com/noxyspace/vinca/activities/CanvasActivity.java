@@ -1,5 +1,6 @@
 package com.noxyspace.vinca.activities;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,86 +45,93 @@ public class CanvasActivity extends AppCompatActivity {
     Bitmap tempBitmap;
     SymbolBar symbolbar;
     DirectoryObject directoryObject;
-    //HorizontalScrollView figureList;
     LinearLayout figureList;
 
-
-    Rect boundary;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.canvas_activity);
 
+        mContext = this;
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         toolbar_canvas_top = (Toolbar) findViewById(R.id.toolbar_canvas_top);
+        setSupportActionBar(toolbar_canvas_top);
 
-        System.out.println("trying to fetch shit..");
-        if (toolbar_canvas_top != null) {
-            System.out.println("toolbar != null");
-        }
-//        setSupportActionBar(toolbar_canvas_top);
-//        ActionBar ab = getSupportActionBar();
-//        ab.setDisplayHomeAsUpEnabled(true);
-//
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 //        fileName = (EditText) findViewById(R.id.text_canvas_name);
-//
+
 //        int file_id = getIntent().getIntExtra("FILE_ID", -1);
 //        getDirectoryObject(file_id);
-//        ImageView project = (ImageView) findViewById(R.id.project_start);
-//
-        ImageView mb = new ImageView(this);
 
-        mb.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT
-        ));
-
-        mb.setImageResource(R.mipmap.activity);
-
-        figureList = (LinearLayout)findViewById(R.id.canvas_layout);
-        figureList.setBackgroundColor(Color.WHITE);
-
-        HorizontalScrollView sview = (HorizontalScrollView) findViewById(R.id.scroll);
-
-        if (sview != null) {
-            System.out.println("Canvas Layout != null");
-            sview.setBackgroundColor(Color.BLACK);
-        }
+        HorizontalScrollView scrollView = (HorizontalScrollView) findViewById(R.id.scroll);
+        scrollView.setBackgroundColor(Color.WHITE);
 
         figureList = (LinearLayout)findViewById(R.id.figure_list);
-        figureList.setBackgroundColor(Color.BLUE);
+        figureList.setBackgroundColor(Color.LTGRAY);
 
-        figureList.addView(mb);
-        /*
+        //figureList.addView(mb);
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/canvas"
-        android:layout_below="@id/toolbar_canvas_top">
+        figureList.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch(event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        break;
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:id="@+id/scroll">
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        break;
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/figure_list">
-                </LinearLayout>
-            </HorizontalScrollView>
-    </LinearLayout>
+                    case DragEvent.ACTION_DRAG_EXITED :
+                        break;
 
+                    case DragEvent.ACTION_DRAG_LOCATION  :
+                        break;
 
-         */
-//        figureList.setBackgroundColor(Color.BLACK);
-//        figureList.invalidate();
+                    case DragEvent.ACTION_DRAG_ENDED   :
+                        break;
+
+                    case DragEvent.ACTION_DROP:
+                        View view = (View)event.getLocalState(); // Symbol from symbolBar
+
+                        ImageView mb = new ImageView(mContext);
+
+                        mb.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ));
+
+                        mb.setImageResource(R.mipmap.activity);
+                        mb.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                    ClipData data = ClipData.newPlainText("", "");
+                                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+
+                                    v.startDrag(data, shadowBuilder, v, 0);
+                                    v.setVisibility(View.VISIBLE);
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        });
+
+                        figureList.addView(mb);
+                        break;
+
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
 
         /**
         myImageView = (ImageView) findViewById(R.id.canvas);
