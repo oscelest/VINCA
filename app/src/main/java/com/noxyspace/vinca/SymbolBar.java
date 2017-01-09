@@ -2,9 +2,6 @@ package com.noxyspace.vinca;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,18 +11,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.noxyspace.vinca.activities.CanvasActivity;
-
-import static android.R.attr.bitmap;
-import static com.noxyspace.vinca.R.id.canvas;
+import com.noxyspace.vinca.canvas.CanvasManager;
 
 
 public class SymbolBar extends Fragment {
 
     private ImageView projectStart, projectEnd, activity, pause, iterationStart, iterationEnd, processStart, processEnd, decision, method;
-    private Bitmap oldBitmap;
+
+    private CanvasManager canvasManger;
 
 
     @Override
@@ -92,11 +86,22 @@ public class SymbolBar extends Fragment {
                         break;
 
                     case DragEvent.ACTION_DRAG_ENDED   :
-                        drawToCanvas(((CanvasActivity) getActivity()).getBitmap(), imageViewToBitmap((ImageView) v));
+
                         break;
 
                     case DragEvent.ACTION_DROP:
+                        View view = (View)event.getLocalState();
+                        canvasManger.addFigure(view);
+
+
+                        view.setVisibility(View.VISIBLE);
+
+                        //View figure = new View(getActivity());
+                        //figure.setLayoutParams(v.getLayoutParams());
                     Log.d("Drag", "DROP");
+                        //canvasManger.addFigure(figure);
+                        //canvasManger.addFigure(v);
+
                         break;
                     default: break;
                 }
@@ -123,21 +128,8 @@ public class SymbolBar extends Fragment {
 
     }//End of setlisteners
 
-    public Bitmap imageViewToBitmap(ImageView view){
-        view.buildDrawingCache();
-        return view.getDrawingCache();
-    }
 
-    public Bitmap drawToCanvas(Bitmap oldBitmap, Bitmap overlayBitmap){
-        Log.d("bitmap width", "" + oldBitmap.getWidth());
-        Log.d("obitmap width", "" + overlayBitmap.getWidth());
 
-        Bitmap tempBitmap = Bitmap.createBitmap(oldBitmap.getWidth(), oldBitmap.getHeight(), oldBitmap.getConfig());
-        Canvas tempCanvas = new Canvas(tempBitmap);
-        tempCanvas.drawBitmap(oldBitmap, 0, 0, null);
-        tempCanvas.drawBitmap(overlayBitmap, 0, 0, null);
-        return tempBitmap;
-    }
 
 
 }
