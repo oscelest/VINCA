@@ -48,14 +48,12 @@ public class HubActivity extends AppCompatActivity {
 
         final Socket socket;
         try {
-            socket = IO.socket("http://localhost/projects");
+            socket = IO.socket("http://46.101.228.220/projects");
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
                 @Override
                 public void call(Object... args) {
                     Log.d("SocketIO", "Connected");
-                    socket.emit("foo", "hi");
-                    socket.disconnect();
                 }
 
             }).on("event", new Emitter.Listener() {
@@ -72,6 +70,7 @@ public class HubActivity extends AppCompatActivity {
                 }
 
             });
+            Log.d("SocketIO", "Initialized");
             socket.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();

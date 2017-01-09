@@ -1,17 +1,13 @@
 package com.noxyspace.vinca.activities.tabs;
 
-import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.test.ApplicationTestCase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -34,13 +30,13 @@ import com.noxyspace.vinca.requests.directory.GetDirectoryContentRequest;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,7 +45,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private CustomAdapter adapter;
 
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
-    private int previousFolder = 0;
+    private String previousFolder = null;
 
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
@@ -60,12 +56,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
         setHasOptionsMenu(true);
 
-
-        directoryObjects.add(new DirectoryObject(1, 1, "Rune", "Thode", 1, "File 1", false, 2000, 2000, 2000));
-        directoryObjects.add(new DirectoryObject(2, 1, "Rune", "Thode", 0, "Folder 1", true, 2000, 2000, 2000));
-
-
-        ((FloatingActionButton)view.findViewById(R.id.fab_plus)).setOnClickListener(new View.OnClickListener() {
+        ((FloatingActionButton) view.findViewById(R.id.fab_plus)).setOnClickListener(new View.OnClickListener() {
             private boolean toggled = false;
 
             @Override
@@ -76,18 +67,18 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             }
         });
 
-        fab_folder = (FloatingActionButton)view.findViewById(R.id.fab_folder);
+        fab_folder = (FloatingActionButton) view.findViewById(R.id.fab_folder);
         fab_folder.setOnClickListener(this);
 
-        fab_file = (FloatingActionButton)view.findViewById(R.id.fab_file);
+        fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
         fab_file.setOnClickListener(this);
 
         return view;
     }
 
     public void onTabSelected() {
-        ApplicationObject.getInstance().setCurrentFolderId(0);
-        this.getDirectoryContent(0);
+        ApplicationObject.getInstance().setCurrentFolderId(null);
+        this.getDirectoryContent(null);
     }
 
     @Override
@@ -98,8 +89,9 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                 return true;
         }
 
-        return(super.onOptionsItemSelected(item));
+        return (super.onOptionsItemSelected(item));
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -112,7 +104,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (!directoryObjects.get(position).isFolder()) {
-            int intentId = directoryObjects.get(position).getId();
+            String intentId = directoryObjects.get(position).getId();
             Intent intent = new Intent(getActivity(), CanvasActivity.class);
             intent.putExtra("FILE_ID", intentId);
             startActivity(intent);
@@ -163,139 +155,108 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         builder.show();
     }
 
-    private void renameDirectoryObject(int directoryId, String name) {
-        this.updateDirectoryObject(directoryId, name, -1, -1);
+    private void renameDirectoryObject(String directoryId, String name) {
+        this.updateDirectoryObject(directoryId, name, null, null);
     }
 
-    private void resetOwnerDirectoryObject(int directoryId, int ownerId) {
-        this.updateDirectoryObject(directoryId, null, ownerId, -1);
+    private void resetOwnerDirectoryObject(String directoryId, String ownerId) {
+        this.updateDirectoryObject(directoryId, null, ownerId, null);
     }
 
-    private void resetParentDirectoryObject(int directoryId, int parentId) {
-        this.updateDirectoryObject(directoryId, null, -1, parentId);
+    private void resetParentDirectoryObject(String directoryId, String parentId) {
+        this.updateDirectoryObject(directoryId, null, null, parentId);
     }
 
-    private void getDirectoryObject(int directoryId) {
+    private void getDirectoryObject(String directoryId) {
         ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(directoryId,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("GetDirectorySuccess", response.toString());
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("GetDirectorySuccess", response.toString());
 
-                            JSONObject content = response.getJSONObject("content");
+                                JSONObject content = response.getJSONObject("content");
+                                JSONObject owner = content.getJSONObject("owner");
+                                String parent = (content.getJSONObject("owner") != null) ? content.getJSONObject("owner").getString("_id") : null;
 
-                            content.getInt("id");
-                            content.getInt("owner_id");
-                            content.getString("owner_first_name");
-                            content.getString("owner_last_name");
-                            content.getInt("parent_id");
-                            content.getString("name");
-                            content.getBoolean("folder");
-                            content.getInt("time_created");
-                            content.getInt("time_updated");
-                            content.getInt("time_deleted");
+                                content.getString("_id");
+                                owner.getString("_id");
+                                owner.getString("first_name");
+                                owner.getString("last_name");
+                                content.getString("name");
+                                content.getBoolean("folder");
+                                content.getInt("time_created");
+                                content.getInt("time_updated");
+                                content.getInt("time_deleted");
 
-                        } else {
-                            Log.d("GetDirectoryFailure", response.toString());
+                            } else {
+                                Log.d("GetDirectoryFailure", response.toString());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
-            }
         ));
     }
 
     private void createDirectoryObject(String directoryName, boolean isFolder) {
         ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(directoryName, ApplicationObject.getInstance().getCurrentFolderId(), isFolder,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("CreateDirectorySuccess", response.toString());
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("CreateDirectorySuccess", response.toString());
 
-                            JSONObject content = response.getJSONObject("content");
+                                JSONObject content = response.getJSONObject("content");
+                                JSONObject owner = content.getJSONObject("owner");
+                                String parent = (content.getJSONObject("owner") != null) ? content.getJSONObject("owner").getString("_id") : null;
 
-                            directoryObjects.add(new DirectoryObject(
-                                content.getInt("id"),
-                                content.getInt("owner_id"),
-                                content.getString("owner_first_name"),
-                                content.getString("owner_last_name"),
-                                content.getInt("parent_id"),
-                                content.getString("name"),
-                                content.getBoolean("folder"),
-                                content.getInt("time_created"),
-                                content.getInt("time_updated"),
-                                content.getInt("time_deleted"))
-                            );
+                                directoryObjects.add(new DirectoryObject(
+                                        content.getString("_id"),
+                                        owner.getString("_id"),
+                                        owner.getString("first_name"),
+                                        owner.getString("last_name"),
+                                        parent,
+                                        content.getString("name"),
+                                        content.getBoolean("folder"),
+                                        content.getInt("time_created"),
+                                        content.getInt("time_updated"),
+                                        content.getInt("time_deleted"))
+                                );
 
-                            if (adapter != null) {
-                                adapter.notifyDataSetChanged();
-                            }
-                        } else {
-                            Log.d("CreateDirectoryFailure", response.toString());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            })
-        );
-    }
-
-    private void updateDirectoryObject(int directoryId, String name, int ownerId, int parentId) {
-        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, ownerId, parentId,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("UpdateDirectorySuccess", response.toString());
-
-                            JSONObject content = response.getJSONObject("content");
-                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
-
-                            while (iterator.hasNext()) {
-                                DirectoryObject directoryObject = iterator.next();
-
-                                if (directoryObject.getId() == response.getInt("folder_id")) {
-                                    directoryObject.setName(content.getString("name"));
-                                    directoryObject.setOwnerId(content.getInt("owner_id"));
-                                    directoryObject.setParentId(content.getInt("parent_id"));
-                                    break;
+                                if (adapter != null) {
+                                    adapter.notifyDataSetChanged();
                                 }
+                            } else {
+                                Log.d("CreateDirectoryFailure", response.toString());
                             }
-
-                            if (adapter != null) {
-                                adapter.notifyDataSetChanged();
-                            }
-                        } else {
-                            Log.d("UpdateDirectoryFailure", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            })
+                })
         );
     }
 
-    private void deleteDirectoryObject(int directoryId) {
-        ApplicationObject.getInstance().addRequest(new DeleteDirectoryObjectRequest(directoryId,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("DeleteDirectorySuccess", response.toString());
+    private void updateDirectoryObject(String directoryId, String name, String ownerId, String parentId) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, ownerId, parentId,
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("UpdateDirectorySuccess", response.toString());
 
-                            if (response.getBoolean("content")) {
+                                JSONObject content = response.getJSONObject("content");
                                 Iterator<DirectoryObject> iterator = directoryObjects.iterator();
 
                                 while (iterator.hasNext()) {
                                     DirectoryObject directoryObject = iterator.next();
 
-                                    if (directoryObject.getId() == response.getInt("folder_id")) {
-                                        iterator.remove();
+                                    if (directoryObject.getId() == response.getString("folder_id")) {
+                                        directoryObject.setName(content.getString("name"));
+                                        directoryObject.setOwnerId(content.getString("owner_id"));
+                                        directoryObject.setParentId(content.getString("parent_id"));
                                         break;
                                     }
                                 }
@@ -303,70 +264,101 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                 if (adapter != null) {
                                     adapter.notifyDataSetChanged();
                                 }
+                            } else {
+                                Log.d("UpdateDirectoryFailure", response.toString());
                             }
-                        } else {
-                            Log.d("DeleteDirectoryFailure", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            })
+                })
         );
     }
 
-    private void getDirectoryContent(int folder_id) {
-        directoryObjects.clear();
+    private void deleteDirectoryObject(String directoryId) {
+        ApplicationObject.getInstance().addRequest(new DeleteDirectoryObjectRequest(directoryId,
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("DeleteDirectorySuccess", response.toString());
 
+                                if (response.getBoolean("content")) {
+                                    Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+
+                                    while (iterator.hasNext()) {
+                                        DirectoryObject directoryObject = iterator.next();
+
+                                        if (directoryObject.getId() == response.getString("folder_id")) {
+                                            iterator.remove();
+                                            break;
+                                        }
+                                    }
+
+                                    if (adapter != null) {
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            } else {
+                                Log.d("DeleteDirectoryFailure", response.toString());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+        );
+    }
+
+    private void getDirectoryContent(String folder_id) {
+        directoryObjects.clear();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
 
         ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest(folder_id,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("GetDirContentSuccess", response.toString());
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("GetDirContentSuccess", response.toString());
 
-                            ApplicationObject.getInstance().setCurrentFolderId(response.getInt("folder_id"));
+                                ApplicationObject.getInstance().setCurrentFolderId(response.getString("folder_id"));
 
-                            JSONObject content = response.getJSONObject("content");
-                            Iterator<String> iterator = content.keys();
-
-                            while (iterator.hasNext()) {
-                                String key = iterator.next();
-                                JSONObject directoryContent = content.getJSONObject(key);
-
-                                directoryObjects.add(new DirectoryObject(
-                                    directoryContent.getInt("id"),
-                                    directoryContent.getInt("owner_id"),
-                                    directoryContent.getString("owner_first_name"),
-                                    directoryContent.getString("owner_last_name"),
-                                    directoryContent.getInt("parent_id"),
-                                    directoryContent.getString("name"),
-                                    directoryContent.getBoolean("folder"),
-                                    directoryContent.getInt("time_created"),
-                                    directoryContent.getInt("time_updated"),
-                                    directoryContent.getInt("time_deleted"))
-                                );
-                            }
-
-                            if (adapter != null) {
-                                ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                                if (ApplicationObject.getInstance().getCurrentFolderId() != 0) {
-                                    ab.setDisplayHomeAsUpEnabled(true);
+                                JSONArray content = response.getJSONArray("content");
+                                for (int i = 0; i < content.length(); i++) {
+                                    JSONObject dirObj = content.getJSONObject(i);
+                                    JSONObject owner = dirObj.getJSONObject("owner");
+                                    String parent = (dirObj.getJSONObject("owner") != null) ? dirObj.getJSONObject("owner").getString("_id") : null;
+                                    directoryObjects.add(new DirectoryObject(
+                                            dirObj.getString("_id"),
+                                            owner.getString("_id"),
+                                            owner.getString("first_name"),
+                                            owner.getString("last_name"),
+                                            parent,
+                                            dirObj.getString("name"),
+                                            dirObj.getBoolean("folder"),
+                                            dirObj.getInt("time_created"),
+                                            dirObj.getInt("time_updated"),
+                                            dirObj.getInt("time_deleted"))
+                                    );
                                 }
-                                adapter.notifyDataSetChanged();
+
+                                if (adapter != null) {
+                                    ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                                    if (ApplicationObject.getInstance().getCurrentFolderId() != null) {
+                                        ab.setDisplayHomeAsUpEnabled(true);
+                                    }
+                                    adapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                Log.d("GetDirContentFailure", response.toString());
                             }
-                        } else {
-                            Log.d("GetDirContentFailure", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
-            }
         ));
     }
 

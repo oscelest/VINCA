@@ -2,20 +2,20 @@ package com.noxyspace.vinca.objects;
 
 public class UserObject {
 
-    public UserObject(int id, String first_name, String last_name, String email, boolean admin, String user_token) {
+    public UserObject(String id, String first_name, String last_name, String email, boolean admin, boolean verified, String user_token) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.admin = admin;
+        this.verified = verified;
         this.user_token = user_token;
     }
 
-    private int id;
-    private String first_name, last_name, user_token, email;
-    private boolean admin;
+    private String id, first_name, last_name, user_token, email;
+    private boolean admin, verified;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

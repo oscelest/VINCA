@@ -227,7 +227,7 @@ public class CanvasActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void getDirectoryObject(int object_id) {
+    private void getDirectoryObject(String object_id) {
         ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
                 new Response.Listener<JSONObject>() {
                     public void onResponse(JSONObject response) {
@@ -238,11 +238,11 @@ public class CanvasActivity extends AppCompatActivity {
                                 JSONObject content = response.getJSONObject("content");
 
                                 directoryObject = new DirectoryObject(
-                                        content.getInt("id"),
-                                        content.getInt("owner_id"),
+                                        content.getString("id"),
+                                        content.getString("owner_id"),
                                         content.getString("owner_first_name"),
                                         content.getString("owner_last_name"),
-                                        content.getInt("parent_id"),
+                                        content.getString("parent_id"),
                                         content.getString("name"),
                                         content.getBoolean("folder"),
                                         content.getInt("time_created"),

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpRequest extends Request<JSONObject> {
-    private static final String SERVER_URL = "http://178.62.117.85";
+    private static final String SERVER_URL = "http://46.101.228.220";
 
     /* User URL
      * GET = Get user object/info ('/' = admin-only/all users, '/self' = own user, '/:id' = user with given id)

@@ -4,25 +4,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DirectoryObject {
-    private int id;
+    private String id;
 
-    private int owner_id;
-    private String owner_first_name;
-    private String owner_last_name;
+    private String owner_id, owner_first_name, owner_last_name;
 
-    private int parent_id;
-    private String name;
+    private String parent_id, name;
 
     private boolean folder;
     private boolean shared;
 
-    private String time_created;
-    private String time_updated;
-    private String time_deleted;
+    private String time_created, time_updated, time_deleted;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
-    public DirectoryObject(int id, int owner_id, String owner_first_name, String owner_last_name, int parent_id, String name, boolean folder, int time_created, int time_updated, int time_deleted) {
+    public DirectoryObject(String id, String owner_id, String owner_first_name, String owner_last_name, String parent_id, String name, boolean folder, int time_created, int time_updated, int time_deleted) {
         this.id = id;
 
         this.owner_id = owner_id;
@@ -40,15 +35,15 @@ public class DirectoryObject {
         this.time_deleted = dateFormat.format(new Date(time_deleted));
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
-    public int getOwnerId() {
+    public String getOwnerId() {
         return this.owner_id;
     }
 
-    public void setOwnerId(int ownerId) {
+    public void setOwnerId(String ownerId) {
         this.owner_id = ownerId;
     }
 
@@ -64,11 +59,11 @@ public class DirectoryObject {
         return (this.owner_first_name + " " + this.owner_last_name);
     }
 
-    public int getParentId() {
+    public String getParentId() {
         return this.parent_id;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(String parentId) {
         this.parent_id = parentId;
     }
 
