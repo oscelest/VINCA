@@ -9,7 +9,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class DeleteDirectoryObjectRequest extends HttpRequest {
-    public DeleteDirectoryObjectRequest(int directory_id, Response.Listener<JSONObject> responseListener) {
+    public DeleteDirectoryObjectRequest(String directory_id, Response.Listener<JSONObject> responseListener) {
         super(Method.DELETE, DIRECTORY_URL + "/" + directory_id, responseListener,
             new Response.ErrorListener() {
                 @Override

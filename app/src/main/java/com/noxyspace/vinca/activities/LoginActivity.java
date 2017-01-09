@@ -106,11 +106,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                         ApplicationObject.getInstance().setUserToken(content.getString("user_token"));
                                         ApplicationObject.getInstance().setUser(new UserObject(
-                                                content.getInt("id"),
+                                                content.getString("_id"),
                                                 content.getString("first_name"),
                                                 content.getString("last_name"),
                                                 content.getString("email"),
-                                                content.getInt("admin") != 0,
+                                                content.getBoolean("admin"),
+                                                content.getBoolean("verified"),
                                                 content.getString("user_token")
                                         ));
 
@@ -148,11 +149,12 @@ public class LoginActivity extends AppCompatActivity {
                                     JSONObject content = response.getJSONObject("content");
                                     ApplicationObject.getInstance().setUserToken(content.getString("user_token"));
                                     ApplicationObject.getInstance().setUser(new UserObject(
-                                            content.getInt("id"),
+                                            content.getString("_id"),
                                             content.getString("first_name"),
                                             content.getString("last_name"),
                                             content.getString("email"),
-                                            content.getInt("admin") != 0,
+                                            content.getBoolean("admin"),
+                                            content.getBoolean("verified"),
                                             content.getString("user_token")
                                     ));
 

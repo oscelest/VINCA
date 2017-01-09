@@ -15,20 +15,16 @@ public final class ApplicationObject {
     }
 
     private RequestQueue requestQueue;
-
     private UserObject user;
     private String user_token;
     private DirectoryObject current_file;
-
-    private int currentFolderId;
+    private String current_folder_id;
 
     private ApplicationObject() {
         this.user = null;
         this.user_token = null;
         this.current_file = null;
-
-        this.currentFolderId = 0;
-
+        this.current_folder_id = null;
         this.requestQueue = null;
     }
 
@@ -72,11 +68,11 @@ public final class ApplicationObject {
         this.current_file = current_file;
     }
 
-    public int getCurrentFolderId() {
-        return this.currentFolderId;
+    public String getCurrentFolderId() {
+        return this.current_folder_id;
     }
 
-    public void setCurrentFolderId(int directoryId) {
-        this.currentFolderId = directoryId;
+    public void setCurrentFolderId(String directoryId) {
+        this.current_folder_id = directoryId;
     }
 }

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpRequest extends Request<JSONObject> {
-    private static final String SERVER_URL = "http://178.62.117.85:8080";
+    private static final String SERVER_URL = "http://178.62.117.85";
 
     /* User URL
      * GET = Get user object/info ('/' = admin-only/all users, '/self' = own user, '/:id' = user with given id)
@@ -23,7 +23,7 @@ public class HttpRequest extends Request<JSONObject> {
      * PUT = Update user object/info ('/' and '/self' = own user, '/:id' = admin-only/user with given id)
      * DELETE = Delete user object ('/self' = own user, '/:id' = admin-only/user with given id)
      * */
-    protected static final String USER_URL = SERVER_URL + "/api/users";
+    protected static final String USER_URL = SERVER_URL + "/api/user";
 
     /* News URL
      * GET = Get news object(s) ('/' = all news, '/:Id' = news with given id)
@@ -90,7 +90,7 @@ public class HttpRequest extends Request<JSONObject> {
         this.headers.clear();
 
         if (ApplicationObject.getInstance().getUserToken() != null) {
-            this.headers.put("Authorization", "Basic:" + ApplicationObject.getInstance().getUserToken());
+            this.headers.put("Authorization", "Bearer " + ApplicationObject.getInstance().getUserToken());
         }
 
         for (HttpParameter header : headers) {

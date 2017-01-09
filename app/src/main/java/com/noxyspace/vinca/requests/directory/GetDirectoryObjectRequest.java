@@ -9,7 +9,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class GetDirectoryObjectRequest extends HttpRequest {
-    public GetDirectoryObjectRequest(int file_id, Response.Listener<JSONObject> responseListener) {
+    public GetDirectoryObjectRequest(String file_id, Response.Listener<JSONObject> responseListener) {
         super(Method.GET, DIRECTORY_URL + "/" + file_id, responseListener,
                 new Response.ErrorListener() {
                     @Override

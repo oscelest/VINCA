@@ -11,11 +11,11 @@ import org.json.JSONObject;
 
 public class RefreshRequest extends HttpRequest {
     public RefreshRequest(Response.Listener<JSONObject> responseListener) {
-        super(Method.POST, USER_URL + "/login", responseListener,
+        super(Method.POST, USER_URL + "/refresh", responseListener,
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("LoginRequestError", error.getMessage() != null ? error.getMessage() : "There was an error.");
+                    Log.d("RefreshRequestError", error.getMessage() != null ? error.getMessage() : "There was an error.");
                 }
             }
         );
