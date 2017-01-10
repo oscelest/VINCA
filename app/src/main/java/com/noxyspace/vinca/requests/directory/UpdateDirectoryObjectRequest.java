@@ -19,8 +19,8 @@ public class UpdateDirectoryObjectRequest extends HttpRequest {
                 }
             },
             new HttpParameter("name", name == null ? "" : name),
-            new HttpParameter("owner_id", ownerId),
-            new HttpParameter("parent_id", parentId)
+            new HttpParameter("owner_id", ownerId == null ? "" : ownerId),
+            new HttpParameter("parent_id", parentId == null ? "" : parentId)
         );
     }
 }

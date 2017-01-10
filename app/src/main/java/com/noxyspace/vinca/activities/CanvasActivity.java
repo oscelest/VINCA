@@ -30,6 +30,7 @@ import com.noxyspace.vinca.SymbolBar;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
+import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 import com.noxyspace.vinca.symbols.*;
 
 import org.json.JSONException;
@@ -130,7 +131,7 @@ public class CanvasActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     directoryObject.setName(fileName.getText().toString());
-                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), directoryObject.getOwnerId(), directoryObject.getParentId(),
+                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), "", "",
                             new Response.Listener<JSONObject>() {
                                 public void onResponse(JSONObject response) {
                                     try {
@@ -205,6 +206,8 @@ public class CanvasActivity extends AppCompatActivity {
     }
 
     private void getDirectoryObject(String object_id) {
+        Log.d("DirObjetId", object_id);
+
         ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
                 new Response.Listener<JSONObject>() {
                     public void onResponse(JSONObject response) {
@@ -220,15 +223,15 @@ public class CanvasActivity extends AppCompatActivity {
                                         owner.getString("_id"),
                                         owner.getString("first_name"),
                                         owner.getString("last_name"),
-                                        content.getString("parent"),
+                                        content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
                                         content.getString("name"),
                                         content.getBoolean("folder"),
                                         content.getInt("time_created"),
                                         content.getInt("time_updated"),
-                                        content.getInt("time_deleted"));
+                                        content.getInt("time_deleted")
+                                );
 
                                 fileName.setText(directoryObject.getName());
-                                Log.d("Name: ", directoryObject.getName());
                             } else {
                                 Log.d("GetDirectoryFailure", response.toString());
                                 //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();

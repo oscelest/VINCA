@@ -75,7 +75,6 @@ public class HubActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.newsTab));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.myProjects));
