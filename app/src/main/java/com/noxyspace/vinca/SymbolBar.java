@@ -13,39 +13,39 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.noxyspace.vinca.canvas.CanvasManager;
+import com.noxyspace.vinca.symbols.*;
 
 
 public class SymbolBar extends Fragment {
 
-    private ImageView projectStart, projectEnd, activity, pause, iterationStart, iterationEnd, processStart, processEnd, decision, method;
+    //private ImageView projectStart, projectEnd, activity, pause, iterationStart, iterationEnd, processStart, processEnd, decision, method;
+    private Symbol project, process, iterate, pause, decision, method, activity, trashcan;
 
     private CanvasManager canvasManger;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.symbol_bar_fragment, container, false);
+        ViewGroup view = (ViewGroup)inflater.inflate(R.layout.symbol_bar_fragment, container, false);
 
-        projectStart = (ImageView) view.findViewById(R.id.project_start);
-        projectEnd = (ImageView) view.findViewById(R.id.project_end);
-        activity = (ImageView) view.findViewById(R.id.activity);
-        pause = (ImageView) view.findViewById(R.id.pause);
-        iterationStart = (ImageView) view.findViewById(R.id.iteration_start);
-        iterationEnd = (ImageView) view.findViewById(R.id.iteration_end);
-        processStart = (ImageView) view.findViewById(R.id.process_start);
-        processEnd = (ImageView) view.findViewById(R.id.process_end);
-        decision  = (ImageView) view.findViewById(R.id.decision);
-        method = (ImageView) view.findViewById(R.id.method);
+        project = new ProjectSymbol(getActivity(), view);
+        process = new ProcessSymbol(getActivity(), view);
+        iterate = new IterationSymbol(getActivity(), view);
+        pause = new PauseSymbol(getActivity(), view);
+        decision = new DecisionSymbol(getActivity(), view);
+        method = new MethodSymbol(getActivity(), view);
+        activity = new ActivitySymbol(getActivity(), view);
 
-        setListeners(projectStart);
-        setListeners(projectEnd);
+        new BarSeperator(getActivity(), view);
+        trashcan = new TrashcanSymbol(getActivity(), view);
+
+
+        setListeners(project);
         setListeners(activity);
         setListeners(decision);
-        setListeners(processStart);
-        setListeners(processEnd);
+        setListeners(process);
         setListeners(pause);
-        setListeners(iterationStart);
-        setListeners(iterationEnd);
+        setListeners(iterate);
         setListeners(method);
 
         return view;

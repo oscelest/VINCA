@@ -1,10 +1,10 @@
 package com.noxyspace.vinca;
 
 import com.noxyspace.vinca.canvas.Timeline;
-import com.noxyspace.vinca.symbols.Activity;
-import com.noxyspace.vinca.symbols.Decision;
-import com.noxyspace.vinca.symbols.Process;
-import com.noxyspace.vinca.symbols.Project;
+import com.noxyspace.vinca.symbols.ActivitySymbol;
+import com.noxyspace.vinca.symbols.DecisionSymbol;
+import com.noxyspace.vinca.symbols.ProcessSymbol;
+import com.noxyspace.vinca.symbols.ProjectSymbol;
 
 import org.junit.Test;
 
@@ -18,17 +18,17 @@ public class SymbolTest {
     @Test
     public void addition_isCorrect() throws Exception {
 
-        Activity a1 = new Activity(1,"Activity Title 1","Activity Description 1");
-        Activity a2 = new Activity(2,"Activity Title 2","Activity Description 2");
-        Activity a3 = new Activity(3,"Activity Title 3","Activity Description 3");
+        ActivitySymbol a1 = new ActivitySymbol(1,"Activity Title 1","Activity Description 1");
+        ActivitySymbol a2 = new ActivitySymbol(2,"Activity Title 2","Activity Description 2");
+        ActivitySymbol a3 = new ActivitySymbol(3,"Activity Title 3","Activity Description 3");
 
-        Decision d1 = new Decision(4,"Decision Title 1","Decision Description 1");
-        Decision d2 = new Decision(5,"Decision Title 2","Decision Description 2");
+        DecisionSymbol d1 = new DecisionSymbol(4,"Decision Title 1","Decision Description 1");
+        DecisionSymbol d2 = new DecisionSymbol(5,"Decision Title 2","Decision Description 2");
 
-        Project project1 = new Project(6, "Project Title 1", "Project Description 1");
+        ProjectSymbol projectSymbol1 = new ProjectSymbol(6, "Project Title 1", "Project Description 1");
 
-        Process process1 = new Process(7, "Process Title 1",  "Process Description 1");
-        Process process2 = new Process(7, "Process Title 2",  "Process Description 2");
+        ProcessSymbol process1 = new ProcessSymbol(7, "Process Title 1",  "Process Description 1");
+        ProcessSymbol process2 = new ProcessSymbol(7, "Process Title 2",  "Process Description 2");
 
         Timeline timeline = new Timeline();
 
@@ -39,7 +39,7 @@ public class SymbolTest {
          ////
 
          // ADD THE FIRST PROJECT
-         timeline.addProject(project1);
+         timeline.addProject(projectSymbol1);
 
         // CHECK PLACEMENT OF PROJECT IN TIMELINE LIST
 

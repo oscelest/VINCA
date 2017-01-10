@@ -11,20 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.DragEvent;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
@@ -32,7 +28,7 @@ import com.noxyspace.vinca.SymbolBar;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
-import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
+import com.noxyspace.vinca.symbols.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +38,6 @@ public class CanvasActivity extends AppCompatActivity {
     Toolbar toolbar_canvas_top;
     ImageView myImageView;
     EditText fileName;
-    Bitmap tempBitmap;
     SymbolBar symbolbar;
     DirectoryObject directoryObject;
     LinearLayout figureList;
@@ -99,31 +94,22 @@ public class CanvasActivity extends AppCompatActivity {
                     case DragEvent.ACTION_DROP:
                         View view = (View)event.getLocalState(); // Symbol from symbolBar
 
-                        ImageView mb = new ImageView(mContext);
+                        if (view instanceof ActivitySymbol) {
+                            new ActivitySymbol(mContext, figureList);
+                        } else if (view instanceof DecisionSymbol) {
+                            new DecisionSymbol(mContext, figureList);
+                        }else if (view instanceof IterationSymbol) {
+                            new IterationSymbol(mContext, figureList);
+                        }else if (view instanceof MethodSymbol) {
+                            new MethodSymbol(mContext, figureList);
+                        }else if (view instanceof PauseSymbol) {
+                            new PauseSymbol(mContext, figureList);
+                        }else if (view instanceof ProcessSymbol) {
+                            new ProcessSymbol(mContext, figureList);
+                        }else if (view instanceof ProjectSymbol) {
+                            new ProjectSymbol(mContext, figureList);
+                        }
 
-                        mb.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        ));
-
-                        mb.setImageResource(R.mipmap.activity);
-                        mb.setOnTouchListener(new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View v, MotionEvent event) {
-                                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                                    ClipData data = ClipData.newPlainText("", "");
-                                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-
-                                    v.startDrag(data, shadowBuilder, v, 0);
-                                    v.setVisibility(View.VISIBLE);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        });
-
-                        figureList.addView(mb);
                         break;
 
                     default:
@@ -133,30 +119,7 @@ public class CanvasActivity extends AppCompatActivity {
             }
         });
 
-        /**
-        myImageView = (ImageView) findViewById(R.id.canvas);
-        myImageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                myImageView.getViewTreeObserver().removeOnPreDrawListener(this);
-                int height = myImageView.getHeight();
-                int width = myImageView.getWidth();
 
-                //Create a new image bitmap and attach a brand new canvas to it
-                tempBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-                tempBitmap.eraseColor(Color.WHITE);
-
-                //Attach the canvas to the ImageView
-                myImageView.setImageBitmap(tempBitmap);
-
-                //Draw the image bitmap into the canvas
-                Canvas tempCanvas = new Canvas(tempBitmap);
-
-                tempCanvas.drawBitmap(tempBitmap, 0, 0, null);
-                return false;
-            }
-        });
-         */
 
         // Change update the name of the file, when focus from EditText is moved
 //        fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
