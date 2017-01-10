@@ -9,17 +9,21 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.crashlytics.android.Crashlytics;
 import com.noxyspace.vinca.activities.tabs.adapter.PagerAdapter;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.objects.ApplicationObject;
 
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 
 import static android.graphics.Color.WHITE;
@@ -108,9 +112,27 @@ public class HubActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_action_bar, menu); //your file name
+        getMenuInflater().inflate(R.menu.menu_action_bar, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(menu != null) {
+            if(menu.getClass().getSimpleName().equals("MenuBuilder")) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch(NoSuchMethodException e) {
+                    Log.d("onMenuOpened", e.getMessage());
+                } catch(Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

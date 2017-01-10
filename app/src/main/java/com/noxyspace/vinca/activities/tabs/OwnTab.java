@@ -1,5 +1,6 @@
 package com.noxyspace.vinca.activities.tabs;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +9,12 @@ import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -420,32 +424,45 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
             createdAt.setText(directoryObjects.get(position).getCreatedTime());
             final ImageView settings_btn = (ImageView) view.findViewById(R.id.settings_directory_object);
+
             settings_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PopupMenu popup = new PopupMenu(getActivity(), settings_btn);
-                    popup.getMenuInflater().inflate(R.menu.menu_directory_object, popup.getMenu());
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                    MenuBuilder menuBuilder = new MenuBuilder(getActivity());
+
+                    MenuInflater inflater = new MenuInflater(getActivity());
+                    inflater.inflate(R.menu.menu_directory_object, menuBuilder);
+
+                    MenuPopupHelper optionsMenu = new MenuPopupHelper(getActivity(), menuBuilder, v);
+                    optionsMenu.setForceShowIcon(true);
+
+                    menuBuilder.setCallback(new MenuBuilder.Callback() {
                         @Override
-                        public boolean onMenuItemClick(MenuItem item) {
+                        public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.rename:
                                     renameDirectoryObjectDialog(directoryObjects.get(position));
-                                    break;
+                                    return true;
 
                                 case R.id.share:
                                     //shareDirectoryObject(directoryObjects.get(position));
-                                    break;
+                                    return true;
 
                                 case R.id.delete:
                                     deleteDirectoryObjectDialog(directoryObjects.get(position));
-                                    break;
-                            }
+                                    return true;
 
-                            return false;
+                                default:
+                                    return false;
+                            }
                         }
+
+                        @Override
+                        public void onMenuModeChange(MenuBuilder menu) {}
                     });
-                    popup.show();
+
+                    optionsMenu.show();
                 }
             });
 

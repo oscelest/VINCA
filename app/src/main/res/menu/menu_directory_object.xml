@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@id/share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="Add contributors" />
 
     <item
         android:id="@+id/rename"
-        android:title="Rename file" />
-
-    <item
-        android:id="@id/share"
-        android:title="Share file" />
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Rename" />
 
     <item
         android:id="@+id/delete"
-        android:title="Delete file"/>
-
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Remove"/>
 </menu>
