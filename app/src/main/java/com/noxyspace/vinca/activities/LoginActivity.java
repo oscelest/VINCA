@@ -42,12 +42,12 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = sharedPreferences.edit();
-        findViewById(R.id.btn_skip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), HubActivity.class));
-            }
-        });
+//        findViewById(R.id.btn_skip).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(), HubActivity.class));
+//            }
+//        });
 
         // Makes sure the keyboard doesn't show on start
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);

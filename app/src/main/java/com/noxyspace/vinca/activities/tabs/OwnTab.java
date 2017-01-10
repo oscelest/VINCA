@@ -45,27 +45,22 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private CustomAdapter adapter;
 
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
-    private String previousFolder = null;
 
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
+
+    private ImageView home_btn;
+    private FloatingActionButton fab_btn;
+    private boolean toggled = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
 
-        setHasOptionsMenu(true);
-
-        ((FloatingActionButton) view.findViewById(R.id.fab_plus)).setOnClickListener(new View.OnClickListener() {
-            private boolean toggled = false;
-
-            @Override
-            public void onClick(View v) {
-                fab_folder.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
-                fab_file.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
-                toggled = !toggled;
-            }
-        });
+        home_btn = (ImageView) view.findViewById(R.id.home);
+        home_btn.setOnClickListener(this);
+        fab_btn = (FloatingActionButton) view.findViewById(R.id.fab_plus);
+        fab_btn.setOnClickListener(this);
 
         fab_folder = (FloatingActionButton) view.findViewById(R.id.fab_folder);
         fab_folder.setOnClickListener(this);
@@ -79,17 +74,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     public void onTabSelected() {
         ApplicationObject.getInstance().setCurrentFolderId(null);
         this.getDirectoryContent(null);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getDirectoryContent(previousFolder);
-                return true;
-        }
-
-        return (super.onOptionsItemSelected(item));
     }
 
     @Override
@@ -109,7 +93,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             intent.putExtra("FILE_ID", intentId);
             startActivity(intent);
         } else {
-            previousFolder = ApplicationObject.getInstance().getCurrentFolderId();
             this.getDirectoryContent(directoryObjects.get(position).getId());
             //this.renameDirectoryObject(directoryObjects.get(position).getId(), "Sup bro?");
         }
@@ -117,11 +100,20 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
     @Override
     public void onClick(View v) {
-        CreateDirectoryObjectDialog(v == fab_folder);
+        if (v == home_btn) {
+            getDirectoryContent(null);
+        } else if (v == fab_btn) {
+            fab_folder.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
+            fab_file.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
+            toggled = !toggled;
+
+        } else if (v == fab_file || v == fab_folder) {
+            createDirectoryObjectDialog(v == fab_folder);
+        }
     }
 
     // Dialog that asks for the title of a file or folder and creates the element
-    public void CreateDirectoryObjectDialog(boolean isFolder) {
+    public void createDirectoryObjectDialog(boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 

@@ -14,12 +14,12 @@
 
         <ImageView
             android:contentDescription=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
-            android:src="@mipmap/logo" />
+            android:src="@drawable/activity_symbol" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_email_layout"
@@ -66,15 +66,15 @@
             android:padding="12dp"
             android:text="@string/login" />
 
-        <Button
-            android:id="@+id/btn_skip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"
-            android:padding="12dp"
-            android:text="@string/skip" />
+        <!--<Button-->
+            <!--android:id="@+id/skip"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginBottom="12dp"-->
+            <!--android:layout_marginTop="12dp"-->
+            <!--android:padding="12dp"-->
+            <!--android:text="@string/skip" />-->
 
         <TextView
             android:id="@+id/text_register_link"
