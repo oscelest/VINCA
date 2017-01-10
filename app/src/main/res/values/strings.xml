@@ -31,9 +31,6 @@
         <item>NewsDescription9</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Preferences screen related strings -->
     <string name="VINCA_fmt">VINCA Preferences</string>
     <string name="VINCA_action">VINCA Account</string>
@@ -49,7 +46,7 @@
     <string name="lastEditedBy_columnName">Last Edited By</string>
     <string name="newsTab">News</string>
     <string name="myProjects">My Projects</string>
-    <string name="recent">Recent Projects</string>
+    <string name="market">Market</string>
     <string name="folderNamePrompt">Hvad skal mappen hedde?</string>
     <string name="foldersName">Mappens navn:</string>
     <string name="cancel">Cancel</string>

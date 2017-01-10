@@ -16,28 +16,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class RecentTab extends ListFragment {
+public class MarketTab extends ListFragment {
 
-    private ArrayList<DirectoryObject> recentList = new ArrayList<>();
-    private int fileNo = 1;
-    CustomAdapter adapter;
+    //private ArrayList<DirectoryObject> recentList = new ArrayList<>();
+    //private int fileNo = 1;
+    //CustomAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recent_tab_fragment, container, false);
-
-//        recentList.add(new DirectoryObject(0, 1, 0, "File 1", "Rune", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-//        recentList.add(new DirectoryObject(1, 2, 0, "File 2", "Mikkel", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-//        recentList.add(new DirectoryObject(2, 3, 0, "File 3", "Andreas", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-//        recentList.add(new DirectoryObject(3, 4, 0, "File 4", "Magnus", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-//        recentList.add(new DirectoryObject(4, 5, 0, "File 5", "Oliver", null, false, (int) (System.currentTimeMillis() / 1000), (int) (System.currentTimeMillis() / 1000)));
-
+        View view = inflater.inflate(R.layout.market_tab_fragment, container, false);
         return view;
     }
 
     public void onTabSelected() {
 
     }
+    /**
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -108,5 +102,5 @@ public class RecentTab extends ListFragment {
             notifyDataSetChanged();
             return view;
         }
-    }
+    }**/
 }

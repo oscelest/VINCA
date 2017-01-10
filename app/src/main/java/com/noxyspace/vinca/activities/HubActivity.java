@@ -78,7 +78,7 @@ public class HubActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.newsTab));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.myProjects));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.recent));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.market));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
