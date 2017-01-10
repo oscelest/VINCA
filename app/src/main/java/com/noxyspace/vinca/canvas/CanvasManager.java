@@ -1,6 +1,7 @@
 package com.noxyspace.vinca.canvas;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.activities.CanvasActivity;
@@ -25,7 +26,7 @@ public class CanvasManager {
 
     }
 
-    public void addFigure(View view){
+    public void addFigure(ImageView view){
 
         symbols.addView(view);
         symbols.invalidate();

@@ -10,7 +10,7 @@ import android.view.DragEvent;
 import android.view.View;
 
 
-public class DragHandler extends AppCompatActivity implements View.OnDragListener{
+public class DragHandler  implements View.OnDragListener{
 
     @Override
     public boolean onDrag(View view, DragEvent event) {
