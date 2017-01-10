@@ -2,6 +2,10 @@ package com.noxyspace.vinca.canvas;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +18,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
 
     private boolean acceptsDrop;
+    private int backgroundColor;
 
     public SymbolLayout(Context context, boolean acceptsDrop) {
         super(context);
@@ -57,19 +62,33 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     @Override
     protected boolean onDragEnded(View v, DragEvent event) {
-        v.setBackgroundColor(SymbolTimelineLayout.BACKGROUND_COLOR);
+        if (this.backgroundColor != 0) {
+            v.setBackgroundColor(this.backgroundColor);
+            this.backgroundColor = 0;
+        }
+
         return true;
     }
 
     @Override
     protected boolean onDragEntered(View v, DragEvent event) {
-        v.setBackgroundColor(SymbolTimelineLayout.HIGHLIGHT_COLOR);
+        Drawable background = ((View)v.getParent()).getBackground();
+
+        if (background != null && background instanceof ColorDrawable) {
+            this.backgroundColor = ((ColorDrawable)background).getColor();
+            v.setBackgroundColor(SymbolTimelineLayout.HIGHLIGHT_COLOR);
+        }
+
         return true;
     }
 
     @Override
     protected boolean onDragExited(View v, DragEvent event) {
-        v.setBackgroundColor(SymbolTimelineLayout.BACKGROUND_COLOR);
+        if (this.backgroundColor != 0) {
+            v.setBackgroundColor(this.backgroundColor);
+            this.backgroundColor = 0;
+        }
+
         return true;
     }
 }
