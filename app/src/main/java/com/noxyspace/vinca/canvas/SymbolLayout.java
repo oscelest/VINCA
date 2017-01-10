@@ -2,7 +2,6 @@ package com.noxyspace.vinca.canvas;
 
 import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -64,7 +63,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     @Override
     protected boolean onDragEntered(View v, DragEvent event) {
-        v.setBackgroundColor(Color.RED);
+        v.setBackgroundColor(SymbolTimelineLayout.HIGHLIGHT_COLOR);
         return true;
     }
 

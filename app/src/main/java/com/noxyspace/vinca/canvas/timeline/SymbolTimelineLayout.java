@@ -16,6 +16,7 @@ public class SymbolTimelineLayout extends SymbolLayoutDragHandler {
     private static final int MINIMUM_WIDTH = 50;
     private static final int MINIMUM_HEIGHT = 50;
 
+    public static final int HIGHLIGHT_COLOR = 0xFFFFFAE3;
     public static final int BACKGROUND_COLOR = 0xFFDDDDDD;
 
     public SymbolTimelineLayout(Context context) {
