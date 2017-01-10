@@ -61,37 +61,6 @@ public class CanvasActivity extends AppCompatActivity {
         LinearLayout canvas = (LinearLayout)findViewById(R.id.canvas);
         canvas.addView(new SymbolTimeline(this));
 
-//        figureList.setOnDragListener(new View.OnDragListener() {
-//            @Override
-//            public boolean onDrag(View v, DragEvent event) {
-//                switch(event.getAction()) {
-//                    case DragEvent.ACTION_DRAG_STARTED:
-//                        break;
-//
-//                    case DragEvent.ACTION_DRAG_ENTERED:
-//                        break;
-//
-//                    case DragEvent.ACTION_DRAG_EXITED :
-//                        break;
-//
-//                    case DragEvent.ACTION_DRAG_LOCATION  :
-//                        break;
-//
-//                    case DragEvent.ACTION_DRAG_ENDED   :
-//                        break;
-//
-//                    case DragEvent.ACTION_DROP:
-//                        View view = (View)event.getLocalState(); // Symbol from symbolBar
-//
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
-
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

@@ -6,7 +6,6 @@ import android.widget.HorizontalScrollView;
 
 public class SymbolTimeline extends HorizontalScrollView {
     private static final int MARGIN_TOP = 10;
-    private static final int BACKGROUND_COLOR = 0xFF0000FF;
 
     private SymbolTimelineLayout layout;
 
@@ -22,7 +21,6 @@ public class SymbolTimeline extends HorizontalScrollView {
         params.setMargins(0, margin, 0, 0);
 
         this.setLayoutParams(params);
-        this.setBackgroundColor(BACKGROUND_COLOR);
 
         this.addView(this.layout = new SymbolTimelineLayout(context));
     }
