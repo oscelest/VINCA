@@ -2,13 +2,14 @@ package com.noxyspace.vinca.canvas;
 
 import android.content.ClipData;
 import android.content.Context;
-import android.util.TypedValue;
+import android.graphics.Color;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
+import com.noxyspace.vinca.canvas.timeline.SymbolTimelineLayout;
 
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
@@ -53,5 +54,23 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     @Override
     protected boolean onDragStarted(View v, DragEvent event) {
         return this.acceptsDrop;
+    }
+
+    @Override
+    protected boolean onDragEnded(View v, DragEvent event) {
+        v.setBackgroundColor(SymbolTimelineLayout.BACKGROUND_COLOR);
+        return true;
+    }
+
+    @Override
+    protected boolean onDragEntered(View v, DragEvent event) {
+        v.setBackgroundColor(Color.RED);
+        return true;
+    }
+
+    @Override
+    protected boolean onDragExited(View v, DragEvent event) {
+        v.setBackgroundColor(SymbolTimelineLayout.BACKGROUND_COLOR);
+        return true;
     }
 }
