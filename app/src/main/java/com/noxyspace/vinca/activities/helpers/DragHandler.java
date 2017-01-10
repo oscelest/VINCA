@@ -1,5 +1,11 @@
 package com.noxyspace.vinca.activities.helpers;
 
+/**
+ * Created by MikkelLeth on 06/01/17.
+ */
+
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
