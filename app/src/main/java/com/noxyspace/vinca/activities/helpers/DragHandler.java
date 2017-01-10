@@ -9,28 +9,49 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
-
-public class DragHandler extends AppCompatActivity implements View.OnDragListener{
-
+public class DragHandler implements View.OnDragListener{
     @Override
     public boolean onDrag(View view, DragEvent event) {
-        //Log.d("Editor - DragEvent", "drag event recieved: " + DragEvent.class.getDeclaredFields()[event.getAction()]);
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
-                Log.d("Editor - Debug", "Started dragging " + view.getId());
+                return this.onDragStarted();
 
-                break;
-            case DragEvent.ACTION_DRAG_EXITED:
-                break;
-            case DragEvent.ACTION_DRAG_ENTERED:
-                break;
             case DragEvent.ACTION_DROP:
-                break;
+                return this.onDragDrop();
+
             case DragEvent.ACTION_DRAG_ENDED:
-                Log.d("Editor - Debug", "Drop ended!");
+                return this.onDragEnded();
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                return this.onDragEntered();
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                return this.onDragExited();
+
+            default:
                 break;
         }
-        //This listener should always receive drag-events, so always return true!
-        return true;
+
+        return false;
+    }
+
+    protected boolean onDragStarted() {
+        return false;
+    }
+
+    protected boolean onDragDrop() {
+        return false;
+    }
+
+    protected boolean onDragEnded() {
+        return false;
+    }
+
+    protected boolean onDragEntered() {
+        return false;
+    }
+
+    protected boolean onDragExited() {
+        return false;
     }
 }
