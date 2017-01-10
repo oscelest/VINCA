@@ -1,9 +1,6 @@
 package com.noxyspace.vinca.activities;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -11,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,39 +16,33 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.SymbolBar;
+import com.noxyspace.vinca.canvas.timeline.SymbolTimeline;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
-import com.noxyspace.vinca.symbols.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CanvasActivity extends AppCompatActivity {
-
-    Toolbar toolbar_canvas_top;
-    ImageView myImageView;
-    EditText fileName;
-    SymbolBar symbolbar;
     DirectoryObject directoryObject;
-    LinearLayout figureList;
 
-    Context mContext;
+    EditText fileName;
+    Toolbar toolbar_canvas_top;
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.canvas_activity);
 
-        mContext = this;
+        this.context = this;
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -68,62 +58,39 @@ public class CanvasActivity extends AppCompatActivity {
         Log.d("Canvas ID", file_id);
         getDirectoryObject(file_id);
 
-        HorizontalScrollView scrollView = (HorizontalScrollView) findViewById(R.id.scroll);
-        scrollView.setBackgroundColor(Color.WHITE);
+        LinearLayout canvas = (LinearLayout)findViewById(R.id.canvas);
+        canvas.addView(new SymbolTimeline(this));
 
-        figureList = (LinearLayout)findViewById(R.id.figure_list);
-        figureList.setBackgroundColor(Color.LTGRAY);
-
-        //figureList.addView(mb);
-
-        figureList.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                switch(event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        break;
-
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        break;
-
-                    case DragEvent.ACTION_DRAG_EXITED :
-                        break;
-
-                    case DragEvent.ACTION_DRAG_LOCATION  :
-                        break;
-
-                    case DragEvent.ACTION_DRAG_ENDED   :
-                        break;
-
-                    case DragEvent.ACTION_DROP:
-                        View view = (View)event.getLocalState(); // Symbol from symbolBar
-
-                        if (view instanceof ActivitySymbol) {
-                            new ActivitySymbol(mContext, figureList);
-                        } else if (view instanceof DecisionSymbol) {
-                            new DecisionSymbol(mContext, figureList);
-                        }else if (view instanceof IterationSymbol) {
-                            new IterationSymbol(mContext, figureList);
-                        }else if (view instanceof MethodSymbol) {
-                            new MethodSymbol(mContext, figureList);
-                        }else if (view instanceof PauseSymbol) {
-                            new PauseSymbol(mContext, figureList);
-                        }else if (view instanceof ProcessSymbol) {
-                            new ProcessSymbol(mContext, figureList);
-                        }else if (view instanceof ProjectSymbol) {
-                            new ProjectSymbol(mContext, figureList);
-                        }
-
-                        break;
-
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-
-
+//        figureList.setOnDragListener(new View.OnDragListener() {
+//            @Override
+//            public boolean onDrag(View v, DragEvent event) {
+//                switch(event.getAction()) {
+//                    case DragEvent.ACTION_DRAG_STARTED:
+//                        break;
+//
+//                    case DragEvent.ACTION_DRAG_ENTERED:
+//                        break;
+//
+//                    case DragEvent.ACTION_DRAG_EXITED :
+//                        break;
+//
+//                    case DragEvent.ACTION_DRAG_LOCATION  :
+//                        break;
+//
+//                    case DragEvent.ACTION_DRAG_ENDED   :
+//                        break;
+//
+//                    case DragEvent.ACTION_DROP:
+//                        View view = (View)event.getLocalState(); // Symbol from symbolBar
+//
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -260,9 +227,5 @@ public class CanvasActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(event);
-    }
-
-    public LinearLayout getFigureList(){
-        return this.figureList;
     }
 }

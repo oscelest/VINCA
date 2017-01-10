@@ -132,8 +132,6 @@ public class LoginActivity extends AppCompatActivity {
                 ));
 
             }
-
-
         });
 
         String user_token = sharedPreferences.getString("com.noxyspace.vinca.USERTOKEN", null);

@@ -1,17 +1,13 @@
 package com.noxyspace.vinca.activities.tabs;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
-import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -102,7 +98,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             startActivity(intent);
         } else {
             this.getDirectoryContent(directoryObjects.get(position).getId());
-            //this.renameDirectoryObject(directoryObjects.get(position).getId(), "Sup bro?");
         }
     }
 
@@ -169,7 +164,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 renameDirectoryObject(directoryObject.getId(), directoryObject.getName());
-                Toast.makeText(getActivity(), "Woop woop rename!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -185,14 +179,12 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
     public void deleteDirectoryObjectDialog(final DirectoryObject directoryObject) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setMessage("Are you sure you want to delete " + directoryObject.getName() + "?");
+        builder.setMessage("Are you sure you want to remove " + directoryObject.getName() + "?");
 
         // Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 deleteDirectoryObject(directoryObject.getId());
-                Toast.makeText(getActivity(), "Woop woop delete!!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -220,109 +212,109 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
     private void createDirectoryObject(String directoryName, boolean isFolder) {
         ApplicationObject.getInstance().addRequest(new CreateDirectoryObjectRequest(directoryName, ApplicationObject.getInstance().getCurrentFolderId(), isFolder,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("CreateDirectorySuccess", response.toString());
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("CreateDirectorySuccess", response.toString());
 
-                                JSONObject content = response.getJSONObject("content");
-                                JSONObject owner = content.getJSONObject("owner");
+                            JSONObject content = response.getJSONObject("content");
+                            JSONObject owner = content.getJSONObject("owner");
 
-                                directoryObjects.add(new DirectoryObject(
-                                        content.getString("_id"),
-                                        owner.getString("_id"),
-                                        owner.getString("first_name"),
-                                        owner.getString("last_name"),
-                                        content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
-                                        content.getString("name"),
-                                        content.getBoolean("folder"),
-                                        content.getInt("time_created"),
-                                        content.getInt("time_updated"),
-                                        content.getInt("time_deleted"))
-                                );
+                            directoryObjects.add(new DirectoryObject(
+                                content.getString("_id"),
+                                owner.getString("_id"),
+                                owner.getString("first_name"),
+                                owner.getString("last_name"),
+                                content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
+                                content.getString("name"),
+                                content.getBoolean("folder"),
+                                content.getInt("time_created"),
+                                content.getInt("time_updated"),
+                                content.getInt("time_deleted"))
+                            );
 
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                Log.d("CreateDirectoryFailure", response.toString());
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            Log.d("CreateDirectoryFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                })
+                }
+            })
         );
     }
 
     private void updateDirectoryObject(String directoryId, String name, String ownerId, String parentId) {
         ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, ownerId, parentId,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("UpdateDirectorySuccess", response.toString());
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("UpdateDirectorySuccess", response.toString());
 
-                                JSONObject content = response.getJSONObject("content");
-                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+                            JSONObject content = response.getJSONObject("content");
+                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
 
-                                while (iterator.hasNext()) {
-                                    DirectoryObject directoryObject = iterator.next();
+                            while (iterator.hasNext()) {
+                                DirectoryObject directoryObject = iterator.next();
 
-                                    if (directoryObject.getId().equals(content.getString("_id"))) {
-                                        directoryObject.setName(content.getString("name"));
-                                        directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
-                                        directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
-                                        break;
-                                    }
+                                if (directoryObject.getId().equals(content.getString("_id"))) {
+                                    directoryObject.setName(content.getString("name"));
+                                    directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
+                                    directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
+                                    break;
                                 }
-
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                Log.d("UpdateDirectoryFailure", response.toString());
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("UpdateDirectoryFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                })
+                }
+            })
         );
     }
 
     private void deleteDirectoryObject(String directoryId) {
         ApplicationObject.getInstance().addRequest(new DeleteDirectoryObjectRequest(directoryId,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("DeleteDirectorySuccess", response.toString());
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("DeleteDirectorySuccess", response.toString());
 
-                                JSONObject content = response.getJSONObject("content");
-                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+                            JSONObject content = response.getJSONObject("content");
+                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
 
-                                while (iterator.hasNext()) {
-                                    DirectoryObject directoryObject = iterator.next();
+                            while (iterator.hasNext()) {
+                                DirectoryObject directoryObject = iterator.next();
 
-                                    if (directoryObject.getId().equals(content.getString("_id"))) {
-                                        iterator.remove();
-                                        break;
-                                    }
+                                if (directoryObject.getId().equals(content.getString("_id"))) {
+                                    iterator.remove();
+                                    break;
                                 }
-
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                Log.d("DeleteDirectoryFailure", response.toString());
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("DeleteDirectoryFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                })
+                }
+            })
         );
     }
 
@@ -334,44 +326,44 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         }
 
         ApplicationObject.getInstance().addRequest(new GetDirectoryContentRequest(folder_id,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("GetDirContentSuccess", response.toString());
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("GetDirContentSuccess", response.toString());
 
-                                ApplicationObject.getInstance().setCurrentFolderId(response.getString("folder_id"));
-                                JSONArray content = response.getJSONArray("content");
+                            ApplicationObject.getInstance().setCurrentFolderId(response.getString("folder_id"));
+                            JSONArray content = response.getJSONArray("content");
 
-                                for (int i = 0; i < content.length(); i++) {
-                                    JSONObject dirObj = content.getJSONObject(i);
-                                    JSONObject owner = dirObj.getJSONObject("owner");
+                            for (int i = 0; i < content.length(); i++) {
+                                JSONObject dirObj = content.getJSONObject(i);
+                                JSONObject owner = dirObj.getJSONObject("owner");
 
-                                    directoryObjects.add(new DirectoryObject(
-                                            dirObj.getString("_id"),
-                                            owner.getString("_id"),
-                                            owner.getString("first_name"),
-                                            owner.getString("last_name"),
-                                            dirObj.isNull("parent") ? null : dirObj.getJSONObject("parent").getString("_id"),
-                                            dirObj.getString("name"),
-                                            dirObj.getBoolean("folder"),
-                                            dirObj.getInt("time_created"),
-                                            dirObj.getInt("time_updated"),
-                                            dirObj.getInt("time_deleted"))
-                                    );
-                                }
-
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                Log.d("GetDirContentFailure", response.toString());
+                                directoryObjects.add(new DirectoryObject(
+                                    dirObj.getString("_id"),
+                                    owner.getString("_id"),
+                                    owner.getString("first_name"),
+                                    owner.getString("last_name"),
+                                    dirObj.isNull("parent") ? null : dirObj.getJSONObject("parent").getString("_id"),
+                                    dirObj.getString("name"),
+                                    dirObj.getBoolean("folder"),
+                                    dirObj.getInt("time_created"),
+                                    dirObj.getInt("time_updated"),
+                                    dirObj.getInt("time_deleted"))
+                                );
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("GetDirContentFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
+            }
         ));
     }
 
@@ -428,7 +420,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             settings_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     MenuBuilder menuBuilder = new MenuBuilder(getActivity());
 
                     MenuInflater inflater = new MenuInflater(getActivity());
@@ -465,7 +456,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                     optionsMenu.show();
                 }
             });
-
 
             Collections.sort(directoryObjects, new Comparator<DirectoryObject>() {
                 @Override

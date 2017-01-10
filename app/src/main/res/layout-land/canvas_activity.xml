@@ -37,25 +37,9 @@
         android:layout_weight="1"
         android:id="@+id/canvas"
         android:layout_below="@id/toolbar_canvas_top">
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:id="@+id/scroll">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="50dp"
-                    android:minHeight="50dp"
-                    android:layout_gravity="center"
-                    android:id="@+id/figure_list" />
-            </HorizontalScrollView>
     </LinearLayout>
 
-    <fragment android:name="com.noxyspace.vinca.SymbolBar"
+    <fragment android:name="com.noxyspace.vinca.canvas.SymbolBar"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
