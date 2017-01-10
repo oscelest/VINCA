@@ -1,24 +1,24 @@
 package com.noxyspace.vinca.symbols;
 
-import com.noxyspace.vinca.activities.helpers.DragHandler;
+import android.content.Context;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Symbol extends DragHandler {
+public class Symbol extends SymbolDragHandler {
+    static private int idCounter = 0;
 
     private int id;
     private String title;
     private String description;
     private boolean hasChildren = false;
     private Symbol parent;
-    private List<Symbol> children;
+    private ArrayList<Symbol> children;
 
-
-    public Symbol(int id, String title, String description){
-        this.id = id;
-        this.title = title;
-        this.description = description;
+    public Symbol(Context context){
+        super(context);
+        this.id = idCounter++;
 
         this.children = new ArrayList<Symbol>();
     }
@@ -55,7 +55,26 @@ public class Symbol extends DragHandler {
     public void setParent(Symbol symbol){
         this.parent = symbol;
     }
+    static public void setIdCounter(int newCounter){
+        idCounter = newCounter;
+    }
+    public ArrayList<Symbol> getChildren(){
+        return children;
+    }
 
+    //DragEvent Methods
+    @Override
+    protected boolean onDragStarted() {
+        return true;
+    }
 
+    @Override
+    protected boolean onDragDrop() {
+        return true;
+    }
 
+    @Override
+    protected boolean onDragEnded() {
+        return true;
+    }
 }
