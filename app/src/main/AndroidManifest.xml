@@ -29,7 +29,7 @@
         <activity android:name=".activities.HubActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.CanvasActivity"
-            />
+            android:parentActivityName=".activities.HubActivity" />
     </application>
 
 </manifest>
