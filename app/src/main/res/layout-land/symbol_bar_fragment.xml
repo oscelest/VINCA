@@ -6,64 +6,70 @@
     android:background="@color/lightGrey">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
+        android:rotation="90"
         android:id="@+id/project_start"
-        android:src="@mipmap/project_start"/>
+        android:src="@drawable/project_start_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:rotation="270"
+        android:layout_gravity="center"
         android:id="@+id/project_end"
-        android:src="@mipmap/project_end" />
+        android:src="@drawable/project_end_symbol" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
         android:id="@+id/activity"
-        android:src="@mipmap/activity"/>
+        android:src="@drawable/activity_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
         android:id="@+id/decision"
-        android:src="@mipmap/decision"/>
+        android:src="@drawable/decision_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
         android:id="@+id/process_start"
-        android:src="@mipmap/question"/>
+        android:src="@drawable/question_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
         android:id="@+id/process_end"
-        android:src="@mipmap/answer"/>
+        android:src="@drawable/answer_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
         android:id="@+id/pause"
-        android:src="@mipmap/pause"/>
+        android:src="@drawable/break_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
         android:id="@+id/method"
-        android:src="@mipmap/method"/>
+        android:src="@drawable/method_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
+        android:rotation="90"
         android:id="@+id/iteration_start"
-        android:src="@mipmap/iteration_start"/>
+        android:src="@drawable/iteration_symbol"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/symbol_bar_icon_size"
+        android:layout_height="@dimen/symbol_bar_icon_size"
+        android:rotation="90"
+        android:scaleY="-1"
         android:id="@+id/iteration_end"
-        android:src="@mipmap/iteration_end"/>
+        android:src="@drawable/iteration_symbol"/>
 
     <View
         android:layout_width="1dp"

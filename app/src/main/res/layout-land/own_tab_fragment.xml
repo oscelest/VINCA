@@ -20,7 +20,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="23dp"
                 android:paddingLeft="50dp"
-                android:paddingRight="50dp"
                 android:paddingTop="23dp">
 
                 <TextView
@@ -50,6 +49,12 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20dp"
+                    android:id="@+id/home"
+                    android:src="@drawable/home"/>
             </LinearLayout>
 
             <View
