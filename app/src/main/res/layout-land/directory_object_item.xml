@@ -7,8 +7,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
-    android:paddingLeft="50dp"
-    android:paddingRight="50dp">
+    android:paddingLeft="50dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -51,7 +50,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/lastEdit"
         android:layout_weight="1"
+        android:text="Last edited by"
         android:paddingTop="2dp"
         android:layout_gravity="center_vertical"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingRight="20dp"
+        android:src="@drawable/settings_three_dots"
+        android:id="@+id/settings_directory_object"/>
 
 </LinearLayout>

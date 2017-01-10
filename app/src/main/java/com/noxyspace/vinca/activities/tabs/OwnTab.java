@@ -8,6 +8,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.activities.CanvasActivity;
@@ -115,9 +117,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     // Dialog that asks for the title of a file or folder and creates the element
     public void createDirectoryObjectDialog(boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        builder.setView(inflater.inflate(R.layout.create_directory_object_dialog_fragment, null));
         builder.setTitle(isFolder ? R.string.foldersName : R.string.filesName);
 
         // Set up the input
@@ -134,6 +134,59 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 createDirectoryObject(fileTitle.getText().toString(), folder);
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    //TODO: Kan man ikke undgå final her?
+    public void renameDirectoryObjectDialog(final DirectoryObject directoryObject) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("New name:");
+
+        // Set up the input
+        final EditText fileTitle = new EditText(getActivity());
+        fileTitle.setMaxLines(1);
+
+        builder.setView(fileTitle);
+
+        // Set up the buttons
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                renameDirectoryObject(directoryObject.getId(), directoryObject.getName());
+                Toast.makeText(getActivity(), "Woop woop rename!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void deleteDirectoryObjectDialog(final DirectoryObject directoryObject) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setMessage("Are you sure you want to delete " + directoryObject.getName() + "?");
+
+        // Set up the buttons
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                deleteDirectoryObject(directoryObject.getId());
+                Toast.makeText(getActivity(), "Woop woop delete!!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -337,10 +390,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                                 }
 
                                 if (adapter != null) {
-                                    ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                                    if (ApplicationObject.getInstance().getCurrentFolderId() != null) {
-                                        ab.setDisplayHomeAsUpEnabled(true);
-                                    }
                                     adapter.notifyDataSetChanged();
                                 }
                             } else {
@@ -385,7 +434,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent) {
+        public View getView(final int position, View view, ViewGroup parent) {
             if (view == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             }
@@ -402,6 +451,36 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
             folderName.setText(directoryObjects.get(position).getName());
             TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
             createdAt.setText(directoryObjects.get(position).getCreatedTime());
+            final ImageView settings_btn = (ImageView) view.findViewById(R.id.settings_directory_object);
+            settings_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(getActivity(), settings_btn);
+                    popup.getMenuInflater().inflate(R.menu.menu_directory_object, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.rename:
+                                    renameDirectoryObjectDialog(directoryObjects.get(position));
+                                    break;
+
+                                case R.id.share:
+                                    //shareDirectoryObject(directoryObjects.get(position));
+                                    break;
+
+                                case R.id.delete:
+                                    deleteDirectoryObjectDialog(directoryObjects.get(position));
+                                    break;
+                            }
+
+                            return false;
+                        }
+                    });
+                    popup.show();
+                }
+            });
+
 
             Collections.sort(directoryObjects, new Comparator<DirectoryObject>() {
                 @Override

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -59,10 +61,11 @@ public class CanvasActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        fileName = (EditText) findViewById(R.id.text_canvas_name);
+        fileName = (EditText) findViewById(R.id.text_canvas_name);
 
-//        int file_id = getIntent().getIntExtra("FILE_ID", -1);
-//        getDirectoryObject(file_id);
+        String file_id = getIntent().getStringExtra("FILE_ID");
+        Log.d("Canvas ID", file_id);
+        getDirectoryObject(file_id);
 
         HorizontalScrollView scrollView = (HorizontalScrollView) findViewById(R.id.scroll);
         scrollView.setBackgroundColor(Color.WHITE);
@@ -122,33 +125,33 @@ public class CanvasActivity extends AppCompatActivity {
 
 
         // Change update the name of the file, when focus from EditText is moved
-//        fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    directoryObject.setName(fileName.getText().toString());
-//                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), directoryObject.getOwnerId(), directoryObject.getParentId(),
-//                            new Response.Listener<JSONObject>() {
-//                                public void onResponse(JSONObject response) {
-//                                    try {
-//                                        if (response.getBoolean("success")) {
-//
-//                                            Log.d("UpdateCanvasNameSuccess", response.toString());
-//                                            JSONObject content = response.getJSONObject("content");
-//                                            directoryObject.setName(content.getString("name"));
-//                                            Log.d("Updated?", directoryObject.getName());
-//
-//                                        } else {
-//                                            Log.d("UpdateCanvasNameFailure", response.toString());
-//                                        }
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }));
-//                }
-//            }
-//        });
+        fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    directoryObject.setName(fileName.getText().toString());
+                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), directoryObject.getOwnerId(), directoryObject.getParentId(),
+                            new Response.Listener<JSONObject>() {
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        if (response.getBoolean("success")) {
+
+                                            Log.d("UpdateCanvasNameSuccess", response.toString());
+                                            JSONObject content = response.getJSONObject("content");
+                                            directoryObject.setName(content.getString("name"));
+                                            Log.d("Updated?", directoryObject.getName());
+
+                                        } else {
+                                            Log.d("UpdateCanvasNameFailure", response.toString());
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }));
+                }
+            }
+        });
 //
 //        fileName.setOnEditorActionListener(
 //                new EditText.OnEditorActionListener() {
@@ -190,22 +193,34 @@ public class CanvasActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void getDirectoryObject(String object_id) {
         ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
                 new Response.Listener<JSONObject>() {
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.getBoolean("success")) {
-                                Log.d("CreateDirectorySuccess", response.toString());
+                                Log.d("GetDirectorySuccess", response.toString());
 
                                 JSONObject content = response.getJSONObject("content");
+                                JSONObject owner = content.getJSONObject("owner");
 
                                 directoryObject = new DirectoryObject(
-                                        content.getString("id"),
-                                        content.getString("owner_id"),
-                                        content.getString("owner_first_name"),
-                                        content.getString("owner_last_name"),
-                                        content.getString("parent_id"),
+                                        content.getString("_id"),
+                                        owner.getString("_id"),
+                                        owner.getString("first_name"),
+                                        owner.getString("last_name"),
+                                        content.getString("parent"),
                                         content.getString("name"),
                                         content.getBoolean("folder"),
                                         content.getInt("time_created"),
@@ -213,6 +228,7 @@ public class CanvasActivity extends AppCompatActivity {
                                         content.getInt("time_deleted"));
 
                                 fileName.setText(directoryObject.getName());
+                                Log.d("Name: ", directoryObject.getName());
                             } else {
                                 Log.d("GetDirectoryFailure", response.toString());
                                 //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
