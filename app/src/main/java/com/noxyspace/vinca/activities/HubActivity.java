@@ -49,36 +49,6 @@ public class HubActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(WHITE);
         setSupportActionBar(toolbar);
 
-        final Socket socket;
-        try {
-            socket = IO.socket("http://46.101.228.220/projects");
-            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Connected");
-                }
-
-            }).on("event", new Emitter.Listener() {
-
-                @Override
-                public void call(Object... args) {
-                }
-
-            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Disconnected");
-                }
-
-            });
-            Log.d("SocketIO", "Initialized");
-            socket.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.newsTab));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.myProjects));
