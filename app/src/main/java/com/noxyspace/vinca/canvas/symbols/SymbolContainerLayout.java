@@ -57,6 +57,11 @@ public class SymbolContainerLayout extends SymbolLayout {
         return this.collapsed;
     }
 
+    public void removeCollapsibleView(View child) {
+        this.collapsedViews.remove(child);
+        this.removeView(child);
+    }
+
     @Override
     public void addView(View child) {
         if (this.collapsed) {

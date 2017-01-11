@@ -192,7 +192,14 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.fetchAllChildViews(children, view);
 
             if (!children.contains(targetView)) {
-                ((ViewGroup)view.getParent()).removeView(view);
+                ViewGroup parent = (ViewGroup)view.getParent();
+
+                if (parent instanceof SymbolContainerLayout) {
+                    ((SymbolContainerLayout)parent).removeCollapsibleView(view);
+                } else {
+                    parent.removeView(view);
+                }
+
                 ((ViewGroup)targetView).addView(view);
             } else {
                 Toast.makeText(getContext(), "Cannot move a parent object into a child object", Toast.LENGTH_SHORT).show();
