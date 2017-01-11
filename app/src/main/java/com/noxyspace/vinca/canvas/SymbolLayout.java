@@ -43,7 +43,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
         if (this instanceof SymbolTimelineLayout) {
             int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SymbolTimelineLayout.PADDING, getResources().getDisplayMetrics());
-            this.setPadding(padding, 0, padding, 0);
+            this.setPadding(0, 0, padding, 0);
             this.setMinimumHeight(padding);
             this.setOrientation(LinearLayout.HORIZONTAL);
             this.setBackgroundColor(SymbolTimelineLayout.BACKGROUND_COLOR);
