@@ -19,13 +19,23 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
+import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +92,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                     SymbolLayout dragLayout = (SymbolLayout)dragView;
 
                                     if (dragLayout.isDropAccepted()) {
-                                        dragLayout.longpresSymbolDialog(getContext());
+                                        System.out.println(toJsonObject().toString());
+                                        //dragLayout.longpresSymbolDialog(getContext());
                                     }
 
                                     dragView = null;
@@ -141,6 +152,45 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     public boolean isDropAccepted() {
         return this.acceptsDrop;
+    }
+
+    public JSONObject toJsonObject() {
+        JSONObject json = new JSONObject();
+
+        try {
+            if (this instanceof TimelineLayout) {
+                json.put("type", "timeline");
+            } else if (this instanceof SymbolProjectLayout) {
+                json.put("type", "project");
+            } else if (this instanceof SymbolProcessLayout) {
+                json.put("type", "process");
+            } else if (this instanceof SymbolIterationLayout) {
+                json.put("type", "iteration");
+            } else if (this instanceof SymbolPauseLayout) {
+                json.put("type", "pause");
+            } else if (this instanceof SymbolDecisionLayout) {
+                json.put("type", "decision");
+            } else if (this instanceof SymbolActivityLayout) {
+                json.put("type", "activity");
+            } else {
+                json.put("type", "UNKNOWN (" + this.getClass().getSimpleName() + ")");
+            }
+
+            JSONArray childArray = new JSONArray();
+            List<View> children = this.fetchChildViews(this);
+
+            for (View child : children) {
+                if (child instanceof SymbolLayout) {
+                    childArray.put(((SymbolLayout)child).toJsonObject());
+                }
+            }
+
+            json.put("children", childArray);
+        } catch (JSONException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return json;
     }
 
     @Override
@@ -212,18 +262,49 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     private void fetchAllChildViews(List<View> children, View parent) {
         if (parent instanceof ViewGroup) {
-            int childCount = ((ViewGroup)parent).getChildCount();
+            if (parent instanceof SymbolContainerLayout) {
+                List<View> collapsedViews = ((SymbolContainerLayout)parent).getCollapsedViews();
 
-            for (int i = 0; i < childCount; i++) {
-                View child = ((ViewGroup)parent).getChildAt(i);
-                children.add(child);
+                for (View child : collapsedViews) {
+                    children.add(child);
+                    this.fetchAllChildViews(children, child);
+                }
+            } else {
+                int childCount = ((ViewGroup) parent).getChildCount();
 
-                this.fetchAllChildViews(children, child);
+                for (int i = 0; i < childCount; i++) {
+                    View child = ((ViewGroup) parent).getChildAt(i);
+
+                    children.add(child);
+                    this.fetchAllChildViews(children, child);
+                }
             }
         }
     }
 
-    public void longpresSymbolDialog(Context context) {
+    private List<View> fetchChildViews(View parent) {
+        List<View> children = new ArrayList<>();
+
+        if (parent instanceof ViewGroup) {
+            if (parent instanceof SymbolContainerLayout) {
+                List<View> collapsedViews = ((SymbolContainerLayout)parent).getCollapsedViews();
+
+                for (View child : collapsedViews) {
+                    children.add(child);
+                }
+            } else {
+                int childCount = ((ViewGroup)parent).getChildCount();
+
+                for (int i = 0; i < childCount; i++) {
+                    children.add(((ViewGroup) parent).getChildAt(i));
+                }
+            }
+        }
+
+        return children;
+    }
+
+    private void longpresSymbolDialog(Context context) {
         LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.canvas_longpress_dialog, null);
 
@@ -241,8 +322,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             public void onClick(DialogInterface dialog, int which) {
                 titleInput = symbolTitle.getText().toString();
                 descriptionInput = symbolDescription.getText().toString();
-                System.out.println(titleInput + " lalalal" + descriptionInput);
 
+                /* Change the stored information */
             }
         });
 

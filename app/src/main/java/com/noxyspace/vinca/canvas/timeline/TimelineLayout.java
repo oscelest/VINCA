@@ -33,7 +33,7 @@ public class TimelineLayout extends SymbolLayout {
                 this.addView(new SymbolProjectLayout(getContext()));
             }
         } else {
-            Toast.makeText(getContext(), "Timeline objects only accept symbols of type: [ Project ]", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Timeline objects only accept: [ Project ]", Toast.LENGTH_SHORT).show();
         }
 
         return true;

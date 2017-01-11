@@ -53,8 +53,8 @@ public class SymbolContainerLayout extends SymbolLayout {
         }
     }
 
-    public boolean isCollapsed() {
-        return this.collapsed;
+    public List<View> getCollapsedViews() {
+        return this.collapsedViews;
     }
 
     public void removeCollapsibleView(View child) {

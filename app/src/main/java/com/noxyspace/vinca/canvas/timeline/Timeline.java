@@ -21,7 +21,10 @@ public class Timeline extends HorizontalScrollView {
         params.setMargins(0, margin, 0, 0);
 
         this.setLayoutParams(params);
-
         this.addView(this.layout = new TimelineLayout(context));
+    }
+
+    public TimelineLayout getLayout() {
+        return this.layout;
     }
 }
