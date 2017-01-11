@@ -24,9 +24,10 @@ public class SymbolProjectLayout extends SymbolContainerLayout {
     public SymbolProjectLayout(Context context, boolean acceptsDrop) {
         super(context, acceptsDrop);
 
-        this.createBrackets(
+        this.createContainerSymbols(
             new SymbolContainerBracket(context, R.drawable.project_start),
-            new SymbolContainerBracket(context, R.drawable.project_end)
+            new SymbolContainerBracket(context, R.drawable.project_end),
+            null
         );
     }
 
