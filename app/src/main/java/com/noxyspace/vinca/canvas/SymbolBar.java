@@ -21,6 +21,10 @@ import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 
 public class SymbolBar extends Fragment {
+    SymbolProjectLayout project;
+    SymbolProcessLayout process;
+    SymbolIterationLayout iteration;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.symbol_bar_fragment, container, false);
@@ -29,9 +33,9 @@ public class SymbolBar extends Fragment {
 
         view.addView(new SymbolBarSeparator(getActivity()));
 
-        view.addView(new SymbolProjectLayout(getActivity(), false));
-        view.addView(new SymbolProcessLayout(getActivity(), false));
-        view.addView(new SymbolIterationLayout(getActivity(), false));
+        view.addView(this.project = new SymbolProjectLayout(getActivity(), false));
+        view.addView(this.process = new SymbolProcessLayout(getActivity(), false));
+        view.addView(this.iteration = new SymbolIterationLayout(getActivity(), false));
         view.addView(new SymbolPauseLayout(getActivity(), false));
         view.addView(new SymbolDecisionLayout(getActivity(), false));
         view.addView(new SymbolMethodLayout(getActivity(), false));
@@ -40,6 +44,10 @@ public class SymbolBar extends Fragment {
         view.addView(new SymbolBarSeparator(getActivity()));
 
         view.addView(new SymbolTrashcanLayout(getActivity()));
+
+//        this.project.toggleCollapse();
+//        this.process.toggleCollapse();
+//        this.iteration.toggleCollapse();
 
         return view;
     }

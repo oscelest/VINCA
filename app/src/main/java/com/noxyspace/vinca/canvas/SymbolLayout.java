@@ -52,6 +52,9 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         if (this instanceof TimelineLayout) {
             int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.PADDING, getResources().getDisplayMetrics());
             params.setMargins(margin, 0, 0, 0);
+        } else if (!acceptsDrop) {
+            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+            params.setMargins(margin, 0, margin, 0);
         }
 
         this.setLayoutParams(params);
