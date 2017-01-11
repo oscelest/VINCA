@@ -35,53 +35,55 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_tab_fragment, container, false);
+            View view = inflater.inflate(R.layout.news_tab_fragment, container, false);
 
-        String Title1, Title2, Title3;
-        String Description1, Description2, Description3;
+        if (newsList.isEmpty()) {
 
-        // DUMMY TEXT
+            String Title1, Title2, Title3;
+            String Description1, Description2, Description3;
 
-        Title1 = "VINCA News Title 1";
-        Title2 = "VINCA News Title 2";
-        Title3 = "VINCA News Title 3";
+            // DUMMY TEXT
 
-        Description1 =  "I 1860, da Abraham var præsidentkandidat, blev han af en journalist bedt om at beskrive" +
-                        " sin barndom. Med et citat fra Thomas Grays Elegy sagde han: ”Den korte og enkle historie om fattigdom. " +
-                        "Det er mit liv, og det er alt De, eller nogen anden, kan få ud af det”. Hans far, Thomas, som var " +
-                        "tømrer, var ædruelig og hårdtarbejdende. Abrahams mor, Nancy (f. Hanks), var 25 år, da hun fødte " +
-                        "Abraham. Hun kunne hverken læse eller skrive, men hendes fætter Dennis Hanks beskrev hende som en uskolet, " +
-                        "men naturlig begavelse – ”hurtigt og klart opfattende”, ”udspekuleret”, ”intellektuel af natur” med en god " +
-                        "hukommelse, sund dømmekraft og meget kærlig.";
+            Title1 = "VINCA News Title 1";
+            Title2 = "VINCA News Title 2";
+            Title3 = "VINCA News Title 3";
 
-        Description2 =  "I 1816 flyttede familien til Indiana. De flyttede sammen med familien Sparrow – Nancys tante og onkel samt " +
-                        "Dennis Hanks, deres adoptivsøn. De flyttede til et skovområde i nærheden af Ohiofloden. Efter to års slid og " +
-                        "nybyggeri indtraf tragedie på tragedie i 1818. Først døde onklen, siden tanten og Abrahams mor. Abraham og Dennis " +
-                        "hjalp Thomas med at lave kisterne til dem. Thomas Lincoln giftede sig med en ungdomskæreste, Sarah Bush, der i " +
-                        "mellemtiden også var blevet alene. Lincoln lærte hurtigt at elske sin nye mor, og han skrev senere om hende: " +
-                        "”Alt hvad jeg er, eller håber at blive, skylder jeg min kære moder”.";
+            Description1 = "I 1860, da Abraham var præsidentkandidat, blev han af en journalist bedt om at beskrive" +
+                    " sin barndom. Med et citat fra Thomas Grays Elegy sagde han: ”Den korte og enkle historie om fattigdom. " +
+                    "Det er mit liv, og det er alt De, eller nogen anden, kan få ud af det”. Hans far, Thomas, som var " +
+                    "tømrer, var ædruelig og hårdtarbejdende. Abrahams mor, Nancy (f. Hanks), var 25 år, da hun fødte " +
+                    "Abraham. Hun kunne hverken læse eller skrive, men hendes fætter Dennis Hanks beskrev hende som en uskolet, " +
+                    "men naturlig begavelse – ”hurtigt og klart opfattende”, ”udspekuleret”, ”intellektuel af natur” med en god " +
+                    "hukommelse, sund dømmekraft og meget kærlig.";
 
-        Description3 =  "Den unge Abraham var en læsehest, der nedskrev alt vigtigt, han havde læst. Hvis han ikke havde papir , hvad " +
-                        "han sjældent havde, skrev han på sin kridttavle og skrev ordene på papir, når han fik fat på noget. Han læste " +
-                        "foruden Bibelen Æsops fabler, Robinson Crusoe samt historie. Han udviklede her den vane, der fulgte ham hele " +
-                        "livet: Hvis der var noget han ikke forstod, læste han det igen og igen og funderede over det, indtil det gav " +
-                        "mening. Som syttenårig var Abraham allerede 1,87 m høj, men vejede blot 55 kg. Han arbejdede en del for de lokale, " +
-                        "men de huskede ham mest som ”doven, altid læsende og tænkende”.";
+            Description2 = "I 1816 flyttede familien til Indiana. De flyttede sammen med familien Sparrow – Nancys tante og onkel samt " +
+                    "Dennis Hanks, deres adoptivsøn. De flyttede til et skovområde i nærheden af Ohiofloden. Efter to års slid og " +
+                    "nybyggeri indtraf tragedie på tragedie i 1818. Først døde onklen, siden tanten og Abrahams mor. Abraham og Dennis " +
+                    "hjalp Thomas med at lave kisterne til dem. Thomas Lincoln giftede sig med en ungdomskæreste, Sarah Bush, der i " +
+                    "mellemtiden også var blevet alene. Lincoln lærte hurtigt at elske sin nye mor, og han skrev senere om hende: " +
+                    "”Alt hvad jeg er, eller håber at blive, skylder jeg min kære moder”.";
 
-        // END DUMMY TEXT
+            Description3 = "Den unge Abraham var en læsehest, der nedskrev alt vigtigt, han havde læst. Hvis han ikke havde papir , hvad " +
+                    "han sjældent havde, skrev han på sin kridttavle og skrev ordene på papir, når han fik fat på noget. Han læste " +
+                    "foruden Bibelen Æsops fabler, Robinson Crusoe samt historie. Han udviklede her den vane, der fulgte ham hele " +
+                    "livet: Hvis der var noget han ikke forstod, læste han det igen og igen og funderede over det, indtil det gav " +
+                    "mening. Som syttenårig var Abraham allerede 1,87 m høj, men vejede blot 55 kg. Han arbejdede en del for de lokale, " +
+                    "men de huskede ham mest som ”doven, altid læsende og tænkende”.";
 
-        titleList.add(Title1);
-        titleList.add(Title2);
-        titleList.add(Title2);
+            // END DUMMY TEXT
 
-        descriptionList.add(Description1);
-        descriptionList.add(Description2);
-        descriptionList.add(Description3);
+            titleList.add(Title1);
+            titleList.add(Title2);
+            titleList.add(Title3);
 
-        for ( int i = 0 ; i < titleList.size() ; i++){
-            newsList.add(new SingleRow(titleList.get(i), descriptionList.get(i)));
+            descriptionList.add(Description1);
+            descriptionList.add(Description2);
+            descriptionList.add(Description3);
+
+            for (int i = 0; i < titleList.size(); i++) {
+                newsList.add(new SingleRow(titleList.get(i), descriptionList.get(i)));
+            }
         }
-
         return view;
     }
 

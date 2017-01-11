@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimeline;
 import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
 import com.noxyspace.vinca.canvas.timeline.Timeline;
 import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
@@ -49,6 +51,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
     Context context;
     LinearLayout canvas;
+    Timeline timeline;
+    SymbolProjectLayout project;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas = (LinearLayout)findViewById(R.id.canvas);
         this.canvas.setOnDragListener(this);
         this.canvas.setBackgroundColor(Color.WHITE);
+
+        timeline = new Timeline(this.context);
+        this.canvas.addView(timeline);
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
