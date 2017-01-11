@@ -98,9 +98,10 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                             return true;
 
                         case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL:
                             handler.removeCallbacks(longPressHandler);
 
-                            if (this.dragView != null) {
+                            if (event.getAction() == MotionEvent.ACTION_UP && this.dragView != null) {
                                 if ((v instanceof SymbolContainerLayout) && ((SymbolContainerLayout)v).isDropAccepted()) {
                                     ((SymbolContainerLayout)v).toggleCollapse();
                                 }
