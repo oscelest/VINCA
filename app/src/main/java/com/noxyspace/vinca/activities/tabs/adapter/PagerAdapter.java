@@ -5,14 +5,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.noxyspace.vinca.activities.tabs.NewsTab;
-import com.noxyspace.vinca.activities.tabs.OwnTab;
+import com.noxyspace.vinca.activities.tabs.MyProjectsTab;
 import com.noxyspace.vinca.activities.tabs.MarketTab;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     private int numberOfTabs;
 
     private NewsTab newsTab;
-    private OwnTab ownTab;
+    private MyProjectsTab myProjectsTab;
     private MarketTab marketTab;
 
     public PagerAdapter(FragmentManager fm) {
@@ -21,7 +21,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         this.numberOfTabs = 3;
 
         this.newsTab = new NewsTab();
-        this.ownTab = new OwnTab();
+        this.myProjectsTab = new MyProjectsTab();
         this.marketTab = new MarketTab();
     }
 
@@ -32,7 +32,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 break;
 
             case 1:
-                this.ownTab.onTabSelected();
+                this.myProjectsTab.onTabSelected();
                 break;
 
             case 2:
@@ -51,7 +51,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 return this.newsTab;
 
             case 1:
-                return this.ownTab;
+                return this.myProjectsTab;
 
             case 2:
                 return this.marketTab;
