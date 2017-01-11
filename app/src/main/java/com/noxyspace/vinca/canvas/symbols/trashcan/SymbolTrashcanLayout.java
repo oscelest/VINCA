@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.canvas.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
 
 public class SymbolTrashcanLayout extends SymbolLayout {
+    public static final int HIGHLIGHT_COLOR = 0xFFFF4C4C;
+
     private SymbolTrashcan trashcan;
 
     public SymbolTrashcanLayout(Context context) {
@@ -30,7 +33,9 @@ public class SymbolTrashcanLayout extends SymbolLayout {
             ViewGroup parent = (ViewGroup)view.getParent();
 
             if (view instanceof TimelineLayout) {
-                ((ViewGroup)parent.getParent()).removeView(parent);
+                ((ViewGroup) parent.getParent()).removeView(parent);
+            } else if (parent instanceof SymbolContainerLayout) {
+                ((SymbolContainerLayout)parent).removeCollapsibleView(view);
             } else {
                 parent.removeView(view);
             }

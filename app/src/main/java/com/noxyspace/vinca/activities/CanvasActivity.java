@@ -27,6 +27,11 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimeline;
 import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
@@ -37,6 +42,7 @@ import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
 import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +55,8 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class CanvasActivity extends AppCompatActivity implements View.OnDragListener {
+    private int backgroundColor;
+
     DirectoryObject directoryObject;
 
     EditText fileName;
@@ -84,8 +92,12 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas.setOnDragListener(this);
         this.canvas.setBackgroundColor(Color.WHITE);
 
-        timeline = new Timeline(this.context);
-        this.canvas.addView(timeline);
+        if (this.canvas.getChildCount() == 0) {
+            timeline = new Timeline(this.context);
+            timeline.getLayout().addView(new SymbolProjectLayout(this.context));
+
+            this.canvas.addView(timeline);
+        }
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -226,7 +238,31 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         return super.dispatchTouchEvent(event);
     }
 
-    private int backgroundColor;
+    public JSONObject toJsonObject() {
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("type", "canvas");
+
+            JSONArray timelineArray = new JSONArray();
+
+            for (int i = 0, count = this.canvas.getChildCount(); i < count; i++) {
+                View child = this.canvas.getChildAt(i);
+
+                if (child instanceof Timeline) {
+                    timelineArray.put(((Timeline)child).getLayout().toJsonObject());
+                } else {
+                    System.out.println("Unexpected object in canvas: " + child.getClass().getSimpleName());
+                }
+            }
+
+            json.put("children", timelineArray);
+        } catch (JSONException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return json;
+    }
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
@@ -271,6 +307,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
             this.canvas.addView(new Timeline(this));
         } else {
             Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline ]", Toast.LENGTH_SHORT).show();
+            System.out.println(this.toJsonObject().toString());
         }
 
         return true;
