@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swiperefresh"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -18,9 +13,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="23dp"
+                android:paddingBottom="@dimen/title_bar_padding_top_bottom"
                 android:paddingLeft="50dp"
-                android:paddingTop="23dp">
+                android:paddingTop="@dimen/title_bar_padding_top_bottom">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,8 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/fab_plus"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="3dp"
+                android:layout_marginBottom="-30dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/folder_blue"
@@ -108,8 +103,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/fab_folder"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="3dp"
                 android:layout_marginEnd="3dp"
+                android:layout_marginBottom="-30dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/file_blue"
@@ -120,5 +115,3 @@
 
         </RelativeLayout>
     </FrameLayout>
-
-</android.support.v4.widget.SwipeRefreshLayout>

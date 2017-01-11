@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
-    android:paddingLeft="50dp">
+    android:paddingLeft="@dimen/title_bar_margin_left">
 
     <LinearLayout
         android:layout_width="0dp"

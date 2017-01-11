@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="15dp"
-    android:paddingBottom="15dp">
+    android:paddingBottom="15dp"
+    android:paddingLeft="@dimen/directory_object_item_margin_left">
 
-    <ImageView
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/folder_white"
-        android:background="@drawable/circle"
-        android:gravity="center_vertical|center_horizontal"
-        android:id="@+id/folder_icon"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="14dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/projectTitle"
-        android:layout_gravity="center_vertical"
-        android:textAlignment="textStart"
-        android:layout_weight="1"
-        android:width="30dp"
-        android:maxEms="15"
-        android:paddingTop="2dp"/>
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/folder_white"
+            android:background="@drawable/circle"
+            android:id="@+id/folder_icon"
+            android:layout_marginEnd="14dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/projectTitle"
+            android:text="Mit superprojekt."
+            android:layout_gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingTop="2dp"/>
+
+    </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/createdAt"
-        android:layout_weight="1"
-        android:paddingTop="2dp"
-        android:layout_gravity="center_vertical"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/lastEdit"
         android:layout_weight="1"
+        android:text="Last edited by"
         android:paddingTop="2dp"
         android:layout_gravity="center_vertical"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingRight="20dp"
+        android:src="@drawable/settings_three_dots"
+        android:id="@+id/settings_directory_object"/>
 
 </LinearLayout>
