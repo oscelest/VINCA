@@ -258,6 +258,42 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         return json;
     }
 
+    public void fromJsonObject(String json) {
+        try {
+            this.fromJsonObject(new JSONObject(json));
+        } catch (JSONException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void fromJsonObject(JSONObject json) {
+        try {
+            String jsonType = json.getString("type");
+
+            if (jsonType.equals("canvas")) {
+                JSONArray timelineArray = json.getJSONArray("children");
+
+                for (int i = 0; i < timelineArray.length(); i++) {
+                    JSONObject child = timelineArray.getJSONObject(i);
+                    String childType = child.getString("type");
+
+                    if (childType.equals("timeline")) {
+                        timeline = new Timeline(this.context);
+                        timeline.getLayout().fromJsonObject(child);
+
+                        this.canvas.addView(timeline);
+                    } else {
+                        System.out.println("Unexpected object in canvas: " + jsonType);
+                    }
+                }
+            } else {
+                System.out.println("Unexpected canvas object: " + jsonType);
+            }
+        } catch (JSONException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @Override
     public boolean onDrag(View v, DragEvent event) {
         switch (event.getAction()) {
@@ -301,7 +337,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
             this.canvas.addView(new Timeline(this));
         } else {
             Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline ]", Toast.LENGTH_SHORT).show();
-            System.out.println(this.toJsonObject().toString());
         }
 
         return true;
