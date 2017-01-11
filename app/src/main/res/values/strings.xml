@@ -40,6 +40,12 @@
     <string name="settings">Settings</string>
     <!-- settings_dialog_fragment start end-->
 
+    <!-- canvas_longpress_dialog start-->
+    <string name="symbolTitle"></string>
+    <string name="symbolDescription"></string>
+    <!-- canvas_longpress_dialog end-->
+
+
     <!-- Own_tab_fragment start-->
     <string name="projectTitle_columnName">Project Title</string>
     <string name="createdAt_columnName">Created At</string>
