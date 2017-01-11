@@ -14,7 +14,7 @@ public class GetNewsRequest extends HttpRequest {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("GetDirectoryError", error.getMessage() != null ? error.getMessage() : "There was an error.");
+                        Log.d("GetNewsError", error.getMessage() != null ? error.getMessage() : "There was an error.");
                     }
                 }
         );
