@@ -32,7 +32,8 @@ import java.util.List;
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
 
-    private String titleInput, descriptionInput;
+    private String titleInput;
+    private String descriptionInput;
 
     private boolean acceptsDrop;
     private int backgroundColor;
