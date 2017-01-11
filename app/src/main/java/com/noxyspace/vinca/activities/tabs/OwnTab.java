@@ -2,10 +2,12 @@ package com.noxyspace.vinca.activities.tabs;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.Log;
@@ -54,7 +56,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
     private FloatingActionButton fab_file;
 
     private FloatingActionButton fab_btn;
-    private boolean toggled = false;
+    private boolean toggled = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,12 +108,14 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         if (v == home_btn) {
             getDirectoryContent(null);
         } else if (v == fab_btn) {
-            fab_folder.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
-            fab_file.setVisibility(toggled ? View.VISIBLE : View.INVISIBLE);
+            fab_folder.setVisibility(toggled ? View.VISIBLE : View.GONE);
+            fab_file.setVisibility(toggled ? View.VISIBLE : View.GONE);
             toggled = !toggled;
 
         } else if (v == fab_file || v == fab_folder) {
             createDirectoryObjectDialog(v == fab_folder);
+            fab_folder.setVisibility(View.GONE);
+            fab_file.setVisibility(View.GONE);
         }
     }
 
@@ -403,7 +407,6 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
                 view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             }
 
-            //view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
             if (!directoryObjects.get(position).isFolder()) {
                 img.setImageResource(R.drawable.file_white);
@@ -413,8 +416,10 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
 
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(directoryObjects.get(position).getName());
-            TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-            createdAt.setText(directoryObjects.get(position).getCreatedTime());
+            if (getActivity().getResources().getConfiguration().getLayoutDirection() == Configuration.ORIENTATION_LANDSCAPE) {
+                TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
+                createdAt.setText(directoryObjects.get(position).getCreatedTime());
+            }
             final ImageView settings_btn = (ImageView) view.findViewById(R.id.settings_directory_object);
 
             settings_btn.setOnClickListener(new View.OnClickListener() {

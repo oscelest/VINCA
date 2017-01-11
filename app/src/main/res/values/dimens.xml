@@ -2,6 +2,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="title_bar_padding_top_bottom">4dp</dimen>
+    <dimen name="title_bar_margin_left">50dp</dimen>
+    <dimen name="directory_object_item_margin_left">12dp</dimen>
     <dimen name="login_container_dimension">300dp</dimen>
     <dimen name="symbol_bar_icon_size">75dp</dimen>
 </resources>
