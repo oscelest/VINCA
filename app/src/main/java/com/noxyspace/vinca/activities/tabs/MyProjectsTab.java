@@ -410,16 +410,17 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
             ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
             if (!directoryObjects.get(position).isFolder()) {
                 img.setImageResource(R.drawable.file_white);
-                TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-                editor.setText(directoryObjects.get(position).getOwnerFullName() + " " + directoryObjects.get(position).getCreatedTime());
             }
 
+            TextView editor = (TextView) view.findViewById(R.id.lastEdit);
+            editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(directoryObjects.get(position).getName());
-            if (getActivity().getResources().getConfiguration().getLayoutDirection() == Configuration.ORIENTATION_LANDSCAPE) {
+            if (getResources().getConfiguration().getLayoutDirection() == Configuration.ORIENTATION_LANDSCAPE) {
                 TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
                 createdAt.setText(directoryObjects.get(position).getCreatedTime());
             }
+
             final ImageView settings_btn = (ImageView) view.findViewById(R.id.settings_directory_object);
 
             settings_btn.setOnClickListener(new View.OnClickListener() {

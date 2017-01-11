@@ -33,10 +33,9 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/canvas"
-        android:layout_below="@id/toolbar_canvas_top">
+        android:id="@+id/canvas">
     </LinearLayout>
 
     <fragment android:name="com.noxyspace.vinca.canvas.SymbolBar"

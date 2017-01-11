@@ -47,9 +47,11 @@
 
 
     <!-- Own_tab_fragment start-->
-    <string name="projectTitle_columnName">Project Title</string>
-    <string name="createdAt_columnName">Created At</string>
-    <string name="lastEditedBy_columnName">Last Edited By</string>
+    <string name="projectTitle_big">Project Title</string>
+    <string name="projectTitle_small">Title</string>
+    <string name="createdAt_big">Created At</string>
+    <string name="lastEditedBy_big">Last Edited By</string>
+    <string name="lastEditedBy_small">Last Edit</string>
     <string name="newsTab">News</string>
     <string name="myProjects">My Projects</string>
     <string name="market">Market</string>
