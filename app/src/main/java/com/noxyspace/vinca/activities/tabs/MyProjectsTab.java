@@ -167,7 +167,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
         // Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                renameDirectoryObject(directoryObject.getId(), directoryObject.getName());
+                renameDirectoryObject(directoryObject.getId(), fileTitle.getText().toString());
             }
         });
 
