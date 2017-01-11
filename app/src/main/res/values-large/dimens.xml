@@ -3,8 +3,16 @@
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
     <dimen name="activity_horizontal_margin">64dp</dimen>
+
     <dimen name="title_bar_padding_top_bottom">23dp</dimen>
     <dimen name="title_bar_margin_left">50dp</dimen>
+
     <dimen name="directory_object_item_margin_left">50dp</dimen>
+
     <dimen name="login_container_dimension">500dp</dimen>
+
+    <dimen name="symbol_bar_icon_size">75dp</dimen>
+
+    <dimen name="fab_space">5dp</dimen>
+    <dimen name="fab_layout">7dp</dimen>
 </resources>
