@@ -44,7 +44,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class MyProjectsTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private CustomAdapter adapter;
 
@@ -167,7 +167,7 @@ public class OwnTab extends ListFragment implements AdapterView.OnItemClickListe
         // Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                renameDirectoryObject(directoryObject.getId(), directoryObject.getName());
+                renameDirectoryObject(directoryObject.getId(), fileTitle.getText().toString());
             }
         });
 

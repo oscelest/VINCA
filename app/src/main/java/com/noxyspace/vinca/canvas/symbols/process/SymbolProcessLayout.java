@@ -23,9 +23,10 @@ public class SymbolProcessLayout extends SymbolContainerLayout {
     public SymbolProcessLayout(Context context, boolean acceptsDrop) {
         super(context, acceptsDrop);
 
-        this.createBrackets(
+        this.createContainerSymbols(
             new SymbolContainerBracket(context, R.drawable.process_start),
-            new SymbolContainerBracket(context, R.drawable.process_end)
+            new SymbolContainerBracket(context, R.drawable.process_end),
+            new SymbolProcess(context)
         );
     }
 

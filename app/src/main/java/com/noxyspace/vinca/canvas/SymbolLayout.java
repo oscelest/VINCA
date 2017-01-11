@@ -1,10 +1,12 @@
 package com.noxyspace.vinca.canvas;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
 import android.view.DragEvent;
@@ -17,6 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
+import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
 
@@ -31,7 +37,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     private boolean acceptsDrop;
     private int backgroundColor;
 
-    public SymbolLayout(final Context context, boolean acceptsDrop) {
+    public SymbolLayout(Context context, boolean acceptsDrop) {
         super(context);
 
         this.acceptsDrop = acceptsDrop;
@@ -68,18 +74,49 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
         if (!(this instanceof SymbolTrashcanLayout)) {
             this.setOnTouchListener(new View.OnTouchListener() {
+                final Handler handler = new Handler();
+
+                View view;
+
+                Runnable longPressHandler = new Runnable() {
+                    public void run() {
+                        ((Activity)getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (view != null) {
+                                    ClipData data = ClipData.newPlainText("", "");
+                                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+
+                                    view.startDrag(data, shadowBuilder, view, 0);
+                                    view.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                    }
+                };
+
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        ClipData data = ClipData.newPlainText("", "");
-                        View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            this.view = v;
+                            handler.postDelayed(longPressHandler, 100);
+                            return true;
 
-                        v.startDrag(data, shadowBuilder, v, 0);
-                        v.setVisibility(View.VISIBLE);
-                        return true;
-                    } else {
-                        return false;
+                        case MotionEvent.ACTION_UP:
+                            handler.removeCallbacks(longPressHandler);
+
+                            if ((v instanceof SymbolContainerLayout) && ((SymbolContainerLayout)v).isDropAccepted()) {
+                                ((SymbolContainerLayout)v).toggleCollapse();
+                            }
+
+                            break;
+
+                        default:
+                            break;
                     }
+
+                    return false;
                 }
             });
         }
