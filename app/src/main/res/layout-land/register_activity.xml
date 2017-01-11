@@ -24,7 +24,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/process_col_symbol" />
+            android:src="@mipmap/logo" />
 
         <LinearLayout
             android:layout_width="@dimen/login_container_dimension"

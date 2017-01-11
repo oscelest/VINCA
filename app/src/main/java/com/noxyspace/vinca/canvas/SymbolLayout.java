@@ -3,17 +3,22 @@ package com.noxyspace.vinca.canvas;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
 import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
@@ -27,6 +32,8 @@ import java.util.List;
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
 
+    private String titleInput, descriptionInput;
+
     private boolean acceptsDrop;
     private int backgroundColor;
 
@@ -39,6 +46,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             LayoutParams.WRAP_CONTENT,
             LayoutParams.WRAP_CONTENT
         );
+        this.setLongClickable(true);
+
 
         if (this instanceof TimelineLayout) {
             int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.PADDING, getResources().getDisplayMetrics());
@@ -54,7 +63,15 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setOrientation(LinearLayout.HORIZONTAL);
             this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         }
-
+        /**
+        this.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                longpresSymbolDialog(context);
+                return true;
+            }
+        });
+        */
         if (!(this instanceof SymbolTrashcanLayout)) {
             this.setOnTouchListener(new View.OnTouchListener() {
                 final Handler handler = new Handler();
@@ -177,5 +194,37 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 this.fetchAllChildViews(children, child);
             }
         }
+    }
+    public void longpresSymbolDialog(Context context) {
+        LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.canvas_longpress_dialog, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("VINCA");
+
+        builder.setView(layout);
+        final EditText symbolTitle = (EditText) layout.findViewById(R.id.symbolTitle);
+        final EditText symbolDescription = (EditText) layout.findViewById(R.id.symbolDescription);
+
+
+        // Set up the buttons
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                titleInput = symbolTitle.getText().toString();
+                descriptionInput = symbolDescription.getText().toString();
+                System.out.println(titleInput + " lalalal" + descriptionInput);
+
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

@@ -66,6 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
+
         // ClickListener for the Register Button
         findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
             @Override
