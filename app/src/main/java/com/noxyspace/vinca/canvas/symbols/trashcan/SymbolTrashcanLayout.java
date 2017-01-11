@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.noxyspace.vinca.canvas.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
 
 public class SymbolTrashcanLayout extends SymbolLayout {
     public static final int HIGHLIGHT_COLOR = 0xFFFF4C4C;

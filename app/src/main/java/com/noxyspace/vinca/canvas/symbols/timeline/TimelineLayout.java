@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.timeline;
+package com.noxyspace.vinca.canvas.symbols.timeline;
 
 import android.content.Context;
 import android.view.DragEvent;

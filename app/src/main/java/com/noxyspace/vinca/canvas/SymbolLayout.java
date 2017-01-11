@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -19,8 +18,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
@@ -29,9 +26,8 @@ import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
 import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
-import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;

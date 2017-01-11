@@ -28,7 +28,7 @@ import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
-import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
