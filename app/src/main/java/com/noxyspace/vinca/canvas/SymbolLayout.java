@@ -63,7 +63,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setOrientation(LinearLayout.HORIZONTAL);
             this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         }
-
+        /**
         this.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -71,7 +71,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 return true;
             }
         });
-
+        */
         if (!(this instanceof SymbolTrashcanLayout)) {
             this.setOnTouchListener(new View.OnTouchListener() {
                 final Handler handler = new Handler();
