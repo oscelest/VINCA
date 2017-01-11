@@ -14,7 +14,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/title_bar_padding_top_bottom"
-                android:layout_marginLeft="@dimen/title_bar_margin_left"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/title_bar_padding_top_bottom">
 
                 <TextView
@@ -38,7 +39,6 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="20dp"
                     android:id="@+id/home"
                     android:src="@drawable/home"/>
             </LinearLayout>
@@ -57,20 +57,24 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="3dp"
-                android:layout_marginEnd="3dp"
+                android:layout_marginRight="@dimen/fab_layout"
                 android:clickable="true"
+                android:layout_above="@+id/fill"
                 android:src="@drawable/plus_button"
                 app:backgroundTint="@color/colorPrimary" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fab_space"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/fill"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_folder"
@@ -78,8 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/fab_plus"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginBottom="-35dp"
+                android:layout_marginBottom="@dimen/fab_space"
+                android:layout_marginRight="@dimen/fab_layout"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/folder_blue"
@@ -94,8 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/fab_folder"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginBottom="-35dp"
+                android:layout_marginBottom="@dimen/fab_space"
+                android:layout_marginRight="@dimen/fab_layout"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/file_blue"

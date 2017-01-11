@@ -44,7 +44,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class OwnTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class MyProjectsTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private CustomAdapter adapter;
 

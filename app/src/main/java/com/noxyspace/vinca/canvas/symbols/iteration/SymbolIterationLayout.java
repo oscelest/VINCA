@@ -12,6 +12,7 @@ import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.process.SymbolProcess;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
 
 public class SymbolIterationLayout extends SymbolContainerLayout {
@@ -22,9 +23,10 @@ public class SymbolIterationLayout extends SymbolContainerLayout {
     public SymbolIterationLayout(Context context, boolean acceptsDrop) {
         super(context, acceptsDrop);
 
-        this.createBrackets(
-            new SymbolContainerBracket(context, R.drawable.iteration_start),
-            new SymbolContainerBracket(context, R.drawable.iteration_end)
+        this.createContainerSymbols(
+                new SymbolContainerBracket(context, R.drawable.iteration_start),
+                new SymbolContainerBracket(context, R.drawable.iteration_end),
+                new SymbolIteration(context)
         );
     }
 

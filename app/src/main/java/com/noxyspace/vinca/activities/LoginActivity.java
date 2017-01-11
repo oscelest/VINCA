@@ -14,12 +14,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.activities.tabs.OwnTab;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.UserObject;
 import com.noxyspace.vinca.requests.users.LoginRequest;
@@ -27,8 +25,6 @@ import com.noxyspace.vinca.requests.users.RefreshRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.zip.Inflater;
 
 public class LoginActivity extends AppCompatActivity {
 
