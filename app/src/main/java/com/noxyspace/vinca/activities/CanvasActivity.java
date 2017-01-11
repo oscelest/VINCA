@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.timeline.SymbolTimeline;
+import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimeline;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;

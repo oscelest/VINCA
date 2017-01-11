@@ -2,26 +2,21 @@ package com.noxyspace.vinca.canvas;
 
 import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
-import com.noxyspace.vinca.canvas.timeline.SymbolTimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.noxyspace.vinca.R.id.view;
 
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
@@ -34,12 +29,27 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
         this.acceptsDrop = acceptsDrop;
 
-        this.setLayoutParams(new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
             LayoutParams.WRAP_CONTENT,
             LayoutParams.WRAP_CONTENT
-        ));
+        );
 
-        if (!(this instanceof SymbolTrashcanLayout)) {
+        if (this instanceof SymbolTimelineLayout) {
+            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SymbolTimelineLayout.PADDING, getResources().getDisplayMetrics());
+            params.setMargins(margin, 0, 0, 0);
+        }
+
+        this.setLayoutParams(params);
+
+        if (this instanceof SymbolTimelineLayout) {
+            int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SymbolTimelineLayout.PADDING, getResources().getDisplayMetrics());
+            this.setPadding(padding, 0, padding, 0);
+            this.setMinimumHeight(padding);
+            this.setOrientation(LinearLayout.HORIZONTAL);
+            this.setBackgroundColor(SymbolTimelineLayout.BACKGROUND_COLOR);
+        }
+
+        if (!(this instanceof SymbolTrashcanLayout) && !(this instanceof SymbolTimelineLayout)) {
             this.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -81,7 +91,11 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     @Override
     protected boolean onDragEntered(View v, DragEvent event) {
-        Drawable background = ((View)v.getParent()).getBackground();
+        Drawable background = v.getBackground();
+
+        if (background == null) {
+            background = ((View)v.getParent()).getBackground();
+        }
 
         if (background != null && background instanceof ColorDrawable) {
             this.backgroundColor = ((ColorDrawable)background).getColor();
