@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.Log;
@@ -74,6 +73,10 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
         fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
         fab_file.setOnClickListener(this);
 
+        if (directoryObjects.isEmpty()) {
+            getDirectoryContent(null);
+        }
+
         return view;
     }
 
@@ -116,6 +119,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
             createDirectoryObjectDialog(v == fab_folder);
             fab_folder.setVisibility(View.GONE);
             fab_file.setVisibility(View.GONE);
+            toggled = !toggled;
         }
     }
 
@@ -407,9 +411,9 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                 view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             }
 
-            ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
-            if (!directoryObjects.get(position).isFolder()) {
-                img.setImageResource(R.drawable.file_white);
+            ImageView img = (ImageView) view.findViewById(R.id.file_icon);
+            if (directoryObjects.get(position).isFolder()) {
+                img.setImageResource(R.drawable.folder_white);
             }
 
             TextView editor = (TextView) view.findViewById(R.id.lastEdit);
