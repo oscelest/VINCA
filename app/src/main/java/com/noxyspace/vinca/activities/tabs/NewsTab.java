@@ -1,6 +1,8 @@
 package com.noxyspace.vinca.activities.tabs;
 
 import android.support.v4.app.ListFragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.os.Bundle;
 import android.view.View;
@@ -35,7 +37,7 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.news_tab_fragment, container, false);
+        View view = inflater.inflate(R.layout.news_tab_fragment, container, false);
 
         if (newsList.isEmpty()) {
 
@@ -84,6 +86,17 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
                 newsList.add(new SingleRow(titleList.get(i), descriptionList.get(i)));
             }
         }
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    return true;
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -126,19 +139,19 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
         }
     }
 
-    private class singleNews{
+    private class singleNews {
         private String fullTitle, fullDescription;
 
-        singleNews(String fullTitle, String fullDescription){
+        singleNews(String fullTitle, String fullDescription) {
             this.fullTitle = fullTitle;
             this.fullDescription = fullDescription;
         }
 
-        public String getFullTitle(){
+        public String getFullTitle() {
             return fullTitle;
         }
 
-        public String getFullDescription(){
+        public String getFullDescription() {
             return fullDescription;
         }
     }
@@ -164,13 +177,13 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
         public View getView(int position, View view, ViewGroup parent) {
             int type = getItemViewType(position);
             if (view == null) {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.news_element_fragment, null);
+                view = getActivity().getLayoutInflater().inflate(R.layout.news_element_fragment, null);
             }
-                ImageView img = (ImageView) view.findViewById(R.id.newsImage);
-                TextView title = (TextView) view.findViewById(R.id.newsTitle);
-                title.setText(newsList.get(position).getTitle());
-                TextView description = (TextView) view.findViewById(R.id.newsDescription);
-                description.setText(newsList.get(position).getDescription());
+            ImageView img = (ImageView) view.findViewById(R.id.newsImage);
+            TextView title = (TextView) view.findViewById(R.id.newsTitle);
+            title.setText(newsList.get(position).getTitle());
+            TextView description = (TextView) view.findViewById(R.id.newsDescription);
+            description.setText(newsList.get(position).getDescription());
 
             return view;
         }
@@ -194,7 +207,7 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
             connection.setDoOutput(true);
 
             //Send request
-            DataOutputStream wr = new DataOutputStream (connection.getOutputStream());
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
             wr.writeBytes(urlParameters);
             wr.close();
 

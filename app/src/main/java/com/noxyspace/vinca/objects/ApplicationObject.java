@@ -19,6 +19,7 @@ public final class ApplicationObject {
     private String user_token;
     private DirectoryObject current_file;
     private String current_folder_id;
+    private String current_parent_id;
 
     private ApplicationObject() {
         this.user = null;
@@ -72,7 +73,15 @@ public final class ApplicationObject {
         return this.current_folder_id;
     }
 
+    public String getCurrentParentId() {
+        return this.current_parent_id;
+    }
+
     public void setCurrentFolderId(String directoryId) {
         this.current_folder_id = directoryId;
+    }
+
+    public void setCurrentParentId(String directoryId) {
+        this.current_parent_id = directoryId;
     }
 }

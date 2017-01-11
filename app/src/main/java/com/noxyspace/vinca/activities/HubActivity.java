@@ -9,32 +9,27 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 
 import com.crashlytics.android.Crashlytics;
-import com.noxyspace.vinca.activities.tabs.adapter.PagerAdapter;
 import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.activities.tabs.MyProjectsTab;
+import com.noxyspace.vinca.activities.tabs.adapter.PagerAdapter;
 import com.noxyspace.vinca.objects.ApplicationObject;
 
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
+
+import io.fabric.sdk.android.Fabric;
 
 import static android.graphics.Color.WHITE;
 
-import io.fabric.sdk.android.Fabric;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-
 public class HubActivity extends AppCompatActivity {
     private PagerAdapter adapter;
+    private int tab_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +53,19 @@ public class HubActivity extends AppCompatActivity {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(this.adapter);
 
-        viewPager.setCurrentItem(1);
-        this.adapter.notifyTabSelection(1);
+        tab_position = 1;
+        tabLayout.getTabAt(tab_position).select();
+        viewPager.setCurrentItem(tab_position);
+        this.adapter.notifyTabSelection(tab_position);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                adapter.notifyTabSelection(tab.getPosition());
+                tab_position = tab.getPosition();
+                viewPager.setCurrentItem(tab_position);
+                adapter.notifyTabSelection(tab_position);
             }
 
             @Override
@@ -88,15 +86,15 @@ public class HubActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(menu != null) {
-            if(menu.getClass().getSimpleName().equals("MenuBuilder")) {
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
                 try {
                     Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
                     m.setAccessible(true);
                     m.invoke(menu, true);
-                } catch(NoSuchMethodException e) {
+                } catch (NoSuchMethodException e) {
                     Log.d("onMenuOpened", e.getMessage());
-                } catch(Exception e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -150,10 +148,13 @@ public class HubActivity extends AppCompatActivity {
         }
     }
 
+
     public void onGroupItemClick(MenuItem item) {
         // custom dialog
         // One of the group items (using the onClick attribute) was clicked
         // The item parameter passed here indicates which item it is
         // All other menu item clicks are handled by onOptionsItemSelected()
     }
+
+
 }
