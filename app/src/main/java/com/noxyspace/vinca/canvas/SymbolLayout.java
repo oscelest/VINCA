@@ -221,8 +221,11 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         builder.setTitle("VINCA");
         builder.setView(layout);
 
-        final EditText symbolTitle = (EditText) layout.findViewById(R.id.symbolTitle);
-        final EditText symbolDescription = (EditText) layout.findViewById(R.id.symbolDescription);
+        final EditText symbolTitle = (EditText)layout.findViewById(R.id.symbolTitle);
+        symbolTitle.setText(this.titleInput);
+
+        final EditText symbolDescription = (EditText)layout.findViewById(R.id.symbolDescription);
+        symbolDescription.setText(this.descriptionInput);
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
