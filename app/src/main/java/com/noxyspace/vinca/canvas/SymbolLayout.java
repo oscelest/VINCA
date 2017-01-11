@@ -167,7 +167,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.backgroundColor = ((ColorDrawable)background).getColor();
 
             if (v instanceof SymbolTrashcanLayout) {
-                v.setBackgroundColor(Color.RED);
+                v.setBackgroundColor(SymbolTrashcanLayout.HIGHLIGHT_COLOR);
             } else {
                 v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
             }
