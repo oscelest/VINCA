@@ -40,8 +40,13 @@ import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class CanvasActivity extends AppCompatActivity implements View.OnDragListener {
     DirectoryObject directoryObject;
@@ -75,7 +80,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         Log.d("Canvas ID", file_id);
         getDirectoryObject(file_id);
 
-        this.canvas = (LinearLayout)findViewById(R.id.canvas);
+        this.canvas = (LinearLayout) findViewById(R.id.canvas);
         this.canvas.setOnDragListener(this);
         this.canvas.setBackgroundColor(Color.WHITE);
 
@@ -189,6 +194,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                                 );
 
                                 fileName.setText(directoryObject.getName());
+                                connectSocket(directoryObject);
                             } else {
                                 Log.d("GetDirectoryFailure", response.toString());
                                 //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
@@ -197,8 +203,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                             e.printStackTrace();
                         }
                     }
-                })
-        );
+                }
+        ));
     }
 
     // Removes focus when clicked outside EditText
@@ -252,14 +258,14 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
     }
 
     protected boolean onDragDrop(View v, DragEvent event) {
-        View view = (View)event.getLocalState();
+        View view = (View) event.getLocalState();
 
         if (view instanceof TimelineLayout) {
-            ViewGroup parent = (ViewGroup)view.getParent();
+            ViewGroup parent = (ViewGroup) view.getParent();
 
             if (parent instanceof Timeline) {
-                ((ViewGroup)parent.getParent()).removeView(parent);
-                ((ViewGroup)v).addView(parent);
+                ((ViewGroup) parent.getParent()).removeView(parent);
+                ((ViewGroup) v).addView(parent);
             }
         } else if (view instanceof SymbolTimelineLayout) {
             this.canvas.addView(new Timeline(this));
@@ -283,11 +289,11 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         Drawable background = v.getBackground();
 
         if (background == null) {
-            background = ((View)v.getParent()).getBackground();
+            background = ((View) v.getParent()).getBackground();
         }
 
         if (background != null && background instanceof ColorDrawable) {
-            this.backgroundColor = ((ColorDrawable)background).getColor();
+            this.backgroundColor = ((ColorDrawable) background).getColor();
             v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
         }
 
@@ -302,4 +308,40 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
         return true;
     }
+
+    private void connectSocket(DirectoryObject d) {
+        final Socket socket;
+        try {
+            socket = IO.socket("http://178.62.117.85/projects");
+            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    Log.d("SocketIO", "Connected");
+                    socket.emit("authentication", ApplicationObject.getInstance().getUserToken());
+                }
+            });
+            socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    Log.d("SocketIO", "Disconnected");
+                }
+            });
+            socket.on("authenticated", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    Log.d("SocketIO", "Authenticated - " + args);
+                    socket.on("post-auth", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            Log.d("SocketIO", "Post-Authenticated - " + args);
+                        }
+                    });
+                }
+            });
+            socket.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
