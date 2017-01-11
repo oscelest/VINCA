@@ -46,8 +46,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             LayoutParams.WRAP_CONTENT,
             LayoutParams.WRAP_CONTENT
         );
-        this.setLongClickable(true);
-
 
         if (this instanceof TimelineLayout) {
             int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.PADDING, getResources().getDisplayMetrics());
@@ -63,32 +61,26 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setOrientation(LinearLayout.HORIZONTAL);
             this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         }
-        /**
-        this.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                longpresSymbolDialog(context);
-                return true;
-            }
-        });
-        */
+
         if (!(this instanceof SymbolTrashcanLayout)) {
             this.setOnTouchListener(new View.OnTouchListener() {
                 final Handler handler = new Handler();
 
-                View view;
+                View dragView;
 
                 Runnable longPressHandler = new Runnable() {
                     public void run() {
                         ((Activity)getContext()).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (view != null) {
-                                    ClipData data = ClipData.newPlainText("", "");
-                                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                                if (dragView instanceof SymbolLayout) {
+                                    SymbolLayout dragLayout = (SymbolLayout)dragView;
 
-                                    view.startDrag(data, shadowBuilder, view, 0);
-                                    view.setVisibility(View.VISIBLE);
+                                    if (dragLayout.isDropAccepted()) {
+                                        dragLayout.longpresSymbolDialog(getContext());
+                                    }
+
+                                    dragView = null;
                                 }
                             }
                         });
@@ -99,15 +91,32 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            this.view = v;
-                            handler.postDelayed(longPressHandler, 100);
+                            this.dragView = v;
+                            handler.postDelayed(longPressHandler, 500);
                             return true;
 
                         case MotionEvent.ACTION_UP:
                             handler.removeCallbacks(longPressHandler);
 
-                            if ((v instanceof SymbolContainerLayout) && ((SymbolContainerLayout)v).isDropAccepted()) {
-                                ((SymbolContainerLayout)v).toggleCollapse();
+                            if (this.dragView != null) {
+                                if ((v instanceof SymbolContainerLayout) && ((SymbolContainerLayout)v).isDropAccepted()) {
+                                    ((SymbolContainerLayout)v).toggleCollapse();
+                                }
+                            }
+
+                            break;
+
+                        case MotionEvent.ACTION_MOVE:
+                            if (this.dragView != null) {
+                                handler.removeCallbacks(longPressHandler);
+
+                                ClipData data = ClipData.newPlainText("", "");
+                                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(this.dragView);
+
+                                this.dragView.startDrag(data, shadowBuilder, this.dragView, 0);
+                                this.dragView.setVisibility(View.VISIBLE);
+
+                                this.dragView = null;
                             }
 
                             break;
@@ -195,22 +204,20 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             }
         }
     }
+
     public void longpresSymbolDialog(Context context) {
-        LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.canvas_longpress_dialog, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("VINCA");
-
         builder.setView(layout);
+
         final EditText symbolTitle = (EditText) layout.findViewById(R.id.symbolTitle);
         final EditText symbolDescription = (EditText) layout.findViewById(R.id.symbolDescription);
 
-
-        // Set up the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
                 titleInput = symbolTitle.getText().toString();
                 descriptionInput = symbolDescription.getText().toString();
                 System.out.println(titleInput + " lalalal" + descriptionInput);

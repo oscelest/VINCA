@@ -19,7 +19,6 @@ public class SymbolActivityLayout extends SymbolLayout {
         super(context, acceptsDrop);
 
         this.addView(this.activity = new SymbolActivity(context));
-
     }
 
     @Override
