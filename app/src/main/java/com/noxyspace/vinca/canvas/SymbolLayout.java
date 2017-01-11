@@ -9,10 +9,19 @@ import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.timeline.SymbolTimelineLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.noxyspace.vinca.R.id.view;
 
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
@@ -90,5 +99,32 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         }
 
         return true;
+    }
+
+    protected void moveView(View view, View targetView) {
+        if (view != targetView) {
+            List<View> children = new ArrayList<>();
+            this.fetchAllChildViews(children, view);
+
+            if (!children.contains(targetView)) {
+                ((ViewGroup)view.getParent()).removeView(view);
+                ((ViewGroup)targetView).addView(view);
+            } else {
+                Toast.makeText(getContext(), "Cannot move a parent object into a child object", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void fetchAllChildViews(List<View> children, View parent) {
+        if (parent instanceof ViewGroup) {
+            int childCount = ((ViewGroup)parent).getChildCount();
+
+            for (int i = 0; i < childCount; i++) {
+                View child = ((ViewGroup)parent).getChildAt(i);
+                children.add(child);
+
+                this.fetchAllChildViews(children, child);
+            }
+        }
     }
 }

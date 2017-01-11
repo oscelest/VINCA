@@ -26,7 +26,11 @@ public class SymbolActivityLayout extends SymbolLayout {
         View view = (View)event.getLocalState();
 
         if (view instanceof SymbolMethodLayout) {
-            this.addView(new SymbolMethodLayout(getContext()));
+            if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
+                this.moveView(view, v);
+            } else {
+                this.addView(new SymbolMethodLayout(getContext()));
+            }
         } else {
             Toast.makeText(getContext(), "Activity objects only accept: [ Method ]", Toast.LENGTH_SHORT).show();
         }
