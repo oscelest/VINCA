@@ -79,10 +79,11 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas.setOnDragListener(this);
         this.canvas.setBackgroundColor(Color.WHITE);
 
-        timeline = new Timeline(this.context);
-        ((TimelineLayout) timeline.getChildAt(0)).addView(new SymbolProjectLayout(this.context));
-        this.canvas.addView(timeline);
-
+        if(this.canvas.getChildCount() == 0) {
+            timeline = new Timeline(this.context);
+            ((TimelineLayout) timeline.getChildAt(0)).addView(new SymbolProjectLayout(this.context));
+            this.canvas.addView(timeline);
+        }
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
