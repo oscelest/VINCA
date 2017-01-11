@@ -193,6 +193,45 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         return json;
     }
 
+    public void fromJsonObject(JSONObject json) {
+        try {
+            SymbolLayout layout = null;
+            String type = json.getString("type");
+
+            if (type.equals("timeline")) {
+                layout = this;
+            } else if (type.equals("project")) {
+                layout = new SymbolProjectLayout(getContext());
+            } else if(type.equals("process")) {
+                layout = new SymbolProcessLayout(getContext());
+            } else if(type.equals("iteration")) {
+                layout = new SymbolIterationLayout(getContext());
+            } else if(type.equals("pause")) {
+                layout = new SymbolPauseLayout(getContext());
+            } else if(type.equals("decision")) {
+                layout = new SymbolDecisionLayout(getContext());
+            } else if(type.equals("activity")) {
+                layout = new SymbolActivityLayout(getContext());
+            } else {
+                System.out.println("Unexpected object type: " + type);
+            }
+
+            if (layout != null) {
+                JSONArray childArray = json.getJSONArray("children");
+
+                for (int i = 0; i < childArray.length(); i++) {
+                    layout.fromJsonObject(childArray.getJSONObject(i));
+                }
+
+                if (layout != this) {
+                    this.addView(layout);
+                }
+            }
+        } catch (JSONException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @Override
     protected boolean onDragStarted(View v, DragEvent event) {
         return this.acceptsDrop;
