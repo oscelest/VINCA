@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -163,7 +164,12 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
         if (background != null && background instanceof ColorDrawable) {
             this.backgroundColor = ((ColorDrawable)background).getColor();
-            v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
+
+            if (v instanceof SymbolTrashcanLayout) {
+                v.setBackgroundColor(Color.RED);
+            } else {
+                v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
+            }
         }
 
         return true;
