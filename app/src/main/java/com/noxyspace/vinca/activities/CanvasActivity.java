@@ -1,27 +1,35 @@
 package com.noxyspace.vinca.activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimeline;
+import com.noxyspace.vinca.canvas.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
+import com.noxyspace.vinca.canvas.timeline.Timeline;
+import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
@@ -30,13 +38,17 @@ import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CanvasActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CanvasActivity extends AppCompatActivity implements View.OnDragListener {
     DirectoryObject directoryObject;
 
     EditText fileName;
     Toolbar toolbar_canvas_top;
 
     Context context;
+    LinearLayout canvas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +71,9 @@ public class CanvasActivity extends AppCompatActivity {
         Log.d("Canvas ID", file_id);
         getDirectoryObject(file_id);
 
-        LinearLayout canvas = (LinearLayout)findViewById(R.id.canvas);
-        canvas.addView(new SymbolTimeline(this));
+        this.canvas = (LinearLayout)findViewById(R.id.canvas);
+        this.canvas.setOnDragListener(this);
+        this.canvas.setBackgroundColor(Color.WHITE);
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -196,6 +209,90 @@ public class CanvasActivity extends AppCompatActivity {
                 }
             }
         }
+
         return super.dispatchTouchEvent(event);
+    }
+
+    private int backgroundColor;
+
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_STARTED:
+                return this.onDragStarted(v, event);
+
+            case DragEvent.ACTION_DROP:
+                return this.onDragDrop(v, event);
+
+            case DragEvent.ACTION_DRAG_ENDED:
+                return this.onDragEnded(v, event);
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                return this.onDragEntered(v, event);
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                return this.onDragExited(v, event);
+
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+    private boolean onDragStarted(View v, DragEvent event) {
+        return true;
+    }
+
+    protected boolean onDragDrop(View v, DragEvent event) {
+        View view = (View)event.getLocalState();
+
+        if (view instanceof TimelineLayout) {
+            ViewGroup parent = (ViewGroup)view.getParent();
+
+            if (parent instanceof Timeline) {
+                ((ViewGroup)parent.getParent()).removeView(parent);
+                ((ViewGroup)v).addView(parent);
+            }
+        } else if (view instanceof SymbolTimelineLayout) {
+            this.canvas.addView(new Timeline(this));
+        } else {
+            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline ]", Toast.LENGTH_SHORT).show();
+        }
+
+        return true;
+    }
+
+    private boolean onDragEnded(View v, DragEvent event) {
+        if (this.backgroundColor != 0) {
+            v.setBackgroundColor(this.backgroundColor);
+            this.backgroundColor = 0;
+        }
+
+        return true;
+    }
+
+    private boolean onDragEntered(View v, DragEvent event) {
+        Drawable background = v.getBackground();
+
+        if (background == null) {
+            background = ((View)v.getParent()).getBackground();
+        }
+
+        if (background != null && background instanceof ColorDrawable) {
+            this.backgroundColor = ((ColorDrawable)background).getColor();
+            v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
+        }
+
+        return true;
+    }
+
+    private boolean onDragExited(View v, DragEvent event) {
+        if (this.backgroundColor != 0) {
+            v.setBackgroundColor(this.backgroundColor);
+            this.backgroundColor = 0;
+        }
+
+        return true;
     }
 }

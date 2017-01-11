@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
-import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
+import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,22 +34,22 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             LayoutParams.WRAP_CONTENT
         );
 
-        if (this instanceof SymbolTimelineLayout) {
-            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SymbolTimelineLayout.PADDING, getResources().getDisplayMetrics());
+        if (this instanceof TimelineLayout) {
+            int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.PADDING, getResources().getDisplayMetrics());
             params.setMargins(margin, 0, 0, 0);
         }
 
         this.setLayoutParams(params);
 
-        if (this instanceof SymbolTimelineLayout) {
-            int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SymbolTimelineLayout.PADDING, getResources().getDisplayMetrics());
+        if (this instanceof TimelineLayout) {
+            int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.PADDING, getResources().getDisplayMetrics());
             this.setPadding(0, 0, padding, 0);
             this.setMinimumHeight(padding);
             this.setOrientation(LinearLayout.HORIZONTAL);
-            this.setBackgroundColor(SymbolTimelineLayout.BACKGROUND_COLOR);
+            this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         }
 
-        if (!(this instanceof SymbolTrashcanLayout) && !(this instanceof SymbolTimelineLayout)) {
+        if (!(this instanceof SymbolTrashcanLayout)) {
             this.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -99,7 +99,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
         if (background != null && background instanceof ColorDrawable) {
             this.backgroundColor = ((ColorDrawable)background).getColor();
-            v.setBackgroundColor(SymbolTimelineLayout.HIGHLIGHT_COLOR);
+            v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
         }
 
         return true;

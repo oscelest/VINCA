@@ -6,36 +6,23 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.canvas.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 
 public class SymbolTimelineLayout extends SymbolLayout {
-    public static final int PADDING = 50;
-    public static final int HIGHLIGHT_COLOR = 0xFFFFFAE3;
-    public static final int BACKGROUND_COLOR = 0xFFEEEEEE;
+    private SymbolTimeline timeline;
 
     public SymbolTimelineLayout(Context context) {
-        super(context, true);
+        this(context, true);
     }
 
-    @Override
-    protected boolean onDragStarted(View v, DragEvent event) {
-        return true;
+    public SymbolTimelineLayout(Context context, boolean acceptsDrop) {
+        super(context, acceptsDrop);
+
+        this.addView(this.timeline = new SymbolTimeline(context));
     }
 
     @Override
     protected boolean onDragDrop(View v, DragEvent event) {
-        View view = (View)event.getLocalState();
-
-        if (view instanceof SymbolProjectLayout) {
-            if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
-                this.moveView(view, v);
-            } else {
-                this.addView(new SymbolProjectLayout(getContext()));
-            }
-        } else {
-            Toast.makeText(getContext(), "Timeline objects only accept symbols of type: [ Project ]", Toast.LENGTH_SHORT).show();
-        }
-
-        return true;
+        Toast.makeText(getContext(), "Timeline objects does not accept children", Toast.LENGTH_SHORT).show();
+        return false;
     }
 }
