@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.timeline;
+package com.noxyspace.vinca.canvas.symbols.timeline;
 
 import android.content.Context;
 import android.view.DragEvent;
@@ -10,6 +10,9 @@ import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 
 public class TimelineLayout extends SymbolLayout {
     public static final int PADDING = 50;
+    public static final int MARGIN_LEFT = 10;
+    public static final int MARGIN_TOP = 10;
+
     public static final int HIGHLIGHT_COLOR = 0xFFFFFAE3;
     public static final int BACKGROUND_COLOR = 0xFFEEEEEE;
 

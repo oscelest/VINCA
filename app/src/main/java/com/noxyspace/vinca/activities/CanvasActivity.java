@@ -26,17 +26,9 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
-import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimeline;
 import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
-import com.noxyspace.vinca.canvas.timeline.Timeline;
-import com.noxyspace.vinca.canvas.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
@@ -47,8 +39,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -64,8 +54,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
     Context context;
     LinearLayout canvas;
-    Timeline timeline;
-    SymbolProjectLayout project;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +81,10 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas.setBackgroundColor(Color.WHITE);
 
         if (this.canvas.getChildCount() == 0) {
-            timeline = new Timeline(this.context);
-            timeline.getLayout().addView(new SymbolProjectLayout(this.context));
+            TimelineLayout initialTimeline = new TimelineLayout(this.context);
+            initialTimeline.addView(new SymbolProjectLayout(this.context));
 
-            this.canvas.addView(timeline);
+            this.canvas.addView(initialTimeline);
         }
 
         // Change update the name of the file, when focus from EditText is moved
@@ -249,8 +237,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
             for (int i = 0, count = this.canvas.getChildCount(); i < count; i++) {
                 View child = this.canvas.getChildAt(i);
 
-                if (child instanceof Timeline) {
-                    timelineArray.put(((Timeline)child).getLayout().toJsonObject());
+                if (child instanceof TimelineLayout) {
+                    timelineArray.put(((TimelineLayout)child).toJsonObject());
                 } else {
                     System.out.println("Unexpected object in canvas: " + child.getClass().getSimpleName());
                 }
@@ -284,8 +272,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                     String childType = child.getString("type");
 
                     if (childType.equals("timeline")) {
-                        timeline = new Timeline(this.context);
-                        timeline.getLayout().fromJsonObject(child);
+
+                        TimelineLayout timeline = new TimelineLayout(this.context);
+                        timeline.fromJsonObject(child);
 
                         this.canvas.addView(timeline);
                     } else {
@@ -333,14 +322,10 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         View view = (View) event.getLocalState();
 
         if (view instanceof TimelineLayout) {
-            ViewGroup parent = (ViewGroup) view.getParent();
-
-            if (parent instanceof Timeline) {
-                ((ViewGroup) parent.getParent()).removeView(parent);
-                ((ViewGroup) v).addView(parent);
-            }
+            ((ViewGroup)view.getParent()).removeView(view);
+            ((ViewGroup)v).addView(view);
         } else if (view instanceof SymbolTimelineLayout) {
-            this.canvas.addView(new Timeline(this));
+            this.canvas.addView(new TimelineLayout(this));
         } else {
             Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline ]", Toast.LENGTH_SHORT).show();
         }
