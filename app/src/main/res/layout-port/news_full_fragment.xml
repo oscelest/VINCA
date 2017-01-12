@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <ImageView
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/confirm_icon"
+            android:layout_gravity="top"
+            android:id="@+id/newsImage" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:text="Titel Tekst - VINCA - Abraham Lincoln"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:id="@+id/newsTitle" />
+
+            <TextView
+                android:text="I 1816 flyttede familien til Indiana. De flyttede sammen med familien Sparrow – Nancys tante og onkel samt Dennis Hanks, deres adoptivsøn. De flyttede til et skovområde i nærheden af Ohiofloden. Efter to års slid og nybyggeri indtraf tragedie på tragedie i 1818."
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:id="@+id/newsDescription" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,5 +1,9 @@
 package com.noxyspace.vinca.activities.tabs;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,18 +21,24 @@ import com.noxyspace.vinca.R;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class NewsTab extends ListFragment implements AdapterView.OnItemClickListener {
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+public class NewsTab extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private ArrayList<SingleRow> newsList = new ArrayList<SingleRow>();
     private ArrayList<String> titleList = new ArrayList<String>();
     private ArrayList<String> descriptionList = new ArrayList<String>();
+    private ArrayList<String> imageUrl = new ArrayList<String>();
 
+    private FloatingActionButton fab_btn_news;
 
     private CustomAdapter adapter;
     private int id = 1;
@@ -39,10 +49,14 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_tab_fragment, container, false);
 
+        fab_btn_news = (FloatingActionButton) view.findViewById(R.id.fab_plus_news);
+        fab_btn_news.setOnClickListener(this);
+
         if (newsList.isEmpty()) {
 
             String Title1, Title2, Title3;
             String Description1, Description2, Description3;
+            String imageUrl1, imageUrl2, imageUrl3;
 
             // DUMMY TEXT
 
@@ -72,6 +86,10 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
                     "mening. Som syttenårig var Abraham allerede 1,87 m høj, men vejede blot 55 kg. Han arbejdede en del for de lokale, " +
                     "men de huskede ham mest som ”doven, altid læsende og tænkende”.";
 
+            imageUrl1 = "http://icons.iconarchive.com/icons/ph03nyx/super-mario/256/Mushroom-1UP-icon.png";
+            imageUrl2 = "http://icons.iconarchive.com/icons/ph03nyx/super-mario/256/Mushroom-Mini-icon.png";
+            imageUrl3 = "http://icons.iconarchive.com/icons/ph03nyx/super-mario/256/Mushroom-Super-icon.png";
+
             // END DUMMY TEXT
 
             titleList.add(Title1);
@@ -81,6 +99,12 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
             descriptionList.add(Description1);
             descriptionList.add(Description2);
             descriptionList.add(Description3);
+
+            imageUrl.add(imageUrl1);
+            imageUrl.add(imageUrl2);
+            imageUrl.add(imageUrl3);
+
+            // new DownloadImageTask().execute(imageUrl.get(i)))
 
             for (int i = 0; i < titleList.size(); i++) {
                 newsList.add(new SingleRow(titleList.get(i), descriptionList.get(i)));
@@ -119,15 +143,26 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
         // Position is position in the list, 0 is first
     }
 
+    @Override
+    public void onClick(View v) {
+
+        /**
+        NewsFull newsFull = new NewsFull();
+        getFragmentManager().beginTransaction()
+                .replace(R.id., newsFull)
+                .commit();
+        **/
+    }
+
     private class SingleRow {
 
         private String title, description;
-        private int image;
+        private Bitmap bitmap;
 
         SingleRow(String title, String description) {
             this.title = title;
             this.description = description;
-            //this.image = image;
+            // this.bitmap = bitmap;
         }
 
         public String getTitle() {
@@ -137,6 +172,10 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
         public String getDescription() {
             return description;
         }
+
+       // public Bitmap getBitmap() {
+       //     return bitmap;
+       // }
     }
 
     private class singleNews {
@@ -231,4 +270,111 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
             }
         }
     }
+
+    private class DownloadImageTask extends AsyncTask<String, Integer, Bitmap> {
+        protected Bitmap doInBackground(String... params) {
+
+            try {
+
+                System.out.println("Url for bitmap = " + params[0]);
+
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (IOException e) {
+                // Log exception
+                return null;
+            }
+
+        }
+
+    }
 }
+
+
+
+
+
+
+
+/**
+ class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+ private Exception exception;
+
+ protected Bitmap doInBackground(String... urls) {
+ try {
+
+ URL url = new URL(urls[0]);
+
+ HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+ connection.setDoInput(true);
+ connection.connect();
+ InputStream input = connection.getInputStream();
+ Bitmap myBitmap = BitmapFactory.decodeStream(input);
+ return myBitmap;
+ } catch (Exception e) {
+ this.exception = e;
+
+ return null;
+ }
+ }
+
+ protected void onPostExecute(Bitmap feed) {
+ // TODO: check this.exception
+ // TODO: do something with the feed
+ }
+ }
+
+    URL url = new URL("http://....");
+    Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+
+
+  try {
+URL url = new URL("http://....");
+    Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+} catch(IOException e) {
+        System.out.println(e);
+        }
+
+
+ try {
+
+ System.out.println("Url for bitmap = " + params[0]);
+
+ URL url = new URL(params[0]);
+ HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+ connection.setDoInput(true);
+ connection.connect();
+ InputStream input = connection.getInputStream();
+ Bitmap myBitmap = BitmapFactory.decodeStream(input);
+ return myBitmap;
+ } catch (IOException e) {
+ // Log exception
+ return null;
+ }
+
+
+ System.out.println("URL = " + params[0]);
+
+ URL url = new URL(params[0]);
+
+ HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+ connection.setDoInput(true);
+ connection.connect();
+ InputStream input = connection.getInputStream();
+ Bitmap myBitmap = BitmapFactory.decodeStream(input);
+
+ System.out.println("END URL");
+
+ return myBitmap;
+
+
+
+
+ **/
