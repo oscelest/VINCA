@@ -35,18 +35,18 @@ public class SymbolContainerLayout extends SymbolLayout {
             this.removeAllViews();
 
             for (View view : this.collapsedViews) {
-                super.addView(view);
+                super.addView(view, -1);
             }
 
             this.collapsed = false;
         } else {
             if (this.symbolCollapsed != null) {
                 this.removeAllViews();
-                super.addView(this.symbolCollapsed);
+                super.addView(this.symbolCollapsed, -1);
             } else {
                 this.removeAllViews();
-                super.addView(this.symbolStart);
-                super.addView(this.symbolEnd);
+                super.addView(this.symbolStart, -1);
+                super.addView(this.symbolEnd, -1);
             }
 
             this.collapsed = true;
