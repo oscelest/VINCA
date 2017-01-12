@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
@@ -59,7 +58,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
+        View view = inflater.inflate(R.layout.my_projects_tab_fragment, container, false);
 
         fab_btn = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_btn.setOnClickListener(this);
@@ -424,6 +423,8 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                 img.setImageResource(R.drawable.folder_white);
             }
 
+            TextView created = (TextView) view.findViewById(R.id.createdAt);
+            created.setText(directoryObjects.get(position).getCreatedTime());
             TextView editor = (TextView) view.findViewById(R.id.lastEdit);
             editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
