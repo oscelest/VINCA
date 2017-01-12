@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.decision;
+package com.noxyspace.vinca.canvas.symbols.specifications.decision;
 
 import android.content.Context;
 import android.view.DragEvent;

@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.pause;
+package com.noxyspace.vinca.canvas.symbols.specifications.pause;
 
 import android.content.Context;
 import android.view.DragEvent;

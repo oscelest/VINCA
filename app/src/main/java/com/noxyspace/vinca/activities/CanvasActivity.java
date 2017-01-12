@@ -26,8 +26,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
@@ -81,10 +80,10 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas.setBackgroundColor(Color.WHITE);
 
         if (this.canvas.getChildCount() == 0) {
-            TimelineLayout initialTimeline = new TimelineLayout(this.context);
-            initialTimeline.addView(new SymbolProjectLayout(this.context));
+            TimelineLayout timeline = new TimelineLayout(this.context);
+            timeline.addView(new SymbolProjectLayout(this));
 
-            this.canvas.addView(initialTimeline);
+            this.canvas.addView(timeline);
         }
 
         // Change update the name of the file, when focus from EditText is moved
@@ -324,10 +323,12 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         if (view instanceof TimelineLayout) {
             ((ViewGroup)view.getParent()).removeView(view);
             ((ViewGroup)v).addView(view);
-        } else if (view instanceof SymbolTimelineLayout) {
-            this.canvas.addView(new TimelineLayout(this));
+        } else if (view instanceof SymbolProjectLayout) {
+            TimelineLayout timeline = new TimelineLayout(this);
+            timeline.addView(new SymbolProjectLayout(this));
+            this.canvas.addView(timeline);
         } else {
-            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline ]", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline, Project ]", Toast.LENGTH_SHORT).show();
         }
 
         return true;
