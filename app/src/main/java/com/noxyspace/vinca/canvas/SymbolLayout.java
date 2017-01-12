@@ -21,13 +21,7 @@ import android.widget.Toast;
 
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.empty.SymbolEmptyLayout;
-import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
-import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
-import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.SymbolTitle;
 import com.noxyspace.vinca.canvas.symbols.specifications.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.decision.SymbolDecisionLayout;
