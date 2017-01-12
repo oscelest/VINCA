@@ -10,7 +10,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class UpdateDirectoryObjectRequest extends HttpRequest {
-    public UpdateDirectoryObjectRequest(String directoryId, String name, String ownerId, String parentId, Response.Listener<JSONObject> responseListener) {
+    public UpdateDirectoryObjectRequest(String directoryId, String name, String data, String ownerId, String parentId, Response.Listener<JSONObject> responseListener) {
         super(Method.PUT, DIRECTORY_URL + "/" + directoryId, responseListener,
             new Response.ErrorListener() {
                 @Override
@@ -19,6 +19,7 @@ public class UpdateDirectoryObjectRequest extends HttpRequest {
                 }
             },
             new HttpParameter("name", name == null ? "" : name),
+            new HttpParameter("data", data == null ? "" : data),
             new HttpParameter("owner_id", ownerId == null ? "" : ownerId),
             new HttpParameter("parent_id", parentId == null ? "" : parentId)
         );

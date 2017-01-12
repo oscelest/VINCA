@@ -28,6 +28,14 @@ import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
 import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.SymbolTitle;
+import com.noxyspace.vinca.canvas.symbols.specifications.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.iteration.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.pause.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 
@@ -41,8 +49,8 @@ import java.util.List;
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
 
-    private String titleInput;
-    private String descriptionInput;
+    private String title;
+    private String description;
 
     private boolean acceptsDrop;
     private int backgroundColor;
@@ -50,6 +58,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     public SymbolLayout(Context context, boolean acceptsDrop) {
         super(context);
 
+        //super.addView(new SymbolTitle(context, "Title"));
         this.acceptsDrop = acceptsDrop;
 
         LinearLayout.LayoutParams params = null;
@@ -105,8 +114,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                     SymbolLayout dragLayout = (SymbolLayout)dragView;
 
                                     if (dragLayout.isDropAccepted()) {
-                                        System.out.println(toJsonObject().toString());
-                                        //dragLayout.longpresSymbolDialog(getContext());
+                                        dragLayout.longpresSymbolDialog(getContext());
                                     }
 
                                     dragView = null;
@@ -304,6 +312,10 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     }
 
     protected void moveView(View view, View targetView) {
+        this.moveView(view, targetView, -1);
+    }
+
+    protected void moveView(View view, View targetView, int targetIndex) {
         if (view != targetView) {
             List<View> children = new ArrayList<>();
             this.fetchAllChildViews(children, view);
@@ -317,7 +329,11 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                     parent.removeView(view);
                 }
 
-                ((ViewGroup)targetView).addView(view);
+                if (targetIndex == -1) {
+                    ((ViewGroup) targetView).addView(view);
+                } else {
+                    ((ViewGroup) targetView).addView(view, targetIndex);
+                }
             } else {
                 Toast.makeText(getContext(), "Cannot move a parent object into a child object", Toast.LENGTH_SHORT).show();
             }
@@ -377,15 +393,15 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         builder.setView(layout);
 
         final EditText symbolTitle = (EditText)layout.findViewById(R.id.symbolTitle);
-        symbolTitle.setText(this.titleInput);
+        symbolTitle.setText(this.title);
 
         final EditText symbolDescription = (EditText)layout.findViewById(R.id.symbolDescription);
-        symbolDescription.setText(this.descriptionInput);
+        symbolDescription.setText(this.description);
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                titleInput = symbolTitle.getText().toString();
-                descriptionInput = symbolDescription.getText().toString();
+                title = symbolTitle.getText().toString();
+                description = symbolDescription.getText().toString();
 
                 /* Change the stored information */
             }

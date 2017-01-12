@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.project;
+package com.noxyspace.vinca.canvas.symbols.specifications.project;
 
 import android.content.Context;
 import android.view.DragEvent;
@@ -15,6 +15,11 @@ import com.noxyspace.vinca.canvas.symbols.empty.SymbolEmptyLayout;
 import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
 import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.iteration.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.pause.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.process.SymbolProcessLayout;
 
 public class SymbolProjectLayout extends SymbolContainerLayout {
     public SymbolProjectLayout(Context context) {
