@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.specifications.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.undoRedoStack.ActionManager;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
@@ -125,6 +126,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         return super.onCreateOptionsMenu(menu);
     }
 
+    Toast toast = null;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -133,10 +136,28 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.undo:
-                System.out.println("Du har trykket på undo!!!!!");
+                if(ActionManager.getInstance().canUndo()){
+                    ActionManager.getInstance().undo();
+                }else{
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+
+                    toast = Toast.makeText(this, "Nothing to undo", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 return true;
             case R.id.redo:
-                System.out.println("Du har trykket op redo!!!!");
+                if(ActionManager.getInstance().canRedo()){
+                    ActionManager.getInstance().redo();
+                }else {
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+
+                    toast = Toast.makeText(this, "Nothing to redo", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

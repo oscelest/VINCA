@@ -1,5 +1,7 @@
 package com.noxyspace.vinca.canvas.undoRedoStack;
 
+import com.noxyspace.vinca.objects.ApplicationObject;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -10,6 +12,12 @@ import java.util.List;
  */
 
 public class ActionManager {
+    private static ActionManager singleton = new ActionManager();
+
+    public static ActionManager getInstance() {
+        return singleton;
+    }
+
     private List<ArbitraryAction> list;
     private int index;
 

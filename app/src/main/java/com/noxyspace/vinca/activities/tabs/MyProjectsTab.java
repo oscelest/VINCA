@@ -455,7 +455,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     renameDirectoryObjectDialog(directoryObjects.get(position));
                                     return true;
 
-                                case R.id.share:
+                                case R.id.save:
                                     //shareDirectoryObject(directoryObjects.get(position));
                                     return true;
 
