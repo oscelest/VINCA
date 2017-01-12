@@ -214,15 +214,15 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
     }
 
     private void renameDirectoryObject(String directoryId, String name) {
-        this.updateDirectoryObject(directoryId, name, null, null);
+        this.updateDirectoryObject(directoryId, name, null, null, null);
     }
 
     private void resetOwnerDirectoryObject(String directoryId, String ownerId) {
-        this.updateDirectoryObject(directoryId, null, ownerId, null);
+        this.updateDirectoryObject(directoryId, null, null, ownerId, null);
     }
 
     private void resetParentDirectoryObject(String directoryId, String parentId) {
-        this.updateDirectoryObject(directoryId, null, null, parentId);
+        this.updateDirectoryObject(directoryId, null, null, null, parentId);
     }
 
     private void createDirectoryObject(String directoryName, boolean isFolder) {
@@ -263,39 +263,39 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
         );
     }
 
-    private void updateDirectoryObject(String directoryId, String name, String ownerId, String parentId) {
-        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, ownerId, parentId,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("UpdateDirectorySuccess", response.toString());
+    private void updateDirectoryObject(String directoryId, String name, String data, String ownerId, String parentId) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, data, ownerId, parentId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("UpdateDirectorySuccess", response.toString());
 
-                                JSONObject content = response.getJSONObject("content");
-                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+                            JSONObject content = response.getJSONObject("content");
+                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
 
-                                while (iterator.hasNext()) {
-                                    DirectoryObject directoryObject = iterator.next();
+                            while (iterator.hasNext()) {
+                                DirectoryObject directoryObject = iterator.next();
 
-                                    if (directoryObject.getId().equals(content.getString("_id"))) {
-                                        directoryObject.setName(content.getString("name"));
-                                        directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
-                                        directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
-                                        break;
-                                    }
+                                if (directoryObject.getId().equals(content.getString("_id"))) {
+                                    directoryObject.setName(content.getString("name"));
+                                    directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
+                                    directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
+                                    break;
                                 }
-
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                Log.d("UpdateDirectoryFailure", response.toString());
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("UpdateDirectoryFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                })
+                }
+            })
         );
     }
 
