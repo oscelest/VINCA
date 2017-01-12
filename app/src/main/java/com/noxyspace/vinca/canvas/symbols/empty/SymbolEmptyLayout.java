@@ -9,12 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.canvas.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivity;
-import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
-import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.activity.SymbolActivity;
+import com.noxyspace.vinca.canvas.symbols.specifications.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.iteration.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.pause.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.process.SymbolProcessLayout;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
