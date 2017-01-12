@@ -11,6 +11,7 @@ import com.noxyspace.vinca.canvas.symbols.SymbolContainerBracket;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.empty.SymbolEmptyLayout;
 import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcess;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
@@ -41,14 +42,19 @@ public class SymbolIterationLayout extends SymbolContainerLayout {
             } else {
                 if (view instanceof SymbolProcessLayout) {
                     this.addView(new SymbolProcessLayout(getContext()));
+                    this.addView(new SymbolEmptyLayout(getContext()));
                 } else if (view instanceof SymbolIterationLayout) {
                     this.addView(new SymbolIterationLayout(getContext()));
+                    this.addView(new SymbolEmptyLayout(getContext()));
                 } else if (view instanceof SymbolPauseLayout) {
                     this.addView(new SymbolPauseLayout(getContext()));
+                    this.addView(new SymbolEmptyLayout(getContext()));
                 } else if (view instanceof SymbolDecisionLayout) {
                     this.addView(new SymbolDecisionLayout(getContext()));
+                    this.addView(new SymbolEmptyLayout(getContext()));
                 } else if (view instanceof SymbolActivityLayout) {
                     this.addView(new SymbolActivityLayout(getContext()));
+                    this.addView(new SymbolEmptyLayout(getContext()));
                 }
             }
         } else {

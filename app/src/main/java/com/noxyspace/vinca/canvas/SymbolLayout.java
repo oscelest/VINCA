@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -22,12 +23,13 @@ import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.empty.SymbolEmptyLayout;
 import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
 import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,10 +52,19 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
         this.acceptsDrop = acceptsDrop;
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-        );
+        LinearLayout.LayoutParams params = null;
+
+        if (this instanceof SymbolEmptyLayout) {
+            params = new LinearLayout.LayoutParams(
+                (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics()),
+                (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, LayoutParams.WRAP_CONTENT, getResources().getDisplayMetrics())
+            );
+        } else {
+            params = new LinearLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            );
+        }
 
         if (this instanceof TimelineLayout) {
             int marginLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.MARGIN_LEFT, getResources().getDisplayMetrics());
@@ -66,6 +77,10 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         }
 
         this.setLayoutParams(params);
+
+        if (this instanceof SymbolEmptyLayout) {
+            this.setBackgroundColor(Color.CYAN);
+        }
 
         if (this instanceof TimelineLayout) {
             int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.PADDING, getResources().getDisplayMetrics());
@@ -240,6 +255,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         if (this.backgroundColor != 0) {
             v.setBackgroundColor(this.backgroundColor);
             this.backgroundColor = 0;
+            this.onExitSymbol();
         }
 
         return true;
@@ -261,6 +277,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             } else {
                 v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
             }
+
+            this.onEnterSymbol();
         }
 
         return true;
@@ -271,9 +289,18 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         if (this.backgroundColor != 0) {
             v.setBackgroundColor(this.backgroundColor);
             this.backgroundColor = 0;
+            this.onExitSymbol();
         }
 
         return true;
+    }
+
+    protected void onEnterSymbol() {
+        /* Abstract placeholder */
+    }
+
+    protected void onExitSymbol() {
+        /* Abstract placeholder */
     }
 
     protected void moveView(View view, View targetView) {
