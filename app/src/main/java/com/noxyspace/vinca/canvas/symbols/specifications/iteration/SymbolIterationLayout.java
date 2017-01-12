@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.iteration;
+package com.noxyspace.vinca.canvas.symbols.specifications.iteration;
 
 import android.content.Context;
 import android.view.DragEvent;
@@ -9,11 +9,10 @@ import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerBracket;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.process.SymbolProcess;
-import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.pause.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.process.SymbolProcessLayout;
 
 public class SymbolIterationLayout extends SymbolContainerLayout {
     public SymbolIterationLayout(Context context) {

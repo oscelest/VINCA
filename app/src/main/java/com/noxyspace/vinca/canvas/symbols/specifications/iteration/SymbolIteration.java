@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.iteration;
+package com.noxyspace.vinca.canvas.symbols.specifications.iteration;
 
 import android.content.Context;
 

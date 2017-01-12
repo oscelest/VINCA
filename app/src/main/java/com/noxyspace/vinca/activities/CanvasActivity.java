@@ -26,8 +26,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
@@ -39,10 +38,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 public class CanvasActivity extends AppCompatActivity implements View.OnDragListener {
     private int backgroundColor;
@@ -73,7 +68,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         fileName = (EditText) findViewById(R.id.text_canvas_name);
 
         String file_id = getIntent().getStringExtra("FILE_ID");
-        Log.d("Canvas ID", file_id);
         getDirectoryObject(file_id);
 
         this.canvas = (LinearLayout) findViewById(R.id.canvas);
@@ -81,10 +75,10 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas.setBackgroundColor(Color.WHITE);
 
         if (this.canvas.getChildCount() == 0) {
-            TimelineLayout initialTimeline = new TimelineLayout(this.context);
-            initialTimeline.addView(new SymbolProjectLayout(this.context));
+            TimelineLayout timeline = new TimelineLayout(this.context);
+            timeline.addView(new SymbolProjectLayout(this));
 
-            this.canvas.addView(initialTimeline);
+            this.canvas.addView(timeline);
         }
 
         // Change update the name of the file, when focus from EditText is moved
@@ -194,10 +188,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                                 );
 
                                 fileName.setText(directoryObject.getName());
-                                connectSocket(directoryObject);
                             } else {
                                 Log.d("GetDirectoryFailure", response.toString());
-                                //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -324,10 +316,12 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         if (view instanceof TimelineLayout) {
             ((ViewGroup)view.getParent()).removeView(view);
             ((ViewGroup)v).addView(view);
-        } else if (view instanceof SymbolTimelineLayout) {
-            this.canvas.addView(new TimelineLayout(this));
+        } else if (view instanceof SymbolProjectLayout) {
+            TimelineLayout timeline = new TimelineLayout(this);
+            timeline.addView(new SymbolProjectLayout(this));
+            this.canvas.addView(timeline);
         } else {
-            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline ]", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline, Project ]", Toast.LENGTH_SHORT).show();
         }
 
         return true;
@@ -364,41 +358,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         }
 
         return true;
-    }
-
-    private void connectSocket(DirectoryObject d) {
-        final Socket socket;
-        try {
-            socket = IO.socket("http://178.62.117.85/projects");
-            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Connected");
-                    socket.emit("authentication", ApplicationObject.getInstance().getUserToken());
-                }
-            });
-            socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Disconnected");
-                }
-            });
-            socket.on("authenticated", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Authenticated - " + args);
-                    socket.on("post-auth", new Emitter.Listener() {
-                        @Override
-                        public void call(Object... args) {
-                            Log.d("SocketIO", "Post-Authenticated - " + args);
-                        }
-                    });
-                }
-            });
-            socket.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
     }
 
 }
