@@ -51,8 +51,6 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
 
-    private ImageView home_btn;
-
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
 
@@ -62,9 +60,6 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
-
-        home_btn = (ImageView) view.findViewById(R.id.home);
-        home_btn.setOnClickListener(this);
 
         fab_btn = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_btn.setOnClickListener(this);
@@ -122,9 +117,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     @Override
     public void onClick(View v) {
-        if (v == home_btn) {
-            getDirectoryContent(null);
-        } else if (v == fab_btn) {
+         if (v == fab_btn) {
             fab_folder.setVisibility(toggled ? VISIBLE : GONE);
             fab_file.setVisibility(toggled ? VISIBLE : GONE);
             toggled = !toggled;
