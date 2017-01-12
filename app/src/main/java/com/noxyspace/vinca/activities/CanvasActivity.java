@@ -40,10 +40,6 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-
 public class CanvasActivity extends AppCompatActivity implements View.OnDragListener {
     private int backgroundColor;
 
@@ -73,7 +69,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         fileName = (EditText) findViewById(R.id.text_canvas_name);
 
         String file_id = getIntent().getStringExtra("FILE_ID");
-        Log.d("Canvas ID", file_id);
         getDirectoryObject(file_id);
 
         this.canvas = (LinearLayout) findViewById(R.id.canvas);
@@ -194,10 +189,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                                 );
 
                                 fileName.setText(directoryObject.getName());
-                                connectSocket(directoryObject);
                             } else {
                                 Log.d("GetDirectoryFailure", response.toString());
-                                //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -364,41 +357,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         }
 
         return true;
-    }
-
-    private void connectSocket(DirectoryObject d) {
-        final Socket socket;
-        try {
-            socket = IO.socket("http://178.62.117.85/projects");
-            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Connected");
-                    socket.emit("authentication", ApplicationObject.getInstance().getUserToken());
-                }
-            });
-            socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Disconnected");
-                }
-            });
-            socket.on("authenticated", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Authenticated - " + args);
-                    socket.on("post-auth", new Emitter.Listener() {
-                        @Override
-                        public void call(Object... args) {
-                            Log.d("SocketIO", "Post-Authenticated - " + args);
-                        }
-                    });
-                }
-            });
-            socket.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
     }
 
 }

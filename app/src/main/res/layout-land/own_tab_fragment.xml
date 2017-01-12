@@ -49,11 +49,6 @@
                     android:layout_marginLeft="@dimen/fab_layout"
                     android:id="@+id/lastEdit"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/home"
-                    android:src="@drawable/home"/>
             </LinearLayout>
 
             <View
@@ -68,59 +63,59 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_plus"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/fab_layout"
+            android:clickable="true"
+            android:layout_above="@+id/fill"
+            android:src="@drawable/plus_button"
+            app:backgroundTint="@color/colorPrimary" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="@dimen/fab_layout"
-                android:clickable="true"
-                android:layout_above="@+id/fill"
-                android:src="@drawable/plus_button"
-                app:backgroundTint="@color/colorPrimary" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fab_space"
-                android:layout_alignParentBottom="true"
-                android:id="@+id/fill"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/fab_space"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/fill"/>
 
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_folder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/fab_plus"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/fab_space"
-                android:layout_marginRight="@dimen/fab_layout"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:src="@drawable/folder_blue"
-                android:visibility="invisible"
-                app:backgroundTint="@color/White"
-                app:layout_anchor="@id/fab_plus"
-                app:layout_anchorGravity="top" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_plus"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/fab_space"
+            android:layout_marginRight="@dimen/fab_layout"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/folder_blue"
+            android:visibility="invisible"
+            app:backgroundTint="@color/White"
+            app:layout_anchor="@id/fab_plus"
+            app:layout_anchorGravity="top" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_file"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/fab_folder"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/fab_space"
-                android:layout_marginRight="@dimen/fab_layout"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:src="@drawable/file_blue"
-                android:visibility="invisible"
-                app:backgroundTint="@color/White"
-                app:layout_anchor="@id/fab_folder"
-                app:layout_anchorGravity="top" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_folder"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/fab_space"
+            android:layout_marginRight="@dimen/fab_layout"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/file_blue"
+            android:visibility="invisible"
+            app:backgroundTint="@color/White"
+            app:layout_anchor="@id/fab_folder"
+            app:layout_anchorGravity="top" />
 
-        </RelativeLayout>
-    </FrameLayout>
+    </RelativeLayout>
+</FrameLayout>
