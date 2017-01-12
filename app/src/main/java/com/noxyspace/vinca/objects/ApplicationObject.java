@@ -1,5 +1,10 @@
 package com.noxyspace.vinca.objects;
 
+import android.content.Context;
+import android.view.Gravity;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
 
@@ -20,6 +25,7 @@ public final class ApplicationObject {
     private DirectoryObject current_file;
     private String current_folder_id;
     private String current_parent_id;
+    private Toast toast;
 
     private ApplicationObject() {
         this.user = null;
@@ -27,6 +33,7 @@ public final class ApplicationObject {
         this.current_file = null;
         this.current_folder_id = null;
         this.requestQueue = null;
+        this.toast = null;
     }
 
     public void addRequest(HttpRequest request) {
@@ -42,6 +49,25 @@ public final class ApplicationObject {
 
             this.requestQueue = new RequestQueue(cache, network);
             this.requestQueue.start();
+        }
+    }
+
+    public void makeToast(Context context, String message) {
+        if (this.toast != null) {
+            this.toast.cancel();
+            this.toast = null;
+        }
+
+        this.toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+
+        if (this.toast != null) {
+            TextView textview = (TextView)this.toast.getView().findViewById(android.R.id.message);
+
+            if (textview != null) {
+                textview.setGravity(Gravity.CENTER);
+            }
+
+            this.toast.show();
         }
     }
 

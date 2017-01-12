@@ -54,7 +54,7 @@
         </ScrollView>
     </HorizontalScrollView>
 
-    <fragment android:name="com.noxyspace.vinca.canvas.SymbolBar"
+    <fragment android:name="com.noxyspace.vinca.canvas.symbols.bar.SymbolBar"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
