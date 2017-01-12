@@ -282,7 +282,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         this.moveView(view, targetView, -1);
     }
 
-    protected void moveView(View view, View targetView, int targetIndex) {
+    public void moveView(View view, View targetView, int targetIndex) {
         if (view != targetView) {
             List<View> children = new ArrayList<>();
             this.fetchAllChildViews(children, view);

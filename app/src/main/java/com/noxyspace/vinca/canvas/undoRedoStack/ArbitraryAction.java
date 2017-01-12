@@ -7,12 +7,12 @@ import android.view.View;
  */
 
 abstract class ArbitraryAction {
-    private View view;
+    protected View view;
 
     public ArbitraryAction(View v){
-        view = v;
+        this.view = v;
     }
 
-    abstract void redoAction();
-    abstract void undoAction();
+    abstract public void redo();
+    abstract public void undo();
 }

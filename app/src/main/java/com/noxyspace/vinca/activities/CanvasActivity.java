@@ -157,6 +157,12 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.undo:
+                System.out.println("Du har trykket på undo!!!!!");
+                return true;
+            case R.id.redo:
+                System.out.println("Du har trykket op redo!!!!");
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
