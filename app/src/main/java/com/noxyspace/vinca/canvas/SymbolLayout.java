@@ -92,8 +92,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                     SymbolLayout dragLayout = (SymbolLayout)dragView;
 
                                     if (dragLayout.isDropAccepted()) {
-                                        System.out.println(toJsonObject().toString());
-                                        //dragLayout.longpresSymbolDialog(getContext());
+                                        dragLayout.longpresSymbolDialog(getContext());
                                     }
 
                                     dragView = null;

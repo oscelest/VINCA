@@ -74,38 +74,13 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas.setOnDragListener(this);
         this.canvas.setBackgroundColor(Color.WHITE);
 
-        if (this.canvas.getChildCount() == 0) {
-            TimelineLayout timeline = new TimelineLayout(this.context);
-            timeline.addView(new SymbolProjectLayout(this));
-
-            this.canvas.addView(timeline);
-        }
-
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     directoryObject.setName(fileName.getText().toString());
-                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), "", "",
-                            new Response.Listener<JSONObject>() {
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        if (response.getBoolean("success")) {
-
-                                            Log.d("UpdateCanvasNameSuccess", response.toString());
-                                            JSONObject content = response.getJSONObject("content");
-                                            directoryObject.setName(content.getString("name"));
-                                            Log.d("Updated?", directoryObject.getName());
-
-                                        } else {
-                                            Log.d("UpdateCanvasNameFailure", response.toString());
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }));
+                    updateDirectoryObject(null);
                 }
             }
         });
@@ -168,40 +143,39 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
     }
 
     private void getDirectoryObject(String object_id) {
-        Log.d("DirObjetId", object_id);
-
         ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("GetDirectorySuccess", response.toString());
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("GetDirectorySuccess", response.toString());
 
-                                JSONObject content = response.getJSONObject("content");
-                                JSONObject owner = content.getJSONObject("owner");
+                            JSONObject content = response.getJSONObject("content");
+                            JSONObject owner = content.getJSONObject("owner");
 
-                                directoryObject = new DirectoryObject(
-                                        content.getString("_id"),
-                                        owner.getString("_id"),
-                                        owner.getString("first_name"),
-                                        owner.getString("last_name"),
-                                        content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
-                                        content.getString("name"),
-                                        content.getBoolean("folder"),
-                                        content.getInt("time_created"),
-                                        content.getInt("time_updated"),
-                                        content.getInt("time_deleted")
-                                );
+                            directoryObject = new DirectoryObject(
+                                content.getString("_id"),
+                                owner.getString("_id"),
+                                owner.getString("first_name"),
+                                owner.getString("last_name"),
+                                content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
+                                content.getString("name"),
+                                content.getBoolean("folder"),
+                                content.getInt("time_created"),
+                                content.getInt("time_updated"),
+                                content.getInt("time_deleted")
+                            );
 
-                                fileName.setText(directoryObject.getName());
-                            } else {
-                                Log.d("GetDirectoryFailure", response.toString());
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            fileName.setText(directoryObject.getName());
+                            fromJsonObject(content.getString("data"));
+                        } else {
+                            Log.d("GetDirectoryFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
+            }
         ));
     }
 
@@ -285,6 +259,27 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void updateDirectoryObject(String data) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), data, null, null,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+
+                            Log.d("UpdateCanvasNameSuccess", response.toString());
+                            JSONObject content = response.getJSONObject("content");
+                            directoryObject.setName(content.getString("name"));
+                        } else {
+                            Log.d("UpdateCanvasNameFailure", response.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
     }
 
     @Override

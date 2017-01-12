@@ -95,11 +95,11 @@ public class SymbolContainerLayout extends SymbolLayout {
     private void addCollapsibleView(View view, int index) {
         if (index == -1) {
             this.collapsedViews.add(view);
-            super.addView(view);
         } else {
             this.collapsedViews.add(index, view);
-            super.addView(view, index);
         }
+
+        super.addView(view, index);
     }
 
     protected void createContainerSymbols(SymbolContainerBracket symbolStart, SymbolContainerBracket symbolEnd, SymbolContainerCollapsed symbolCollapsed) {
