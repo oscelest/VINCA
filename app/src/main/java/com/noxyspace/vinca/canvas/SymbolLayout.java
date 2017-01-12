@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -20,14 +21,17 @@ import android.widget.Toast;
 
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.symbols.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.iteration.SymbolIterationLayout;
-import com.noxyspace.vinca.canvas.symbols.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.process.SymbolProcessLayout;
-import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.empty.SymbolEmptyLayout;
+import com.noxyspace.vinca.canvas.symbols.SymbolTitle;
+import com.noxyspace.vinca.canvas.symbols.specifications.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.decision.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.iteration.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.pause.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.trashcan.SymbolTrashcanLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,8 +43,8 @@ import java.util.List;
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
 
-    private String titleInput;
-    private String descriptionInput;
+    private String title;
+    private String description;
 
     private boolean acceptsDrop;
     private int backgroundColor;
@@ -48,12 +52,22 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     public SymbolLayout(Context context, boolean acceptsDrop) {
         super(context);
 
+        //super.addView(new SymbolTitle(context, "Title"));
         this.acceptsDrop = acceptsDrop;
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-        );
+        LinearLayout.LayoutParams params = null;
+
+        if (this instanceof SymbolEmptyLayout) {
+            params = new LinearLayout.LayoutParams(
+                (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics()),
+                (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, LayoutParams.WRAP_CONTENT, getResources().getDisplayMetrics())
+            );
+        } else {
+            params = new LinearLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            );
+        }
 
         if (this instanceof TimelineLayout) {
             int marginLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.MARGIN_LEFT, getResources().getDisplayMetrics());
@@ -66,6 +80,10 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         }
 
         this.setLayoutParams(params);
+
+        if (this instanceof SymbolEmptyLayout) {
+            this.setBackgroundColor(Color.CYAN);
+        }
 
         if (this instanceof TimelineLayout) {
             int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.PADDING, getResources().getDisplayMetrics());
@@ -90,8 +108,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                     SymbolLayout dragLayout = (SymbolLayout)dragView;
 
                                     if (dragLayout.isDropAccepted()) {
-                                        System.out.println(toJsonObject().toString());
-                                        //dragLayout.longpresSymbolDialog(getContext());
+                                        dragLayout.longpresSymbolDialog(getContext());
                                     }
 
                                     dragView = null;
@@ -240,6 +257,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         if (this.backgroundColor != 0) {
             v.setBackgroundColor(this.backgroundColor);
             this.backgroundColor = 0;
+            this.onExitSymbol();
         }
 
         return true;
@@ -261,6 +279,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             } else {
                 v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
             }
+
+            this.onEnterSymbol();
         }
 
         return true;
@@ -271,12 +291,25 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         if (this.backgroundColor != 0) {
             v.setBackgroundColor(this.backgroundColor);
             this.backgroundColor = 0;
+            this.onExitSymbol();
         }
 
         return true;
     }
 
+    protected void onEnterSymbol() {
+        /* Abstract placeholder */
+    }
+
+    protected void onExitSymbol() {
+        /* Abstract placeholder */
+    }
+
     protected void moveView(View view, View targetView) {
+        this.moveView(view, targetView, -1);
+    }
+
+    public void moveView(View view, View targetView, int targetIndex) {
         if (view != targetView) {
             List<View> children = new ArrayList<>();
             this.fetchAllChildViews(children, view);
@@ -290,7 +323,11 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                     parent.removeView(view);
                 }
 
-                ((ViewGroup)targetView).addView(view);
+                if (targetIndex == -1) {
+                    ((ViewGroup) targetView).addView(view);
+                } else {
+                    ((ViewGroup) targetView).addView(view, targetIndex);
+                }
             } else {
                 Toast.makeText(getContext(), "Cannot move a parent object into a child object", Toast.LENGTH_SHORT).show();
             }
@@ -350,15 +387,15 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         builder.setView(layout);
 
         final EditText symbolTitle = (EditText)layout.findViewById(R.id.symbolTitle);
-        symbolTitle.setText(this.titleInput);
+        symbolTitle.setText(this.title);
 
         final EditText symbolDescription = (EditText)layout.findViewById(R.id.symbolDescription);
-        symbolDescription.setText(this.descriptionInput);
+        symbolDescription.setText(this.description);
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                titleInput = symbolTitle.getText().toString();
-                descriptionInput = symbolDescription.getText().toString();
+                title = symbolTitle.getText().toString();
+                description = symbolDescription.getText().toString();
 
                 /* Change the stored information */
             }

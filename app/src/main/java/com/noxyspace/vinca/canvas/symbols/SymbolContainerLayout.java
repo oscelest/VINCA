@@ -35,18 +35,18 @@ public class SymbolContainerLayout extends SymbolLayout {
             this.removeAllViews();
 
             for (View view : this.collapsedViews) {
-                super.addView(view);
+                super.addView(view, -1);
             }
 
             this.collapsed = false;
         } else {
             if (this.symbolCollapsed != null) {
                 this.removeAllViews();
-                super.addView(this.symbolCollapsed);
+                super.addView(this.symbolCollapsed, -1);
             } else {
                 this.removeAllViews();
-                super.addView(this.symbolStart);
-                super.addView(this.symbolEnd);
+                super.addView(this.symbolStart, -1);
+                super.addView(this.symbolEnd, -1);
             }
 
             this.collapsed = true;
@@ -64,13 +64,30 @@ public class SymbolContainerLayout extends SymbolLayout {
 
     @Override
     public void addView(View child) {
+        this.handleAddView(child, -1);
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        this.handleAddView(child, index);
+    }
+
+    private void handleAddView(View view, int index) {
         if (this.collapsed) {
-            this.collapsedViews.add(this.collapsedViews.size() - 1, child);
+            if (index == -1) {
+                this.collapsedViews.add(this.collapsedViews.size() - 1, view);
+            } else {
+                this.collapsedViews.add(index, view);
+            }
         } else {
             if (this.getChildCount() >= 2) {
-                this.addCollapsibleView(child, this.getChildCount() - 1);
+                if (index == -1) {
+                    this.addCollapsibleView(view, this.getChildCount() - 1);
+                } else {
+                    this.addCollapsibleView(view, index);
+                }
             } else {
-                this.addCollapsibleView(child, -1);
+                this.addCollapsibleView(view, -1);
             }
         }
     }
@@ -78,11 +95,11 @@ public class SymbolContainerLayout extends SymbolLayout {
     private void addCollapsibleView(View view, int index) {
         if (index == -1) {
             this.collapsedViews.add(view);
-            super.addView(view);
         } else {
             this.collapsedViews.add(index, view);
-            super.addView(view, index);
         }
+
+        super.addView(view, index);
     }
 
     protected void createContainerSymbols(SymbolContainerBracket symbolStart, SymbolContainerBracket symbolEnd, SymbolContainerCollapsed symbolCollapsed) {

@@ -33,7 +33,7 @@ public class SymbolTrashcanLayout extends SymbolLayout {
             ViewGroup parent = (ViewGroup)view.getParent();
 
             if (view instanceof TimelineLayout) {
-                ((ViewGroup) parent.getParent()).removeView(parent);
+                parent.removeView(view);
             } else if (parent instanceof SymbolContainerLayout) {
                 ((SymbolContainerLayout)parent).removeCollapsibleView(view);
             } else {

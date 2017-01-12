@@ -6,12 +6,14 @@
         android:id="@+id/undo"
         android:icon="@drawable/canvas_undo"
         android:title="@string/undo"
+        android:state_enabled="true"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/redo"
         android:icon="@drawable/canvas_redo"
         android:title="@string/redo"
+        android:state_enabled="true"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/notifications"
@@ -20,9 +22,9 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/share"
-        android:icon="@drawable/canvas_share"
-        android:title="@string/share"
+        android:id="@+id/save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/save"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -14,12 +14,12 @@
 
         <ImageView
             android:contentDescription=""
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="@dimen/logo_size_width"
+            android:layout_height="@dimen/logo_size_height"
+            android:layout_gravity="center"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
-            android:src="@mipmap/logo" />
+            android:src="@drawable/vinca_text_ikon" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_email_layout"
@@ -66,22 +66,13 @@
             android:padding="12dp"
             android:text="@string/login" />
 
-        <!--<Button-->
-            <!--android:id="@+id/skip"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_marginBottom="12dp"-->
-            <!--android:layout_marginTop="12dp"-->
-            <!--android:padding="12dp"-->
-            <!--android:text="@string/skip" />-->
-
         <TextView
             android:id="@+id/text_register_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:layout_gravity="center"
+            android:textColor="@color/colorPrimary"
             android:text="@string/no_account"
             android:textSize="16sp" />
 

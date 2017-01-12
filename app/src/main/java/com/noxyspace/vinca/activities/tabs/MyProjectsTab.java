@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
@@ -51,8 +50,6 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
 
-    private ImageView home_btn;
-
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
 
@@ -61,10 +58,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
-
-        home_btn = (ImageView) view.findViewById(R.id.home);
-        home_btn.setOnClickListener(this);
+        View view = inflater.inflate(R.layout.my_projects_tab_fragment, container, false);
 
         fab_btn = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_btn.setOnClickListener(this);
@@ -122,17 +116,16 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     @Override
     public void onClick(View v) {
-        if (v == home_btn) {
-            getDirectoryContent(null);
-        } else if (v == fab_btn) {
+         if (v == fab_btn) {
             fab_folder.setVisibility(toggled ? VISIBLE : GONE);
             fab_file.setVisibility(toggled ? VISIBLE : GONE);
             toggled = !toggled;
 
         } else if (v == fab_file || v == fab_folder) {
             createDirectoryObjectDialog(v == fab_folder);
-            fab_folder.setVisibility(GONE);
-            fab_file.setVisibility(GONE);
+            fab_folder.setVisibility(View.GONE);
+            fab_file.setVisibility(View.GONE);
+            toggled = !toggled;
         }
     }
 
@@ -220,15 +213,15 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
     }
 
     private void renameDirectoryObject(String directoryId, String name) {
-        this.updateDirectoryObject(directoryId, name, null, null);
+        this.updateDirectoryObject(directoryId, name, null, null, null);
     }
 
     private void resetOwnerDirectoryObject(String directoryId, String ownerId) {
-        this.updateDirectoryObject(directoryId, null, ownerId, null);
+        this.updateDirectoryObject(directoryId, null, null, ownerId, null);
     }
 
     private void resetParentDirectoryObject(String directoryId, String parentId) {
-        this.updateDirectoryObject(directoryId, null, null, parentId);
+        this.updateDirectoryObject(directoryId, null, null, null, parentId);
     }
 
     private void createDirectoryObject(String directoryName, boolean isFolder) {
@@ -269,39 +262,39 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
         );
     }
 
-    private void updateDirectoryObject(String directoryId, String name, String ownerId, String parentId) {
-        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, ownerId, parentId,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("UpdateDirectorySuccess", response.toString());
+    private void updateDirectoryObject(String directoryId, String name, String data, String ownerId, String parentId) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, data, ownerId, parentId,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("UpdateDirectorySuccess", response.toString());
 
-                                JSONObject content = response.getJSONObject("content");
-                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+                            JSONObject content = response.getJSONObject("content");
+                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
 
-                                while (iterator.hasNext()) {
-                                    DirectoryObject directoryObject = iterator.next();
+                            while (iterator.hasNext()) {
+                                DirectoryObject directoryObject = iterator.next();
 
-                                    if (directoryObject.getId().equals(content.getString("_id"))) {
-                                        directoryObject.setName(content.getString("name"));
-                                        directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
-                                        directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
-                                        break;
-                                    }
+                                if (directoryObject.getId().equals(content.getString("_id"))) {
+                                    directoryObject.setName(content.getString("name"));
+                                    directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
+                                    directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
+                                    break;
                                 }
-
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                Log.d("UpdateDirectoryFailure", response.toString());
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.d("UpdateDirectoryFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                })
+                }
+            })
         );
     }
 
@@ -425,12 +418,13 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                 view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             }
 
-
-            ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
-            if (!directoryObjects.get(position).isFolder()) {
-                img.setImageResource(R.drawable.file_white);
+            ImageView img = (ImageView) view.findViewById(R.id.file_icon);
+            if (directoryObjects.get(position).isFolder()) {
+                img.setImageResource(R.drawable.folder_white);
             }
 
+            TextView created = (TextView) view.findViewById(R.id.createdAt);
+            created.setText(directoryObjects.get(position).getCreatedTime());
             TextView editor = (TextView) view.findViewById(R.id.lastEdit);
             editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
@@ -461,7 +455,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     renameDirectoryObjectDialog(directoryObjects.get(position));
                                     return true;
 
-                                case R.id.share:
+                                case R.id.save:
                                     //shareDirectoryObject(directoryObjects.get(position));
                                     return true;
 

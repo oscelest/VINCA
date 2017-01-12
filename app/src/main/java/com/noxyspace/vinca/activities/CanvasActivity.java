@@ -26,9 +26,9 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.symbols.project.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.timeline.SymbolTimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.undoRedoStack.ActionManager;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
@@ -39,10 +39,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 public class CanvasActivity extends AppCompatActivity implements View.OnDragListener {
     private int backgroundColor;
@@ -73,19 +69,11 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         fileName = (EditText) findViewById(R.id.text_canvas_name);
 
         String file_id = getIntent().getStringExtra("FILE_ID");
-        Log.d("Canvas ID", file_id);
         getDirectoryObject(file_id);
 
         this.canvas = (LinearLayout) findViewById(R.id.canvas);
         this.canvas.setOnDragListener(this);
         this.canvas.setBackgroundColor(Color.WHITE);
-
-        if (this.canvas.getChildCount() == 0) {
-            TimelineLayout initialTimeline = new TimelineLayout(this.context);
-            initialTimeline.addView(new SymbolProjectLayout(this.context));
-
-            this.canvas.addView(initialTimeline);
-        }
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -93,25 +81,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     directoryObject.setName(fileName.getText().toString());
-                    ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), "", "",
-                            new Response.Listener<JSONObject>() {
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        if (response.getBoolean("success")) {
-
-                                            Log.d("UpdateCanvasNameSuccess", response.toString());
-                                            JSONObject content = response.getJSONObject("content");
-                                            directoryObject.setName(content.getString("name"));
-                                            Log.d("Updated?", directoryObject.getName());
-
-                                        } else {
-                                            Log.d("UpdateCanvasNameFailure", response.toString());
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }));
+                    updateDirectoryObject(null);
                 }
             }
         });
@@ -156,6 +126,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         return super.onCreateOptionsMenu(menu);
     }
 
+    Toast toast = null;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -163,47 +135,68 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.undo:
+                if(ActionManager.getInstance().canUndo()){
+                    ActionManager.getInstance().undo();
+                }else{
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+
+                    toast = Toast.makeText(this, "Nothing to undo", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                return true;
+            case R.id.redo:
+                if(ActionManager.getInstance().canRedo()){
+                    ActionManager.getInstance().redo();
+                }else {
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+
+                    toast = Toast.makeText(this, "Nothing to redo", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void getDirectoryObject(String object_id) {
-        Log.d("DirObjetId", object_id);
-
         ApplicationObject.getInstance().addRequest(new GetDirectoryObjectRequest(object_id,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getBoolean("success")) {
-                                Log.d("GetDirectorySuccess", response.toString());
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            Log.d("GetDirectorySuccess", response.toString());
 
-                                JSONObject content = response.getJSONObject("content");
-                                JSONObject owner = content.getJSONObject("owner");
+                            JSONObject content = response.getJSONObject("content");
+                            JSONObject owner = content.getJSONObject("owner");
 
-                                directoryObject = new DirectoryObject(
-                                        content.getString("_id"),
-                                        owner.getString("_id"),
-                                        owner.getString("first_name"),
-                                        owner.getString("last_name"),
-                                        content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
-                                        content.getString("name"),
-                                        content.getBoolean("folder"),
-                                        content.getInt("time_created"),
-                                        content.getInt("time_updated"),
-                                        content.getInt("time_deleted")
-                                );
+                            directoryObject = new DirectoryObject(
+                                content.getString("_id"),
+                                owner.getString("_id"),
+                                owner.getString("first_name"),
+                                owner.getString("last_name"),
+                                content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
+                                content.getString("name"),
+                                content.getBoolean("folder"),
+                                content.getInt("time_created"),
+                                content.getInt("time_updated"),
+                                content.getInt("time_deleted")
+                            );
 
-                                fileName.setText(directoryObject.getName());
-                                connectSocket(directoryObject);
-                            } else {
-                                Log.d("GetDirectoryFailure", response.toString());
-                                //Toast.makeText(getApplicationContext(), "Server error, try again later.", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            fileName.setText(directoryObject.getName());
+                            fromJsonObject(content.getString("data"));
+                        } else {
+                            Log.d("GetDirectoryFailure", response.toString());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
+            }
         ));
     }
 
@@ -289,6 +282,27 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         }
     }
 
+    private void updateDirectoryObject(String data) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), data, null, null,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+
+                            Log.d("UpdateCanvasNameSuccess", response.toString());
+                            JSONObject content = response.getJSONObject("content");
+                            directoryObject.setName(content.getString("name"));
+                        } else {
+                            Log.d("UpdateCanvasNameFailure", response.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
+    }
+
     @Override
     public boolean onDrag(View v, DragEvent event) {
         switch (event.getAction()) {
@@ -324,10 +338,12 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         if (view instanceof TimelineLayout) {
             ((ViewGroup)view.getParent()).removeView(view);
             ((ViewGroup)v).addView(view);
-        } else if (view instanceof SymbolTimelineLayout) {
-            this.canvas.addView(new TimelineLayout(this));
+        } else if (view instanceof SymbolProjectLayout) {
+            TimelineLayout timeline = new TimelineLayout(this);
+            timeline.addView(new SymbolProjectLayout(this));
+            this.canvas.addView(timeline);
         } else {
-            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline ]", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline, Project ]", Toast.LENGTH_SHORT).show();
         }
 
         return true;
@@ -364,41 +380,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         }
 
         return true;
-    }
-
-    private void connectSocket(DirectoryObject d) {
-        final Socket socket;
-        try {
-            socket = IO.socket("http://178.62.117.85/projects");
-            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Connected");
-                    socket.emit("authentication", ApplicationObject.getInstance().getUserToken());
-                }
-            });
-            socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Disconnected");
-                }
-            });
-            socket.on("authenticated", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d("SocketIO", "Authenticated - " + args);
-                    socket.on("post-auth", new Emitter.Listener() {
-                        @Override
-                        public void call(Object... args) {
-                            Log.d("SocketIO", "Post-Authenticated - " + args);
-                        }
-                    });
-                }
-            });
-            socket.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
     }
 
 }

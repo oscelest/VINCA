@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.activity;
+package com.noxyspace.vinca.canvas.symbols.specifications.activity;
 
 import android.content.Context;
 import android.view.DragEvent;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.canvas.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.method.SymbolMethodLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.method.SymbolMethodLayout;
 
 public class SymbolActivityLayout extends SymbolLayout {
     private SymbolActivity activity;
