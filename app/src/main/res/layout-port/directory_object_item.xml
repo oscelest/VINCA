@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/projectTitle"
-            android:text="Mit superprojekt."
             android:layout_gravity="center"
             android:maxLines="1"
             android:ellipsize="end"
@@ -40,7 +39,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/lastEdit"
         android:layout_weight="1"
-        android:text="Last edited by"
         android:layout_gravity="center_vertical"/>
 
     <ImageView
