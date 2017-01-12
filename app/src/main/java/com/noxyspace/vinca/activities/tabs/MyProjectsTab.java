@@ -51,8 +51,6 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
 
-    private ImageView home_btn;
-
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
 
@@ -62,9 +60,6 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.own_tab_fragment, container, false);
-
-        home_btn = (ImageView) view.findViewById(R.id.home);
-        home_btn.setOnClickListener(this);
 
         fab_btn = (FloatingActionButton) view.findViewById(R.id.fab_plus);
         fab_btn.setOnClickListener(this);
@@ -122,17 +117,16 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     @Override
     public void onClick(View v) {
-        if (v == home_btn) {
-            getDirectoryContent(null);
-        } else if (v == fab_btn) {
+         if (v == fab_btn) {
             fab_folder.setVisibility(toggled ? VISIBLE : GONE);
             fab_file.setVisibility(toggled ? VISIBLE : GONE);
             toggled = !toggled;
 
         } else if (v == fab_file || v == fab_folder) {
             createDirectoryObjectDialog(v == fab_folder);
-            fab_folder.setVisibility(GONE);
-            fab_file.setVisibility(GONE);
+            fab_folder.setVisibility(View.GONE);
+            fab_file.setVisibility(View.GONE);
+            toggled = !toggled;
         }
     }
 
@@ -425,10 +419,9 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                 view = getActivity().getLayoutInflater().inflate(R.layout.directory_object_item, null);
             }
 
-
-            ImageView img = (ImageView) view.findViewById(R.id.folder_icon);
-            if (!directoryObjects.get(position).isFolder()) {
-                img.setImageResource(R.drawable.file_white);
+            ImageView img = (ImageView) view.findViewById(R.id.file_icon);
+            if (directoryObjects.get(position).isFolder()) {
+                img.setImageResource(R.drawable.folder_white);
             }
 
             TextView editor = (TextView) view.findViewById(R.id.lastEdit);

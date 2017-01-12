@@ -6,6 +6,9 @@
     <dimen name="title_bar_margin_left">50dp</dimen>
     <dimen name="title_bar_margin_left_port">20dp</dimen>
 
+    <dimen name="logo_size_height">100dp</dimen>
+    <dimen name="logo_size_width">250dp</dimen>
+
     <dimen name="directory_object_item_margin_left">12dp</dimen>
 
     <dimen name="login_container_dimension">300dp</dimen>

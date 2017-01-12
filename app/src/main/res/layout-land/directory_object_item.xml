@@ -17,9 +17,9 @@
         <ImageView
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/folder_white"
+            android:src="@drawable/file_white"
             android:background="@drawable/circle"
-            android:id="@+id/folder_icon"
+            android:id="@+id/file_icon"
             android:layout_marginEnd="14dp"
             android:layout_gravity="center"/>
 
