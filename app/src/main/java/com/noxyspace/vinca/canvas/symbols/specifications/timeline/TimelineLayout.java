@@ -28,14 +28,16 @@ public class TimelineLayout extends SymbolLayout {
     protected boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
 
-        if (view instanceof SymbolProjectLayout) {
-            if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
-                this.moveView(view, v);
+        if (view != v) {
+            if (view instanceof SymbolProjectLayout) {
+                if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
+                    this.moveView(view, v);
+                } else {
+                    this.addView(new SymbolProjectLayout(getContext()));
+                }
             } else {
-                this.addView(new SymbolProjectLayout(getContext()));
+                this.makeToast("Timeline objects only accept: [ Project ]");
             }
-        } else {
-            this.makeToast("Timeline objects only accept: [ Project ]");
         }
 
         return true;

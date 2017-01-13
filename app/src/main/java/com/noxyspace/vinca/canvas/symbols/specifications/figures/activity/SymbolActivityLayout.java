@@ -35,18 +35,20 @@ public class SymbolActivityLayout extends SymbolLayout {
     protected boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
 
-        if (view instanceof SymbolMethodLayout) {
-            if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
-                this.moveView(view, v);
-            } else {
-                if (!this.hasMethod()) {
-                    this.setMethod(true);
+        if (view != v) {
+            if (view instanceof SymbolMethodLayout) {
+                if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
+                    this.moveView(view, v);
                 } else {
-                    this.makeToast("An activity can only have a single method");
+                    if (!this.hasMethod()) {
+                        this.setMethod(true);
+                    } else {
+                        this.makeToast("An activity can only have a single method");
+                    }
                 }
+            } else {
+                this.makeToast("Activity objects only accept: [ Method ]");
             }
-        } else {
-            this.makeToast("Activity objects only accept: [ Method ]");
         }
 
         return true;

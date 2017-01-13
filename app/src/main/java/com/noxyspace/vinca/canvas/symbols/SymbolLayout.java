@@ -92,7 +92,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 int marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TimelineLayout.MARGIN_TOP, getResources().getDisplayMetrics());
 
                 params.setMargins(marginLeft, marginTop, 0, 0);
-            } else if (!acceptsDrop) {
+            } else if (!acceptsDrop && !(this instanceof SymbolContainerBracketLayout)) {
                 int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
                 params.setMargins(margin, 0, margin, 0);
             }
@@ -153,7 +153,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
                             if (event.getAction() == MotionEvent.ACTION_UP && this.dragView != null) {
                                 if (v instanceof SymbolLayout) {
-                                    if (!(v instanceof SymbolTrashcanLayout) && ((SymbolLayout)v).isDropAccepted()) {
+                                    if (!(v instanceof SymbolTrashcanLayout) && (((SymbolLayout)v).isDropAccepted() || (v.getParent() instanceof SymbolProjectLayout && ((SymbolLayout)v.getParent()).isDropAccepted()))) {
                                         if (v instanceof SymbolContainerLayout) {
                                             ((SymbolContainerLayout)v).toggleCollapse();
                                         } else if (v instanceof SymbolContainerBracketLayout) {
@@ -164,7 +164,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                             }
                                         }
                                     } else {
-                                        if (v instanceof SymbolProjectLayout || (v instanceof SymbolContainerBracketLayout && !((SymbolLayout)v.getParent()).isDropAccepted())) {
+                                        if (v instanceof SymbolContainerBracketLayout && v.getParent() instanceof SymbolProjectLayout) {
                                             makeToast("Project\n\nA project object is....");
                                         } else if (v instanceof SymbolProcessLayout) {
                                             makeToast("Process\n\nA process object is....");

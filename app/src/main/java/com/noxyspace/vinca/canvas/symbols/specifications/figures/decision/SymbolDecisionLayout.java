@@ -21,7 +21,10 @@ public class SymbolDecisionLayout extends SymbolLayout {
 
     @Override
     protected boolean onDragDrop(View v, DragEvent event) {
-        this.makeToast("Decision objects does not accept children");
+        if ((View)event.getLocalState() != v) {
+            this.makeToast("Decision objects does not accept children");
+        }
+
         return false;
     }
 }

@@ -37,24 +37,26 @@ public class SymbolIterationLayout extends SymbolContainerLayout {
     protected boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
 
-        if (view instanceof SymbolProcessLayout || view instanceof SymbolIterationLayout || view instanceof SymbolPauseLayout || view instanceof SymbolDecisionLayout || view instanceof SymbolActivityLayout) {
-            if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
-                this.moveView(view, v);
-            } else {
-                if (view instanceof SymbolProcessLayout) {
-                    this.addView(new SymbolProcessLayout(getContext()));
-                } else if (view instanceof SymbolIterationLayout) {
-                    this.addView(new SymbolIterationLayout(getContext()));
-                } else if (view instanceof SymbolPauseLayout) {
-                    this.addView(new SymbolPauseLayout(getContext()));
-                } else if (view instanceof SymbolDecisionLayout) {
-                    this.addView(new SymbolDecisionLayout(getContext()));
-                } else if (view instanceof SymbolActivityLayout) {
-                    this.addView(new SymbolActivityLayout(getContext()));
+        if (view != v && !(view instanceof SymbolContainerBracketLayout && view.getParent() == v)) {
+            if (view instanceof SymbolProcessLayout || view instanceof SymbolIterationLayout || view instanceof SymbolPauseLayout || view instanceof SymbolDecisionLayout || view instanceof SymbolActivityLayout) {
+                if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
+                    this.moveView(view, v);
+                } else {
+                    if (view instanceof SymbolProcessLayout) {
+                        this.addView(new SymbolProcessLayout(getContext()));
+                    } else if (view instanceof SymbolIterationLayout) {
+                        this.addView(new SymbolIterationLayout(getContext()));
+                    } else if (view instanceof SymbolPauseLayout) {
+                        this.addView(new SymbolPauseLayout(getContext()));
+                    } else if (view instanceof SymbolDecisionLayout) {
+                        this.addView(new SymbolDecisionLayout(getContext()));
+                    } else if (view instanceof SymbolActivityLayout) {
+                        this.addView(new SymbolActivityLayout(getContext()));
+                    }
                 }
+            } else {
+                this.makeToast("Iteration objects only accept: [ Process, Iteration, Pause, Decision, Activity ]");
             }
-        } else {
-            this.makeToast("Iteration objects only accept: [ Process, Iteration, Pause, Decision, Activity ]");
         }
 
         return true;

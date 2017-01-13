@@ -21,7 +21,10 @@ public class SymbolMethodLayout extends SymbolLayout {
 
     @Override
     protected boolean onDragDrop(View v, DragEvent event) {
-        this.makeToast("Method objects does not accept children");
+        if ((View)event.getLocalState() != v) {
+            this.makeToast("Method objects does not accept children");
+        }
+
         return false;
     }
 }

@@ -21,7 +21,10 @@ public class SymbolPauseLayout extends SymbolLayout {
 
     @Override
     protected boolean onDragDrop(View v, DragEvent event) {
-        this.makeToast("Pause objects does not accept children");
+        if ((View)event.getLocalState() != v) {
+            this.makeToast("Pause objects does not accept children");
+        }
+
         return false;
     }
 }
