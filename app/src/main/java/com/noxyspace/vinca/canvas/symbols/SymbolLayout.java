@@ -23,8 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.activities.CanvasActivity;
 import com.noxyspace.vinca.canvas.actions.ActionManager;
 import com.noxyspace.vinca.canvas.actions.ActionParameter;
+import com.noxyspace.vinca.canvas.actions.derivatives.AddAction;
 import com.noxyspace.vinca.canvas.actions.derivatives.MoveAction;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerCollapsed;
@@ -52,6 +54,7 @@ import io.fabric.sdk.android.InitializationCallback;
 
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
+    private static boolean isMovingSymbol;
 
     protected static Toast toast = null;
 
@@ -190,11 +193,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
                                 if (this.dragView instanceof SymbolContainerBracketLayout) {
                                     if (this.dragView.getParent() instanceof SymbolProjectLayout) {
-                                        if (((SymbolLayout) this.dragView.getParent()).isDropAccepted()) {
-                                            this.dragView = null;
-                                        } else {
-                                            this.dragView = (ViewGroup) this.dragView.getParent();
-                                        }
+                                        this.dragView = (ViewGroup)this.dragView.getParent();
                                     }
                                 }
 
@@ -232,6 +231,12 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     @Override
     public void addView(View child, int index) {
+        if (child.getParent() == null && !CanvasActivity.isLoadingSymbols && !ActionManager.isManagingAction && !isMovingSymbol) {
+            if (child instanceof SymbolLayout && !(this instanceof SymbolEmptyLayout) && !(child instanceof SymbolEmptyLayout)) {
+                ActionManager.getInstance().add(new AddAction(child, new ActionParameter(this, index)));
+            }
+        }
+
         super.addView(child, index);
 
         if (!(this instanceof SymbolEmptyLayout) && !(child instanceof SymbolEmptyLayout)) {
@@ -246,6 +251,12 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     }
 
     protected void addViewSuper(View view, int index) {
+        if (view.getParent() == null && !isMovingSymbol) {
+            if (view instanceof SymbolLayout && !(this instanceof SymbolEmptyLayout) && !(view instanceof SymbolEmptyLayout)) {
+                System.out.println("This is a SUPER new view");
+            }
+        }
+
         ViewGroup.LayoutParams params = view.getLayoutParams();
 
         if (params == null) {
@@ -281,6 +292,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     }
 
     public void moveView(View view, View targetView, int targetIndex, boolean record) {
+        isMovingSymbol = true;
+
         if (view != targetView) {
             List<View> children = new ArrayList<>();
             this.fetchAllChildViews(children, view);
@@ -308,6 +321,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         } else {
             this.makeToast("Cannot move a an object into itself");
         }
+
+        isMovingSymbol = false;
     }
 
     public JSONObject toJsonObject() {
