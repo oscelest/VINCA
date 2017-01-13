@@ -83,38 +83,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                 }
             }
         });
-//
-//        fileName.setOnEditorActionListener(
-//                new EditText.OnEditorActionListener() {
-//                    DirectoryObject current_file = ApplicationObject.getInstance().getCurrentFile();
-//                    @Override
-//                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                        if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-//                            if (!event.isShiftPressed()) {
-////                                ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(current_file,
-////                                        new Response.Listener<JSONObject>() {
-////                                            public void onResponse(JSONObject response) {
-////                                                try {
-////                                                    if (response.getBoolean("success")) {
-////
-////                                                        Log.d("UpdateCanvasNameSuccess", response.toString());
-////                                                        JSONObject content = response.getJSONObject("content");
-////                                                        current_file.setName(content.getString("name"));
-////
-////                                                    } else {
-////                                                        Log.d("UpdateCanvasNameFailure", response.toString());
-////                                                    }
-////                                                } catch (JSONException e) {
-////                                                    e.printStackTrace();
-////                                                }
-////                                            }
-////                                        }));
-//                                return true;
-//                            }
-//                        }
-//                        return false;
-//                    }
-//                });
     }
 
     @Override
@@ -129,35 +97,35 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+
             case R.id.undo:
                 if(ActionManager.getInstance().canUndo()){
                     ActionManager.getInstance().undo();
                 }else{
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-
-                    toast = Toast.makeText(this, "Nothing to undo", Toast.LENGTH_SHORT);
-                    toast.show();
+                    makeToast("Nothing to undo");
                 }
                 return true;
+
             case R.id.redo:
                 if(ActionManager.getInstance().canRedo()){
                     ActionManager.getInstance().redo();
                 }else {
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-
-                    toast = Toast.makeText(this, "Nothing to redo", Toast.LENGTH_SHORT);
-                    toast.show();
+                    makeToast("Nothing to redo");
                 }
                 return true;
+
+            case R.id.save:
+                this.updateDirectoryObject(toJsonObject().toString());
+                this.makeToast("Saving canvas data...");
+                return true;
+
+            default:
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -198,7 +166,26 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         ));
     }
 
-    // Removes focus when clicked outside EditText
+    private void updateDirectoryObject(String data) {
+        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), data, null, null,
+            new Response.Listener<JSONObject>() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+                            JSONObject content = response.getJSONObject("content");
+                            directoryObject.setName(content.getString("name"));
+                            makeToast("Saved");
+                        } else {
+                            Log.d("UpdateCanvasNameFailure", response.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+        );
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -278,27 +265,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    private void updateDirectoryObject(String data) {
-        ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryObject.getId(), directoryObject.getName(), data, null, null,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-
-                            Log.d("UpdateCanvasNameSuccess", response.toString());
-                            JSONObject content = response.getJSONObject("content");
-                            directoryObject.setName(content.getString("name"));
-                        } else {
-                            Log.d("UpdateCanvasNameFailure", response.toString());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            })
-        );
     }
 
     @Override

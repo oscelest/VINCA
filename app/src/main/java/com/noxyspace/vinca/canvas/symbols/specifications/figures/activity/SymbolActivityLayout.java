@@ -38,8 +38,12 @@ public class SymbolActivityLayout extends SymbolLayout {
         if (view instanceof SymbolMethodLayout) {
             if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
                 this.moveView(view, v);
-            } else if (!this.hasMethod()) {
-                this.setMethod(true);
+            } else {
+                if (!this.hasMethod()) {
+                    this.setMethod(true);
+                } else {
+                    this.makeToast("An activity can only have a single method");
+                }
             }
         } else {
             this.makeToast("Activity objects only accept: [ Method ]");

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration.SymbolIterationLayout;
@@ -25,24 +27,28 @@ public class SymbolEmptyLayout extends SymbolLayout {
     @Override
     protected boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
-        ViewGroup parent = (ViewGroup)this.getParent();
+        ViewGroup parent = (ViewGroup)v.getParent();
 
-        if (view instanceof SymbolProcessLayout || view instanceof SymbolIterationLayout || view instanceof SymbolPauseLayout || view instanceof SymbolDecisionLayout || view instanceof SymbolActivityLayout) {
-            int index = parent.indexOfChild(this);
+        if (view instanceof SymbolProcessLayout || view instanceof SymbolIterationLayout || view instanceof SymbolPauseLayout || view instanceof SymbolDecisionLayout || view instanceof SymbolActivityLayout || view instanceof SymbolContainerBracketLayout) {
+            int index = parent.indexOfChild(v);
 
-            if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
-                this.moveView(view, parent, index + 1);
+            if (view instanceof SymbolContainerBracketLayout) {
+                ((SymbolContainerLayout)view.getParent()).expand(view, v);
             } else {
-                if (view instanceof SymbolProcessLayout) {
-                    parent.addView(new SymbolProcessLayout(getContext()), index + 1);
-                } else if (view instanceof SymbolIterationLayout) {
-                    parent.addView(new SymbolIterationLayout(getContext()), index + 1);
-                } else if (view instanceof SymbolPauseLayout) {
-                    parent.addView(new SymbolPauseLayout(getContext()), index + 1);
-                } else if (view instanceof SymbolDecisionLayout) {
-                    parent.addView(new SymbolDecisionLayout(getContext()), index + 1);
-                } else if (view instanceof SymbolActivityLayout) {
-                    parent.addView(new SymbolActivityLayout(getContext()), index + 1);
+                if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
+                    this.moveView(view, parent, index + 1);
+                } else {
+                    if (view instanceof SymbolProcessLayout) {
+                        parent.addView(new SymbolProcessLayout(getContext()), index + 1);
+                    } else if (view instanceof SymbolIterationLayout) {
+                        parent.addView(new SymbolIterationLayout(getContext()), index + 1);
+                    } else if (view instanceof SymbolPauseLayout) {
+                        parent.addView(new SymbolPauseLayout(getContext()), index + 1);
+                    } else if (view instanceof SymbolDecisionLayout) {
+                        parent.addView(new SymbolDecisionLayout(getContext()), index + 1);
+                    } else if (view instanceof SymbolActivityLayout) {
+                        parent.addView(new SymbolActivityLayout(getContext()), index + 1);
+                    }
                 }
             }
         } else {

@@ -101,7 +101,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setOrientation(LinearLayout.HORIZONTAL);
             this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         } else if (this instanceof SymbolEmptyLayout) {
-          //  this.setBackgroundColor(Color.RED);
+            //this.setBackgroundColor(Color.RED);
         }
 
         if (!(this instanceof SymbolContainerBracketLayout)) {
@@ -184,16 +184,26 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                             break;
 
                         case MotionEvent.ACTION_MOVE:
-                            if (this.dragView != null && !(dragView instanceof SymbolTrashcanLayout)) {
+                            if (this.dragView != null && !(this.dragView instanceof SymbolTrashcanLayout)) {
                                 handler.removeCallbacks(longPressHandler);
 
-                                ClipData data = ClipData.newPlainText("", "");
-                                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(this.dragView);
+                                if (this.dragView.getParent() instanceof SymbolProjectLayout) {
+                                    if (((SymbolLayout)this.dragView.getParent()).isDropAccepted()) {
+                                        this.dragView = null;
+                                    } else {
+                                        this.dragView = (ViewGroup)this.dragView.getParent();
+                                    }
+                                }
 
-                                this.dragView.startDrag(data, shadowBuilder, this.dragView, 0);
-                                this.dragView.setVisibility(View.VISIBLE);
+                                if (this.dragView != null) {
+                                    ClipData data = ClipData.newPlainText("", "");
+                                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(this.dragView);
 
-                                this.dragView = null;
+                                    this.dragView.startDrag(data, shadowBuilder, this.dragView, 0);
+                                    this.dragView.setVisibility(View.VISIBLE);
+
+                                    this.dragView = null;
+                                }
                             }
 
                             break;
@@ -220,7 +230,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         if (!(this instanceof SymbolEmptyLayout) && !(child instanceof SymbolEmptyLayout)) {
             if (this instanceof SymbolContainerLayout && child instanceof SymbolLayout) {
                 this.addView(new SymbolEmptyLayout(getContext()), index + (index == -1 ? 0 : 1));
-                System.out.println("Adding empty on " + this.getClass().getSimpleName() + " spawning " + child.getClass().getSimpleName());
             }
         }
     }
@@ -246,37 +255,47 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     public JSONObject toJsonObject() {
         JSONObject json = new JSONObject();
 
-        try {
-            if (this instanceof TimelineLayout) {
-                json.put("type", "timeline");
-            } else if (this instanceof SymbolProjectLayout) {
-                json.put("type", "project");
-            } else if (this instanceof SymbolProcessLayout) {
-                json.put("type", "process");
-            } else if (this instanceof SymbolIterationLayout) {
-                json.put("type", "iteration");
-            } else if (this instanceof SymbolPauseLayout) {
-                json.put("type", "pause");
-            } else if (this instanceof SymbolDecisionLayout) {
-                json.put("type", "decision");
-            } else if (this instanceof SymbolActivityLayout) {
-                json.put("type", "activity");
-            } else {
-                json.put("type", "UNKNOWN (" + this.getClass().getSimpleName() + ")");
-            }
-
-            JSONArray childArray = new JSONArray();
-            List<View> children = this.fetchChildViews(this);
-
-            for (View child : children) {
-                if (child instanceof SymbolLayout) {
-                    childArray.put(((SymbolLayout)child).toJsonObject());
+        if (!(this instanceof SymbolEmptyLayout) && !(this instanceof SymbolContainerBracketLayout)) {
+            try {
+                if (this instanceof TimelineLayout) {
+                    json.put("type", "timeline");
+                } else if (this instanceof SymbolProjectLayout) {
+                    json.put("type", "project");
+                } else if (this instanceof SymbolProcessLayout) {
+                    json.put("type", "process");
+                } else if (this instanceof SymbolIterationLayout) {
+                    json.put("type", "iteration");
+                } else if (this instanceof SymbolPauseLayout) {
+                    json.put("type", "pause");
+                } else if (this instanceof SymbolDecisionLayout) {
+                    json.put("type", "decision");
+                } else if (this instanceof SymbolActivityLayout) {
+                    json.put("type", "activity");
+                    json.put("method", ((SymbolActivityLayout) this).hasMethod());
+                } else {
+                    json.put("type", "UNKNOWN (" + this.getClass().getSimpleName() + ")");
                 }
-            }
 
-            json.put("children", childArray);
-        } catch (JSONException e) {
-            System.out.println(e.getMessage());
+                json.put("title", this.title == null ? "" : this.title);
+                json.put("description", this.description == null ? "" : this.title);
+
+                JSONArray childArray = new JSONArray();
+                List<View> children = this.fetchChildViews(this);
+
+                for (View child : children) {
+                    if (child instanceof SymbolLayout) {
+                        JSONObject jsonChild = ((SymbolLayout)child).toJsonObject();
+
+                        if (jsonChild.length() != 0) {
+                            childArray.put(jsonChild);
+                        }
+                    }
+                }
+
+                json.put("children", childArray);
+            } catch (JSONException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         return json;
@@ -301,11 +320,15 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 layout = new SymbolDecisionLayout(getContext());
             } else if(type.equals("activity")) {
                 layout = new SymbolActivityLayout(getContext());
+                ((SymbolActivityLayout)layout).setMethod(json.getBoolean("method"));
             } else {
                 System.out.println("Unexpected object type: " + type);
             }
 
             if (layout != null) {
+                layout.title = json.getString("title");
+                layout.description = json.getString("description");
+
                 JSONArray childArray = json.getJSONArray("children");
 
                 for (int i = 0; i < childArray.length(); i++) {
