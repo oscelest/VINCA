@@ -424,9 +424,17 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
             }
 
             TextView created = (TextView) view.findViewById(R.id.createdAt);
-            created.setText(directoryObjects.get(position).getCreatedTime());
+
+            if (created != null) {
+                created.setText(directoryObjects.get(position).getCreatedTime());
+            }
+
             TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-            editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
+
+            if (editor != null) {
+                editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
+            }
+
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(directoryObjects.get(position).getName());
             if (getResources().getConfiguration().getLayoutDirection() == Configuration.ORIENTATION_LANDSCAPE) {

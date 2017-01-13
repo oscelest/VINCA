@@ -251,12 +251,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     }
 
     protected void addViewSuper(View view, int index) {
-        if (view.getParent() == null && !isMovingSymbol) {
-            if (view instanceof SymbolLayout && !(this instanceof SymbolEmptyLayout) && !(view instanceof SymbolEmptyLayout)) {
-                System.out.println("This is a SUPER new view");
-            }
-        }
-
         ViewGroup.LayoutParams params = view.getLayoutParams();
 
         if (params == null) {
@@ -386,23 +380,31 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             } else if (type.equals("project")) {
                 layout = new SymbolProjectLayout(getContext());
             } else if(type.equals("process")) {
-                layout = new SymbolProcessLayout(getContext(), true, json.getBoolean("collapsed"));
+                layout = new SymbolProcessLayout(getContext(), true, json.has("collapsed") ? json.getBoolean("collapsed") : false);
             } else if(type.equals("iteration")) {
-                layout = new SymbolIterationLayout(getContext(), true, json.getBoolean("collapsed"));
+                layout = new SymbolIterationLayout(getContext(), true, json.has("collapsed") ? json.getBoolean("collapsed") : false);
             } else if(type.equals("pause")) {
                 layout = new SymbolPauseLayout(getContext());
             } else if(type.equals("decision")) {
                 layout = new SymbolDecisionLayout(getContext());
             } else if(type.equals("activity")) {
                 layout = new SymbolActivityLayout(getContext());
-                ((SymbolActivityLayout)layout).setMethod(json.getBoolean("method"));
+
+                if (json.has("method")) {
+                    ((SymbolActivityLayout) layout).setMethod(json.getBoolean("method"));
+                }
             } else {
                 System.out.println("Unexpected object type: " + type);
             }
 
             if (layout != null) {
-                layout.title = json.getString("title");
-                layout.description = json.getString("description");
+                if (json.has("title")) {
+                    layout.title = json.getString("title");
+                }
+
+                if (json.has("description")) {
+                    layout.description = json.getString("description");
+                }
 
                 JSONArray childArray = json.getJSONArray("children");
 
