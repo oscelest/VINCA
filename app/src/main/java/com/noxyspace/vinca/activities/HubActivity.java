@@ -1,16 +1,23 @@
 package com.noxyspace.vinca.activities;
 
+import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,11 +38,23 @@ public class HubActivity extends AppCompatActivity {
     private PagerAdapter adapter;
     private int tab_position;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.hub_activity);
+
+        // Changing multitasking menu icon to another than the launch icon
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(R.color.colorPrimary, typedValue, true);
+        int color = typedValue.data;
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.vinca_v_logo);
+        ActivityManager.TaskDescription description = new ActivityManager.TaskDescription(null, bm, color);
+        setTaskDescription(description);
+        bm.recycle();
 
         this.adapter = new PagerAdapter(getSupportFragmentManager());
 
