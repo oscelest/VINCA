@@ -33,7 +33,7 @@ public class SymbolEmptyLayout extends SymbolLayout {
             int index = parent.indexOfChild(v);
 
             if (view instanceof SymbolContainerBracketLayout) {
-                ((SymbolContainerLayout)view.getParent()).expand(view, v);
+                ((SymbolContainerLayout)view.getParent()).resize(view, v);
             } else {
                 if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
                     this.moveView(view, parent, index + 1);

@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.canvas.actions.ActionParameter;
+import com.noxyspace.vinca.canvas.actions.derivatives.AddAction;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
 import com.noxyspace.vinca.canvas.actions.ActionManager;
@@ -48,6 +50,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
     Context context;
     LinearLayout canvas;
+
+    public static boolean isLoadingSymbols = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         this.canvas = (LinearLayout) findViewById(R.id.canvas);
         this.canvas.setOnDragListener(this);
         this.canvas.setBackgroundColor(Color.WHITE);
+
+        ActionManager.getInstance().clear();
 
         // Change update the name of the file, when focus from EditText is moved
         fileName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -102,17 +108,19 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                 return true;
 
             case R.id.undo:
-                if(ActionManager.getInstance().canUndo()){
+                if (ActionManager.getInstance().canUndo()) {
+                    System.out.println("Undoing");
                     ActionManager.getInstance().undo();
-                }else{
+                } else {
                     makeToast("Nothing to undo");
                 }
                 return true;
 
             case R.id.redo:
-                if(ActionManager.getInstance().canRedo()){
+                if (ActionManager.getInstance().canRedo()) {
+                    System.out.println("Redoing");
                     ActionManager.getInstance().redo();
-                }else {
+                } else {
                     makeToast("Nothing to redo");
                 }
                 return true;
@@ -239,6 +247,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
     }
 
     public void fromJsonObject(JSONObject json) {
+        isLoadingSymbols = true;
+
         try {
             String jsonType = json.getString("type");
 
@@ -265,6 +275,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
+
+        isLoadingSymbols = false;
     }
 
     @Override
@@ -309,6 +321,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
             } else {
                 TimelineLayout timeline = new TimelineLayout(this);
                 timeline.addView(new SymbolProjectLayout(this));
+
+                ActionManager.getInstance().add(new AddAction(timeline, new ActionParameter(this.canvas, -1)));
                 this.canvas.addView(timeline);
             }
         } else {

@@ -1,8 +1,6 @@
 package com.noxyspace.vinca.canvas.symbols.specifications.timeline;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
@@ -14,7 +12,7 @@ public class TimelineLayout extends SymbolLayout {
     public static final int MARGIN_LEFT = 10;
     public static final int MARGIN_TOP = 10;
 
-    public static final int HIGHLIGHT_COLOR = Color.LTGRAY;
+    public static final int HIGHLIGHT_COLOR = 0xFFFFFAE3;
     public static final int BACKGROUND_COLOR = 0xFFFFFFFF;
 
     public TimelineLayout(Context context) {
@@ -29,8 +27,6 @@ public class TimelineLayout extends SymbolLayout {
     @Override
     protected boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
-
-        v.setBackgroundColor(this.BACKGROUND_COLOR);
 
         if (view instanceof SymbolProjectLayout) {
             if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {

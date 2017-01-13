@@ -7,6 +7,7 @@ import java.util.List;
 
 public class ActionManager {
     private static ActionManager singleton = new ActionManager();
+    public static boolean isManagingAction = false;
 
     public static ActionManager getInstance() {
         return singleton;
@@ -17,18 +18,21 @@ public class ActionManager {
 
     public ActionManager(){
         this.list = new ArrayList<ArbitraryAction>();
-        this.list.add(new RemoveAction(null, null));
+        this.clear();
+    }
+
+    public void add(ArbitraryAction a) {
+        this.list.subList(++index, list.size()).clear();
+        this.list.add(a);
+    }
+
+    public void clear() {
+        this.list.clear();
         this.index = -1;
     }
 
-    public void add(ArbitraryAction a){
-        this.list.subList(index, list.size() - 1).clear();
-        this.list.add(a);
-        this.index++;
-    }
-
     public boolean canRedo() {
-        return (this.index < this.list.size());
+        return (this.index < this.list.size() - 1);
     }
 
     public boolean canUndo() {
@@ -37,15 +41,17 @@ public class ActionManager {
 
     public void redo(){
         if (this.canRedo()) {
-            this.index++;
-            //this.list.get(this.index++).redo();
+            isManagingAction = true;
+            this.list.get(++this.index).redo();
+            isManagingAction = false;
         }
     }
 
     public void undo(){
         if (this.canUndo()) {
-            this.index--;
-            //this.list.get(this.index--).undo();
+            isManagingAction = true;
+            this.list.get(this.index--).undo();
+            isManagingAction = false;
         }
     }
 }

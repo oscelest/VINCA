@@ -6,9 +6,15 @@ import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.noxyspace.vinca.canvas.actions.ActionManager;
+import com.noxyspace.vinca.canvas.actions.ActionParameter;
+import com.noxyspace.vinca.canvas.actions.derivatives.RemoveAction;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
+import com.noxyspace.vinca.objects.ApplicationObject;
 
 public class SymbolTrashcanLayout extends SymbolLayout {
     public static final int HIGHLIGHT_COLOR = 0xFFFF4C4C;
@@ -34,15 +40,17 @@ public class SymbolTrashcanLayout extends SymbolLayout {
             if (view instanceof SymbolActivityLayout && ((SymbolActivityLayout)view).hasMethod()) {
                 ((SymbolActivityLayout)view).setMethod(false);
             } else {
-                this.removeViews(view);
-
-//                ViewGroup parent = (ViewGroup)view.getParent();
-//
-//                if (parent instanceof SymbolContainerLayout) {
-//                    ((SymbolContainerLayout) parent).removeCollapsibleView(view);
-//                } else {
-//                    parent.removeView(view);
-//                }
+                if (view instanceof TimelineLayout) {
+                    ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter((ViewGroup)view.getParent(), ((ViewGroup)view.getParent()).indexOfChild(view))));
+                    ((ViewGroup)view.getParent()).removeView(view);
+                } else if (view instanceof SymbolContainerBracketLayout) {
+                    this.makeToast("Cannot delete container brackets");
+                } else if (view.getParent() instanceof SymbolLayout) {
+                    ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter((ViewGroup)view.getParent(), ((ViewGroup)view.getParent()).indexOfChild(view))));
+                    this.removeViews(view);
+                } else {
+                    this.makeToast("Cannot delete this symbol");
+                }
             }
         } else {
             this.makeToast("Cannot remove symbolbar objects");

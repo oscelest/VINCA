@@ -58,10 +58,11 @@ public class SymbolContainerLayout extends SymbolLayout {
         }
     }
 
-    public void expand(View viewBracket, View viewEmpty) {
+    public void resize(View viewBracket, View viewEmpty) {
+        ViewGroup parentEmpty = (ViewGroup)viewEmpty.getParent();
         ViewGroup parent = (ViewGroup)this.getParent();
 
-        if (parent == viewEmpty.getParent()) {
+        if (parentEmpty == parent) {
             int indexEmpty = parent.indexOfChild(viewEmpty);
             int indexContainer = parent.indexOfChild(this);
 
@@ -76,7 +77,7 @@ public class SymbolContainerLayout extends SymbolLayout {
                         }
                     }
                 } else {
-                    this.makeToast("You can only drag the start symbol towards the left");
+                    this.makeToast("You can only expand the start symbol towards the left");
                 }
             } else if (viewBracket == this.symbolEnd) {
                 if (indexEmpty > indexContainer) {
@@ -85,10 +86,46 @@ public class SymbolContainerLayout extends SymbolLayout {
 
                         if (!(child instanceof SymbolEmptyLayout)) {
                             this.moveView(child, this);
+
+                            i -= 2;
+                            indexEmpty -= 2;
                         }
                     }
                 } else {
-                    this.makeToast("You can only drag the end symbol towards the right");
+                    this.makeToast("You can only expand the end symbol towards the right");
+                }
+            }
+        } else if (parentEmpty == this) {
+            int indexEmpty = this.indexOfChild(viewEmpty);
+            int indexBracket = this.indexOfChild(viewBracket);
+
+            if (viewBracket == this.symbolStart) {
+                if (indexEmpty > indexBracket) {
+                    for (int i = indexBracket + 1; i < indexEmpty; i++) {
+                        View child = this.getChildAt(i);
+
+                        if (!(child instanceof SymbolEmptyLayout)) {
+                            this.moveView(child, parent, parent.indexOfChild(this));
+
+                            i -= 2;
+                            indexEmpty -= 2;
+                        }
+                    }
+                } else {
+                    this.makeToast("You can only shrink the start symbol towards the right");
+                }
+            } else if (viewBracket == this.symbolEnd) {
+                if (indexEmpty < indexBracket) {
+                    for (int i = indexBracket - 1; i > indexEmpty; i--) {
+                        View child = this.getChildAt(i);
+
+                        if (!(child instanceof SymbolEmptyLayout)) {
+                            /* Move to position '2' to maintain the initial bracket and empty layout */
+                            this.moveView(child, parent, parent.indexOfChild(this) + 2);
+                        }
+                    }
+                } else {
+                    this.makeToast("You can only shrink the end symbol towards the left");
                 }
             }
         } else {
@@ -158,19 +195,26 @@ public class SymbolContainerLayout extends SymbolLayout {
         this.symbolEnd = symbolEnd;
         this.symbolCollapsed = symbolCollapsed;
 
-        if (this.collapsed) {
-            super.addView(this.symbolCollapsed, -1);
-        } else {
-            this.collapsedViews.add(this.symbolStart);
-            this.addViewSuper(this.symbolStart);
+        this.collapsedViews.add(this.symbolStart);
 
-            if (this.isDropAccepted()) {
-                SymbolEmptyLayout empty = new SymbolEmptyLayout(getContext());
-                this.collapsedViews.add(empty);
+        if (!this.collapsed) {
+            this.addViewSuper(this.symbolStart);
+        } else {
+            super.addView(this.symbolCollapsed, -1);
+        }
+
+        if (this.isDropAccepted()) {
+            SymbolEmptyLayout empty = new SymbolEmptyLayout(getContext());
+            this.collapsedViews.add(empty);
+
+            if (!this.collapsed) {
                 this.addViewSuper(empty);
             }
+        }
 
-            this.collapsedViews.add(this.symbolEnd);
+        this.collapsedViews.add(this.symbolEnd);
+
+        if (!this.collapsed) {
             this.addViewSuper(this.symbolEnd);
         }
     }
