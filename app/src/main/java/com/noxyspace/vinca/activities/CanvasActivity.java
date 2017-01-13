@@ -298,6 +298,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
     protected boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
+//        v.setBackgroundColor(this.backgroundColor);
 
         if (view instanceof TimelineLayout) {
             ((ViewGroup)view.getParent()).removeView(view);
@@ -313,7 +314,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         } else {
             this.makeToast("Canvas objects only accept symbols of type: [ Timeline, Project ]");
         }
-
         return true;
     }
 
@@ -335,7 +335,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
         if (background != null && background instanceof ColorDrawable) {
             this.backgroundColor = ((ColorDrawable) background).getColor();
-            v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
+//            v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
         }
 
         return true;

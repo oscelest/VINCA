@@ -134,7 +134,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     @Override
     public void onClick(View v) {
-         if (v == fab_btn) {
+        if (v == fab_btn) {
             fab_folder.setVisibility(toggled ? VISIBLE : GONE);
             fab_file.setVisibility(toggled ? VISIBLE : GONE);
             toggled = !toggled;
@@ -282,37 +282,37 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private void updateDirectoryObject(String directoryId, String name, String data, String ownerId, String parentId) {
         ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, data, ownerId, parentId,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("UpdateDirectorySuccess", response.toString());
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("UpdateDirectorySuccess", response.toString());
 
-                            JSONObject content = response.getJSONObject("content");
-                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+                                JSONObject content = response.getJSONObject("content");
+                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
 
-                            while (iterator.hasNext()) {
-                                DirectoryObject directoryObject = iterator.next();
+                                while (iterator.hasNext()) {
+                                    DirectoryObject directoryObject = iterator.next();
 
-                                if (directoryObject.getId().equals(content.getString("_id"))) {
-                                    directoryObject.setName(content.getString("name"));
-                                    directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
-                                    directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
-                                    break;
+                                    if (directoryObject.getId().equals(content.getString("_id"))) {
+                                        directoryObject.setName(content.getString("name"));
+                                        directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
+                                        directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (adapter != null) {
-                                adapter.notifyDataSetChanged();
+                                if (adapter != null) {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                Log.d("UpdateDirectoryFailure", response.toString());
                             }
-                        } else {
-                            Log.d("UpdateDirectoryFailure", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            })
+                })
         );
     }
 

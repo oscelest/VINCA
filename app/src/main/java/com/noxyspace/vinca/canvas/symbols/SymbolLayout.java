@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -362,7 +363,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     @Override
     protected boolean onDragEntered(View v, DragEvent event) {
-        this.onHighlightEnter(v);
+//        this.onHighlightEnter(v);
         this.onEnterSymbol();
         return true;
     }
@@ -516,7 +517,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             if (v instanceof SymbolTrashcanLayout) {
                 v.setBackgroundColor(SymbolTrashcanLayout.HIGHLIGHT_COLOR);
             } else {
-                v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
+//                v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
             }
 
             this.onEnterSymbol();
