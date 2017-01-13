@@ -3,13 +3,16 @@ package com.noxyspace.vinca.activities.tabs;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -21,10 +24,12 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.activities.CanvasActivity;
+import com.noxyspace.vinca.activities.CreateDialog;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
@@ -55,6 +60,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private FloatingActionButton fab_btn;
     private boolean toggled = true;
+    private boolean firstRun = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +74,8 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
         fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
         fab_file.setOnClickListener(this);
+
+        getDirectoryContent(null);
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
@@ -90,7 +98,21 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     public void onTabSelected() {
         ApplicationObject.getInstance().setCurrentFolderId(null);
-        this.getDirectoryContent(null);
+        if(!firstRun) {
+            this.getDirectoryContent(null);
+        }
+        firstRun = false;
+    }
+
+    //TODO:
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -116,7 +138,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     @Override
     public void onClick(View v) {
-         if (v == fab_btn) {
+        if (v == fab_btn) {
             fab_folder.setVisibility(toggled ? VISIBLE : GONE);
             fab_file.setVisibility(toggled ? VISIBLE : GONE);
             toggled = !toggled;
@@ -132,7 +154,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
     public void createDirectoryObjectDialog(boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(isFolder ? R.string.foldersName : R.string.filesName);
+        builder.setMessage(isFolder ? R.string.foldersName : R.string.filesName);
 
         // Set up the input
         final EditText fileTitle = new EditText(getActivity());
@@ -264,37 +286,37 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private void updateDirectoryObject(String directoryId, String name, String data, String ownerId, String parentId) {
         ApplicationObject.getInstance().addRequest(new UpdateDirectoryObjectRequest(directoryId, name, data, ownerId, parentId,
-            new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (response.getBoolean("success")) {
-                            Log.d("UpdateDirectorySuccess", response.toString());
+                new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getBoolean("success")) {
+                                Log.d("UpdateDirectorySuccess", response.toString());
 
-                            JSONObject content = response.getJSONObject("content");
-                            Iterator<DirectoryObject> iterator = directoryObjects.iterator();
+                                JSONObject content = response.getJSONObject("content");
+                                Iterator<DirectoryObject> iterator = directoryObjects.iterator();
 
-                            while (iterator.hasNext()) {
-                                DirectoryObject directoryObject = iterator.next();
+                                while (iterator.hasNext()) {
+                                    DirectoryObject directoryObject = iterator.next();
 
-                                if (directoryObject.getId().equals(content.getString("_id"))) {
-                                    directoryObject.setName(content.getString("name"));
-                                    directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
-                                    directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
-                                    break;
+                                    if (directoryObject.getId().equals(content.getString("_id"))) {
+                                        directoryObject.setName(content.getString("name"));
+                                        directoryObject.setOwnerId(content.isNull("owner") ? null : content.getJSONObject("owner").getString("_id"));
+                                        directoryObject.setParentId(content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"));
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (adapter != null) {
-                                adapter.notifyDataSetChanged();
+                                if (adapter != null) {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                Log.d("UpdateDirectoryFailure", response.toString());
                             }
-                        } else {
-                            Log.d("UpdateDirectoryFailure", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            })
+                })
         );
     }
 
@@ -362,7 +384,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                             dirObj.isNull("parent") ? null : dirObj.getJSONObject("parent").getString("_id"),
                                             dirObj.getString("name"),
                                             dirObj.getBoolean("folder"),
-                                            dirObj.getInt("time_created"),
+                                            dirObj.getLong("time_created"),
                                             dirObj.getInt("time_updated"),
                                             dirObj.getInt("time_deleted"))
                                     );
@@ -423,23 +445,13 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                 img.setImageResource(R.drawable.folder_white);
             }
 
-            TextView created = (TextView) view.findViewById(R.id.createdAt);
-
-            if (created != null) {
-                created.setText(directoryObjects.get(position).getCreatedTime());
-            }
-
             TextView editor = (TextView) view.findViewById(R.id.lastEdit);
-
-            if (editor != null) {
-                editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
-            }
-
+            editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(directoryObjects.get(position).getName());
-            if (getResources().getConfiguration().getLayoutDirection() == Configuration.ORIENTATION_LANDSCAPE) {
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-                createdAt.setText(directoryObjects.get(position).getCreatedTime());
+                createdAt.setText("" + directoryObjects.get(position).getCreatedTime());
             }
 
             final ImageView settings_btn = (ImageView) view.findViewById(R.id.settings_directory_object);
@@ -464,6 +476,12 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     return true;
 
                                 case R.id.save:
+                                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+                                    Point size = new Point();
+                                    display.getSize(size);
+                                    int width = size.x;
+                                    int height = size.y;
+                                    Toast.makeText(getActivity(), "Width: " + width + "\nHeight: " + height, Toast.LENGTH_SHORT).show();
                                     //shareDirectoryObject(directoryObjects.get(position));
                                     return true;
 

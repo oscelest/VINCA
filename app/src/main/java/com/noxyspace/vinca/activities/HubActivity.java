@@ -45,16 +45,19 @@ public class HubActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.hub_activity);
 
-        // Changing multitasking menu icon to another than the launch icon
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getTheme();
-        theme.resolveAttribute(R.color.colorPrimary, typedValue, true);
-        int color = typedValue.data;
+        if (Build.VERSION.SDK_INT >= 21){
+            // Changing multitasking menu icon to another than the launch icon
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getTheme();
+            theme.resolveAttribute(R.color.colorPrimary, typedValue, true);
+            int color = typedValue.data;
 
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.vinca_v_logo);
-        ActivityManager.TaskDescription description = new ActivityManager.TaskDescription(null, bm, color);
-        setTaskDescription(description);
-        bm.recycle();
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.vinca_v_logo);
+
+            ActivityManager.TaskDescription description = new ActivityManager.TaskDescription(null, bm, color);
+            setTaskDescription(description);
+            bm.recycle();
+        }
 
         this.adapter = new PagerAdapter(getSupportFragmentManager());
 

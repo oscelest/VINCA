@@ -19,7 +19,7 @@
             android:name="io.fabric.ApiKey"
             android:value="824f94a6adf58631eb97dc52336456d13ac5c386" />
 
-        <activity android:name=".activities.RegisterActivity">
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,7 +27,7 @@
         </activity>
 
         <activity android:name=".activities.HubActivity" />
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.CanvasActivity"
             android:parentActivityName=".activities.HubActivity"/>
     </application>

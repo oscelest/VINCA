@@ -45,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
+        android:padding="5dp"
         android:src="@drawable/settings_three_dots"
         android:id="@+id/settings_directory_object"/>
 
