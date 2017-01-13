@@ -3,6 +3,7 @@ package com.noxyspace.vinca.activities.tabs;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -470,6 +472,12 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     return true;
 
                                 case R.id.save:
+                                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+                                    Point size = new Point();
+                                    display.getSize(size);
+                                    int width = size.x;
+                                    int height = size.y;
+                                    Toast.makeText(getActivity(), "Width: " + width + "\nHeight: " + height, Toast.LENGTH_SHORT).show();
                                     //shareDirectoryObject(directoryObjects.get(position));
                                     return true;
 
