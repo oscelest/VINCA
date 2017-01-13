@@ -159,7 +159,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                             }
                                         }
                                     } else {
-                                        if (v instanceof SymbolProjectLayout) {
+                                        if (v instanceof SymbolProjectLayout || (v instanceof SymbolContainerBracketLayout && !((SymbolLayout)v.getParent()).isDropAccepted())) {
                                             makeToast("Project\n\nA project object is....");
                                         } else if (v instanceof SymbolProcessLayout) {
                                             makeToast("Process\n\nA process object is....");
