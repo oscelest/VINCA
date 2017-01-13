@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuBuilder;
@@ -21,10 +22,12 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.activities.CanvasActivity;
+import com.noxyspace.vinca.activities.CreateDialog;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
@@ -69,6 +72,8 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
         fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
         fab_file.setOnClickListener(this);
 
+        onTabSelected();
+
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         view.setOnKeyListener(new View.OnKeyListener() {
@@ -91,6 +96,17 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
     public void onTabSelected() {
         ApplicationObject.getInstance().setCurrentFolderId(null);
         this.getDirectoryContent(null);
+    }
+
+    //TODO:
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -132,7 +148,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
     public void createDirectoryObjectDialog(boolean isFolder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(isFolder ? R.string.foldersName : R.string.filesName);
+        builder.setMessage(isFolder ? R.string.foldersName : R.string.filesName);
 
         // Set up the input
         final EditText fileTitle = new EditText(getActivity());
@@ -362,7 +378,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                             dirObj.isNull("parent") ? null : dirObj.getJSONObject("parent").getString("_id"),
                                             dirObj.getString("name"),
                                             dirObj.getBoolean("folder"),
-                                            dirObj.getInt("time_created"),
+                                            dirObj.getLong("time_created"),
                                             dirObj.getInt("time_updated"),
                                             dirObj.getInt("time_deleted"))
                                     );
@@ -423,15 +439,13 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                 img.setImageResource(R.drawable.folder_white);
             }
 
-            TextView created = (TextView) view.findViewById(R.id.createdAt);
-            created.setText(directoryObjects.get(position).getCreatedTime());
             TextView editor = (TextView) view.findViewById(R.id.lastEdit);
             editor.setText(directoryObjects.get(position).getOwnerFullName() + "\n" + directoryObjects.get(position).getCreatedTime());
             TextView folderName = (TextView) view.findViewById(R.id.projectTitle);
             folderName.setText(directoryObjects.get(position).getName());
-            if (getResources().getConfiguration().getLayoutDirection() == Configuration.ORIENTATION_LANDSCAPE) {
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 TextView createdAt = (TextView) view.findViewById(R.id.createdAt);
-                createdAt.setText(directoryObjects.get(position).getCreatedTime());
+                createdAt.setText("" + directoryObjects.get(position).getCreatedTime());
             }
 
             final ImageView settings_btn = (ImageView) view.findViewById(R.id.settings_directory_object);

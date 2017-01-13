@@ -17,7 +17,7 @@ public class DirectoryObject {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
-    public DirectoryObject(String id, String owner_id, String owner_first_name, String owner_last_name, String parent_id, String name, boolean folder, int time_created, int time_updated, int time_deleted) {
+    public DirectoryObject(String id, String owner_id, String owner_first_name, String owner_last_name, String parent_id, String name, boolean folder, long time_created, long time_updated, long time_deleted) {
         this.id = id;
 
         this.owner_id = owner_id;
