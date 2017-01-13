@@ -321,8 +321,10 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                     json.put("type", "project");
                 } else if (this instanceof SymbolProcessLayout) {
                     json.put("type", "process");
+                    json.put("collapsed", ((SymbolProcessLayout)this).isCollapsed());
                 } else if (this instanceof SymbolIterationLayout) {
                     json.put("type", "iteration");
+                    json.put("collapsed", ((SymbolIterationLayout)this).isCollapsed());
                 } else if (this instanceof SymbolPauseLayout) {
                     json.put("type", "pause");
                 } else if (this instanceof SymbolDecisionLayout) {
@@ -369,9 +371,9 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             } else if (type.equals("project")) {
                 layout = new SymbolProjectLayout(getContext());
             } else if(type.equals("process")) {
-                layout = new SymbolProcessLayout(getContext());
+                layout = new SymbolProcessLayout(getContext(), true, json.getBoolean("collapsed"));
             } else if(type.equals("iteration")) {
-                layout = new SymbolIterationLayout(getContext());
+                layout = new SymbolIterationLayout(getContext(), true, json.getBoolean("collapsed"));
             } else if(type.equals("pause")) {
                 layout = new SymbolPauseLayout(getContext());
             } else if(type.equals("decision")) {

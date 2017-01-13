@@ -195,19 +195,26 @@ public class SymbolContainerLayout extends SymbolLayout {
         this.symbolEnd = symbolEnd;
         this.symbolCollapsed = symbolCollapsed;
 
-        if (this.collapsed) {
-            super.addView(this.symbolCollapsed, -1);
-        } else {
-            this.collapsedViews.add(this.symbolStart);
-            this.addViewSuper(this.symbolStart);
+        this.collapsedViews.add(this.symbolStart);
 
-            if (this.isDropAccepted()) {
-                SymbolEmptyLayout empty = new SymbolEmptyLayout(getContext());
-                this.collapsedViews.add(empty);
+        if (!this.collapsed) {
+            this.addViewSuper(this.symbolStart);
+        } else {
+            super.addView(this.symbolCollapsed, -1);
+        }
+
+        if (this.isDropAccepted()) {
+            SymbolEmptyLayout empty = new SymbolEmptyLayout(getContext());
+            this.collapsedViews.add(empty);
+
+            if (!this.collapsed) {
                 this.addViewSuper(empty);
             }
+        }
 
-            this.collapsedViews.add(this.symbolEnd);
+        this.collapsedViews.add(this.symbolEnd);
+
+        if (!this.collapsed) {
             this.addViewSuper(this.symbolEnd);
         }
     }
