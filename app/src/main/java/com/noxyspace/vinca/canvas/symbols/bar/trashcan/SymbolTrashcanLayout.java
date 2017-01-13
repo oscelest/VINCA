@@ -5,9 +5,13 @@ import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.noxyspace.vinca.canvas.actions.ActionManager;
+import com.noxyspace.vinca.canvas.actions.ActionParameter;
+import com.noxyspace.vinca.canvas.actions.derivatives.RemoveAction;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.objects.ApplicationObject;
 
 public class SymbolTrashcanLayout extends SymbolLayout {
     public static final int HIGHLIGHT_COLOR = 0xFFFF4C4C;
@@ -32,15 +36,8 @@ public class SymbolTrashcanLayout extends SymbolLayout {
             if (view instanceof SymbolActivityLayout && ((SymbolActivityLayout)view).hasMethod()) {
                 ((SymbolActivityLayout)view).setMethod(false);
             } else {
+                ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter((ViewGroup)view.getParent(), ((ViewGroup)view.getParent()).indexOfChild(view))));
                 this.removeViews(view);
-
-//                ViewGroup parent = (ViewGroup)view.getParent();
-//
-//                if (parent instanceof SymbolContainerLayout) {
-//                    ((SymbolContainerLayout) parent).removeCollapsibleView(view);
-//                } else {
-//                    parent.removeView(view);
-//                }
             }
         } else {
             this.makeToast("Cannot remove symbolbar objects");

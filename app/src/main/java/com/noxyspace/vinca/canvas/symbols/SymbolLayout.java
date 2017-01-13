@@ -23,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.canvas.actions.ActionManager;
+import com.noxyspace.vinca.canvas.actions.ActionParameter;
+import com.noxyspace.vinca.canvas.actions.derivatives.MoveAction;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerCollapsed;
 import com.noxyspace.vinca.canvas.symbols.specifications.empty.SymbolEmptyLayout;
@@ -185,11 +188,13 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                             if (this.dragView != null && !(this.dragView instanceof SymbolTrashcanLayout)) {
                                 handler.removeCallbacks(longPressHandler);
 
-                                if (this.dragView.getParent() instanceof SymbolProjectLayout) {
-                                    if (((SymbolLayout)this.dragView.getParent()).isDropAccepted()) {
-                                        this.dragView = null;
-                                    } else {
-                                        this.dragView = (ViewGroup)this.dragView.getParent();
+                                if (this.dragView instanceof SymbolContainerBracketLayout) {
+                                    if (this.dragView.getParent() instanceof SymbolProjectLayout) {
+                                        if (((SymbolLayout) this.dragView.getParent()).isDropAccepted()) {
+                                            this.dragView = null;
+                                        } else {
+                                            this.dragView = (ViewGroup) this.dragView.getParent();
+                                        }
                                     }
                                 }
 
@@ -214,6 +219,10 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 }
             });
         }
+    }
+
+    public boolean isDropAccepted() {
+        return this.acceptsDrop;
     }
 
     @Override
@@ -246,8 +255,59 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         super.addView(view, index, params);
     }
 
-    public boolean isDropAccepted() {
-        return this.acceptsDrop;
+    public int removeViews(View view) {
+        ViewGroup parent = (ViewGroup)view.getParent();
+        int currentIndex = parent.indexOfChild(view);
+
+        SymbolLayout empty = (SymbolLayout)parent.getChildAt(currentIndex + 1);
+
+        if (parent instanceof SymbolContainerLayout) {
+            ((SymbolContainerLayout)parent).removeCollapsibleView(view);
+            ((SymbolContainerLayout)parent).removeCollapsibleView(empty);
+        } else {
+            parent.removeView(view);
+            parent.removeView(empty);
+        }
+
+        return currentIndex;
+    }
+
+    protected void moveView(View view, View targetView) {
+        this.moveView(view, targetView, -1);
+    }
+
+    public void moveView(View view, View targetView, int targetIndex) {
+        this.moveView(view, targetView, targetIndex, true);
+    }
+
+    public void moveView(View view, View targetView, int targetIndex, boolean record) {
+        if (view != targetView) {
+            List<View> children = new ArrayList<>();
+            this.fetchAllChildViews(children, view);
+
+            if (!children.contains(targetView)) {
+                if (record) {
+                    ActionManager.getInstance().add(new MoveAction(view,
+                        new ActionParameter((View) view.getParent(), ((ViewGroup) view.getParent()).indexOfChild(view)),
+                        new ActionParameter(targetView, targetIndex))
+                    );
+                }
+
+                ViewGroup parent = (ViewGroup)view.getParent();
+                int currentIndex = this.removeViews(view);
+
+                if (targetIndex != -1) {
+                    /* Account for the two symbols we just removed, if they destination is the current parent */
+                    targetIndex -= (targetView == parent && currentIndex < targetIndex ? 2 : 0);
+                }
+
+                ((ViewGroup)targetView).addView(view, targetIndex);
+            } else {
+                this.makeToast("Cannot move a parent object into a child object");
+            }
+        } else {
+            this.makeToast("Cannot move a an object into itself");
+        }
     }
 
     public JSONObject toJsonObject() {
@@ -378,50 +438,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     protected void onExitSymbol() {
         /* Abstract placeholder */
-    }
-
-    protected int removeViews(View view) {
-        ViewGroup parent = (ViewGroup)view.getParent();
-        int currentIndex = parent.indexOfChild(view);
-
-        SymbolLayout empty = (SymbolLayout)parent.getChildAt(currentIndex + 1);
-
-        if (parent instanceof SymbolContainerLayout) {
-            ((SymbolContainerLayout)parent).removeCollapsibleView(view);
-            ((SymbolContainerLayout)parent).removeCollapsibleView(empty);
-        } else {
-            parent.removeView(view);
-            parent.removeView(empty);
-        }
-
-        return currentIndex;
-    }
-
-    protected void moveView(View view, View targetView) {
-        this.moveView(view, targetView, -1);
-    }
-
-    public void moveView(View view, View targetView, int targetIndex) {
-        if (view != targetView) {
-            List<View> children = new ArrayList<>();
-            this.fetchAllChildViews(children, view);
-
-            if (!children.contains(targetView)) {
-                ViewGroup parent = (ViewGroup)view.getParent();
-                int currentIndex = this.removeViews(view);
-
-                if (targetIndex != -1) {
-                    /* Account for the two symbols we just removed, if they destination is the current parent */
-                    targetIndex -= (targetView == parent && currentIndex < targetIndex ? 2 : 0);
-                }
-
-                ((ViewGroup)targetView).addView(view, targetIndex);
-            } else {
-                this.makeToast("Cannot move a parent object into a child object");
-            }
-        } else {
-            this.makeToast("Cannot move a an object into itself");
-        }
     }
 
     private void fetchAllChildViews(List<View> children, View parent) {

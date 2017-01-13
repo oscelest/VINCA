@@ -17,18 +17,20 @@ public class ActionManager {
 
     public ActionManager(){
         this.list = new ArrayList<ArbitraryAction>();
-        this.list.add(new RemoveAction(null, null));
         this.index = -1;
     }
 
     public void add(ArbitraryAction a){
-        this.list.subList(index, list.size() - 1).clear();
+        this.list.subList(++index, list.size()).clear();
         this.list.add(a);
-        this.index++;
+    }
+
+    public void clear() {
+        this.list.clear();
     }
 
     public boolean canRedo() {
-        return (this.index < this.list.size());
+        return (this.index < this.list.size() - 1);
     }
 
     public boolean canUndo() {
@@ -37,15 +39,13 @@ public class ActionManager {
 
     public void redo(){
         if (this.canRedo()) {
-            this.index++;
-            //this.list.get(this.index++).redo();
+            this.list.get(++this.index).redo();
         }
     }
 
     public void undo(){
         if (this.canUndo()) {
-            this.index--;
-            //this.list.get(this.index--).undo();
+            this.list.get(this.index--).undo();
         }
     }
 }
