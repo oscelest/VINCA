@@ -441,7 +441,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     @Override
     protected boolean onDragEntered(View v, DragEvent event) {
-//        this.onHighlightEnter(v);
+        this.onHighlightEnter(v);
         this.onEnterSymbol();
         return true;
     }
@@ -551,7 +551,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             if (v instanceof SymbolTrashcanLayout) {
                 v.setBackgroundColor(SymbolTrashcanLayout.HIGHLIGHT_COLOR);
             } else {
-//                v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
+                v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
             }
 
             this.onEnterSymbol();

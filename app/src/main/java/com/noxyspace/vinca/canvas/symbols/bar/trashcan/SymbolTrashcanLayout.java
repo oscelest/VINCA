@@ -13,6 +13,7 @@ import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 
@@ -40,14 +41,24 @@ public class SymbolTrashcanLayout extends SymbolLayout {
             if (view instanceof SymbolActivityLayout && ((SymbolActivityLayout)view).hasMethod()) {
                 ((SymbolActivityLayout)view).setMethod(false);
             } else {
+                ViewGroup parent = (ViewGroup)view.getParent();
+
                 if (view instanceof TimelineLayout) {
-                    ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter((ViewGroup)view.getParent(), ((ViewGroup)view.getParent()).indexOfChild(view))));
-                    ((ViewGroup)view.getParent()).removeView(view);
+                    ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter(parent, parent.indexOfChild(view))));
+                    parent.removeView(view);
+                    this.makeToast("Removed timeline");
+                } else if (view instanceof SymbolProjectLayout) {
+                    if (parent != null && parent instanceof TimelineLayout) {
+                        ActionManager.getInstance().add(new RemoveAction(parent, new ActionParameter((ViewGroup)parent.getParent(), ((ViewGroup)parent.getParent()).indexOfChild(view))));
+                        ((ViewGroup)parent.getParent()).removeView(parent);
+                        this.makeToast("Removed project (and timeline)");
+                    }
                 } else if (view instanceof SymbolContainerBracketLayout) {
                     this.makeToast("Cannot delete container brackets");
-                } else if (view.getParent() instanceof SymbolLayout) {
-                    ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter((ViewGroup)view.getParent(), ((ViewGroup)view.getParent()).indexOfChild(view))));
+                } else if (parent instanceof SymbolLayout) {
+                    ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter(parent, parent.indexOfChild(view))));
                     this.removeViews(view);
+                    this.makeToast("Removed symbol");
                 } else {
                     this.makeToast("Cannot delete this symbol");
                 }

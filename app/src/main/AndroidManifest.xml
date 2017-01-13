@@ -29,6 +29,7 @@
         <activity android:name=".activities.HubActivity" />
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.CanvasActivity"
+            android:screenOrientation="landscape"
             android:parentActivityName=".activities.HubActivity"/>
     </application>
 
