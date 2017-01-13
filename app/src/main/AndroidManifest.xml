@@ -11,7 +11,7 @@
         android:label="VINCA"
         android:allowBackup="true"
         android:supportsRtl="true"
-        android:icon="@drawable/folder_white"
+        android:icon="@mipmap/vinca_v"
         android:theme="@style/AppTheme" >
         // android:logo="@drawable/ic_launcher_no_text"
 
