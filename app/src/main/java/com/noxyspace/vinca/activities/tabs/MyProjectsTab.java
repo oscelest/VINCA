@@ -60,6 +60,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private FloatingActionButton fab_btn;
     private boolean toggled = true;
+    private boolean firstRun = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
         fab_file = (FloatingActionButton) view.findViewById(R.id.fab_file);
         fab_file.setOnClickListener(this);
 
-        onTabSelected();
+        getDirectoryContent(null);
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
@@ -97,7 +98,10 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     public void onTabSelected() {
         ApplicationObject.getInstance().setCurrentFolderId(null);
-        this.getDirectoryContent(null);
+        if(!firstRun) {
+            this.getDirectoryContent(null);
+        }
+        firstRun = false;
     }
 
     //TODO:
