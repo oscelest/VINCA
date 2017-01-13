@@ -26,8 +26,9 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.symbols.specifications.project.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
+import com.noxyspace.vinca.canvas.actions.ActionManager;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.GetDirectoryObjectRequest;
@@ -36,8 +37,6 @@ import com.noxyspace.vinca.requests.directory.UpdateDirectoryObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 
 public class CanvasActivity extends AppCompatActivity implements View.OnDragListener {
     private int backgroundColor;
@@ -125,12 +124,38 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         return super.onCreateOptionsMenu(menu);
     }
 
+    Toast toast = null;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.undo:
+                if(ActionManager.getInstance().canUndo()){
+                    ActionManager.getInstance().undo();
+                }else{
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+
+                    toast = Toast.makeText(this, "Nothing to undo", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                return true;
+            case R.id.redo:
+                if(ActionManager.getInstance().canRedo()){
+                    ActionManager.getInstance().redo();
+                }else {
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+
+                    toast = Toast.makeText(this, "Nothing to redo", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -306,17 +331,21 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
     }
 
     protected boolean onDragDrop(View v, DragEvent event) {
-        View view = (View) event.getLocalState();
+        View view = (View)event.getLocalState();
 
         if (view instanceof TimelineLayout) {
             ((ViewGroup)view.getParent()).removeView(view);
             ((ViewGroup)v).addView(view);
         } else if (view instanceof SymbolProjectLayout) {
-            TimelineLayout timeline = new TimelineLayout(this);
-            timeline.addView(new SymbolProjectLayout(this));
-            this.canvas.addView(timeline);
+            if (((SymbolProjectLayout)view).isDropAccepted()) {
+                /* Move object? */
+            } else {
+                TimelineLayout timeline = new TimelineLayout(this);
+                timeline.addView(new SymbolProjectLayout(this));
+                this.canvas.addView(timeline);
+            }
         } else {
-            Toast.makeText(this, "Canvas objects only accept symbols of type: [ Timeline, Project ]", Toast.LENGTH_SHORT).show();
+            this.makeToast("Canvas objects only accept symbols of type: [ Timeline, Project ]");
         }
 
         return true;
@@ -355,4 +384,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
         return true;
     }
 
+    private void makeToast(String message) {
+        ApplicationObject.getInstance().makeToast(this, message);
+    }
 }
