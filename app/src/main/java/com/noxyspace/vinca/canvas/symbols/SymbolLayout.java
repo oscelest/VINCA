@@ -556,7 +556,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
             this.onEnterSymbol();
         }
-
     }
 
     private void onHighlightExited(View v) {
