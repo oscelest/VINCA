@@ -58,6 +58,44 @@ public class SymbolContainerLayout extends SymbolLayout {
         }
     }
 
+    public void expand(View viewBracket, View viewEmpty) {
+        ViewGroup parent = (ViewGroup)this.getParent();
+
+        if (parent == viewEmpty.getParent()) {
+            int indexEmpty = parent.indexOfChild(viewEmpty);
+            int indexContainer = parent.indexOfChild(this);
+
+            if (viewBracket == this.symbolStart) {
+                if (indexEmpty < indexContainer) {
+                    for (int i = indexContainer - 1; i > indexEmpty; i--) {
+                        View child = parent.getChildAt(i);
+
+                        if (!(child instanceof SymbolEmptyLayout)) {
+                            /* Move to position '2' to maintain the initial bracket and empty layout */
+                            this.moveView(child, this, 2);
+                        }
+                    }
+                } else {
+                    this.makeToast("You can only drag the start symbol towards the left");
+                }
+            } else if (viewBracket == this.symbolEnd) {
+                if (indexEmpty > indexContainer) {
+                    for (int i = indexContainer + 1; i < indexEmpty; i++) {
+                        View child = parent.getChildAt(i);
+
+                        if (!(child instanceof SymbolEmptyLayout)) {
+                            this.moveView(child, this);
+                        }
+                    }
+                } else {
+                    this.makeToast("You can only drag the end symbol towards the right");
+                }
+            }
+        } else {
+            this.makeToast("You cannot expand an enclosed object into the middle of another");
+        }
+    }
+
     public List<View> getCollapsedViews() {
         return this.collapsedViews;
     }
@@ -126,9 +164,11 @@ public class SymbolContainerLayout extends SymbolLayout {
             this.collapsedViews.add(this.symbolStart);
             this.addViewSuper(this.symbolStart);
 
-            SymbolEmptyLayout empty = new SymbolEmptyLayout(getContext());
-            this.collapsedViews.add(empty);
-            this.addViewSuper(empty);
+            if (this.isDropAccepted()) {
+                SymbolEmptyLayout empty = new SymbolEmptyLayout(getContext());
+                this.collapsedViews.add(empty);
+                this.addViewSuper(empty);
+            }
 
             this.collapsedViews.add(this.symbolEnd);
             this.addViewSuper(this.symbolEnd);
