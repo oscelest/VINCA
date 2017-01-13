@@ -16,7 +16,11 @@ public class RemoveAction extends ArbitraryAction {
     }
 
     public void redo() {
-        ((SymbolLayout)position.getParent()).removeViews(view);
+        if (position.getParent() instanceof SymbolLayout) {
+            ((SymbolLayout)position.getParent()).removeViews(view);
+        } else {
+            position.getParent().removeView(view);
+        }
     }
 
     public void undo() {
