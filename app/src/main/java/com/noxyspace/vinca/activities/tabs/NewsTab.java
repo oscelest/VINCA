@@ -146,12 +146,10 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
     @Override
     public void onClick(View v) {
 
-        /**
         NewsFull newsFull = new NewsFull();
         getFragmentManager().beginTransaction()
-                .replace(R.id., newsFull)
+                .replace(R.id.pager, newsFull)
                 .commit();
-        **/
     }
 
     private class SingleRow {
