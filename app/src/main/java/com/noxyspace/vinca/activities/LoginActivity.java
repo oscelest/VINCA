@@ -1,10 +1,15 @@
 package com.noxyspace.vinca.activities;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
@@ -25,6 +31,8 @@ import com.noxyspace.vinca.requests.users.RefreshRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.noxyspace.vinca.R.mipmap.vinca_v_logo;
 
 public class LoginActivity extends AppCompatActivity {
 
