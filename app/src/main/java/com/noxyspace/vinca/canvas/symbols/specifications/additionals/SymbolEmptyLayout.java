@@ -8,9 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration.SymbolIterationLayout;

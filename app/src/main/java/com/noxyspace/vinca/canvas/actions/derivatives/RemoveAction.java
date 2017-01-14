@@ -7,7 +7,7 @@ import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.actions.ActionParameter;
 import com.noxyspace.vinca.canvas.actions.ArbitraryAction;
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolEmptyLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
 
 public class RemoveAction extends ArbitraryAction {

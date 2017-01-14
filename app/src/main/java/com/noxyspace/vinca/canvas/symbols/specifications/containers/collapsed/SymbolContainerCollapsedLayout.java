@@ -22,7 +22,7 @@ public class SymbolContainerCollapsedLayout extends SymbolLayout {
         this.setOrientation(LinearLayout.VERTICAL);
 
         if (acceptsDrop) {
-            this.addView(this.header = new SymbolTitle(context, "Header"));
+            this.addView(this.header = new SymbolTitle(context, ""));
         } else {
             this.header = null;
         }
@@ -30,7 +30,7 @@ public class SymbolContainerCollapsedLayout extends SymbolLayout {
         this.addView(this.symbol = symbol);
 
         if (acceptsDrop) {
-            this.addView(this.footer = new SymbolTitle(context, "Footer"));
+            this.addView(this.footer = new SymbolTitle(context, ""));
         } else {
             this.footer = null;
         }

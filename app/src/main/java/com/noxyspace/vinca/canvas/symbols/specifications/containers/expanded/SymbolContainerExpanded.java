@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.specifications.containers;
+package com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded;
 
 import android.content.Context;
 import android.view.Gravity;

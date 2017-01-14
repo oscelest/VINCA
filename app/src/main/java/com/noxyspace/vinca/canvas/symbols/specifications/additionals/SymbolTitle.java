@@ -19,8 +19,8 @@ public class SymbolTitle extends TextView {
         super(context);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, //(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SymbolLayout.SYMBOL_DIMENSION, getResources().getDisplayMetrics()),
-            LinearLayout.LayoutParams.WRAP_CONTENT //(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TEXT_HEIGHT, getResources().getDisplayMetrics())
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
         );
 
         int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SymbolContainerLayout.CONTAINER_MARGIN, getResources().getDisplayMetrics());

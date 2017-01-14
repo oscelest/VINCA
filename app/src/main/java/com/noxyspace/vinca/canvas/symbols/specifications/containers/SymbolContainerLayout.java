@@ -2,20 +2,16 @@ package com.noxyspace.vinca.canvas.symbols.specifications.containers;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.activities.CanvasActivity;
 import com.noxyspace.vinca.canvas.actions.ActionManager;
-import com.noxyspace.vinca.canvas.actions.ActionParameter;
-import com.noxyspace.vinca.canvas.actions.derivatives.AddAction;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolEmptyLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolTitle;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivity;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +37,11 @@ public class SymbolContainerLayout extends SymbolLayout {
 
     public SymbolContainerLayout(Context context, boolean acceptsDrop, boolean collapsed) {
         super(context, acceptsDrop);
+
+        this.setOrientation(LinearLayout.VERTICAL);
+
+        this.header = new SymbolTitle(context, "");
+        this.footer = new SymbolTitle(context, "");
 
         this.symbolExpanded = new SymbolContainerExpanded(context);
         this.symbolCollapsed = null;
@@ -74,14 +75,13 @@ public class SymbolContainerLayout extends SymbolLayout {
 
     public void toggleCollapse() {
         if (this.symbolExpanded != null && this.symbolCollapsed != null) {
-            int index = this.indexOfChild(this.collapsed ? this.symbolCollapsed : this.symbolExpanded);
-            this.removeViewAt(index);
+            this.removeAllViews();
 
             if (this.collapsed) {
-                this.addView(this.symbolExpanded, index);
+                super.addView(this.symbolExpanded, -1);
                 this.collapsed = false;
             } else {
-                this.addView(this.symbolCollapsed, index);
+                this.showCollapsed();
                 this.collapsed = true;
             }
         }
@@ -91,21 +91,23 @@ public class SymbolContainerLayout extends SymbolLayout {
         this.symbolExpanded.createContainerSymbols(start, end, this.isDropAccepted());
         this.symbolCollapsed = collapse;
 
-        //this.setOrientation(LinearLayout.VERTICAL);
-
-//        if (this.isDropAccepted()) {
-//            this.addViewSuper(this.header = new SymbolTitle(getContext(), "fHeader"));
-//        }
-
         if (this.collapsed) {
-            this.addView(this.symbolCollapsed);
+            this.showCollapsed();
         } else {
-            this.addView(this.symbolExpanded);
+            super.addView(this.symbolExpanded, -1);
+        }
+    }
+
+    private void showCollapsed() {
+        if (this.isDropAccepted()) {
+            super.addView(this.header, -1);
         }
 
-//        if (this.isDropAccepted()) {
-//            this.addViewSuper(this.footer = new SymbolTitle(getContext(), "hFooter"));
-//        }
+        super.addView(this.symbolCollapsed, -1);
+
+        if (this.isDropAccepted()) {
+            super.addView(this.footer, -1);
+        }
     }
 
     @Override
@@ -119,24 +121,14 @@ public class SymbolContainerLayout extends SymbolLayout {
     }
 
     public void handleAddView(View view, int index) {
-        if (view == this.symbolExpanded || view == this.symbolCollapsed) {
-            super.addView(view, index);
-        } else {
-            if (index == -1) {
-                this.symbolExpanded.addView(view, this.symbolExpanded.getChildCount() - 1);
+        if (this.symbolExpanded != null) {
+            this.symbolExpanded.addView(view, (index == -1) ? (this.symbolExpanded.getChildCount() - 1) : index);
 
-                if (!(view instanceof SymbolEmptyLayout) && view instanceof SymbolLayout) {
-                    this.symbolExpanded.addView(new SymbolEmptyLayout(getContext()), this.symbolExpanded.getChildCount() - 1);
-                }
-            } else {
-                this.symbolExpanded.addView(view, index);
-
-                if (!(view instanceof SymbolEmptyLayout) && view instanceof SymbolLayout) {
-                    this.symbolExpanded.addView(new SymbolEmptyLayout(getContext()), index + 1);
-                }
+            if (!(view instanceof SymbolEmptyLayout) && view instanceof SymbolLayout) {
+                this.symbolExpanded.addView(new SymbolEmptyLayout(getContext()), (index == -1) ? (this.symbolExpanded.getChildCount() - 1) : (index + 1));
             }
 
-            if (this.collapsed) {
+            if (this.collapsed && !ActionManager.isManagingAction && !CanvasActivity.isLoadingSymbols) {
                 this.makeToast("Added symbol to the collapsed structure");
             }
         }
