@@ -104,7 +104,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setOrientation(LinearLayout.HORIZONTAL);
             this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         } else if (this instanceof SymbolEmptyLayout) {
-            this.setBackgroundColor(Color.RED);
+            //this.setBackgroundColor(Color.RED);
         } else {
             this.setGravity(Gravity.CENTER_VERTICAL);
         }
