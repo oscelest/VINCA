@@ -3,13 +3,11 @@ package com.noxyspace.vinca.canvas.symbols.specifications.figures.project;
 import android.content.Context;
 import android.view.DragEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracket;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration.SymbolIterationLayout;
@@ -38,7 +36,7 @@ public class SymbolProjectLayout extends SymbolContainerLayout {
         if (view != v && !(view instanceof SymbolContainerBracketLayout && view.getParent() == v)) {
             if (view instanceof SymbolProcessLayout || view instanceof SymbolIterationLayout || view instanceof SymbolPauseLayout || view instanceof SymbolDecisionLayout || view instanceof SymbolActivityLayout) {
                 if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
-                    this.moveView(view, v);
+                    ((SymbolLayout)view).moveView(v);
                 } else {
                     if (view instanceof SymbolProcessLayout) {
                         this.addView(new SymbolProcessLayout(getContext()));

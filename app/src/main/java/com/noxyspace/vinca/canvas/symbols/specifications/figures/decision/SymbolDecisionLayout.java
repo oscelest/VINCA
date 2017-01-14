@@ -4,19 +4,15 @@ import android.content.Context;
 import android.view.DragEvent;
 import android.view.View;
 
-import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsedLayout;
 
-public class SymbolDecisionLayout extends SymbolLayout {
-    private SymbolDecision decision;
-
+public class SymbolDecisionLayout extends SymbolContainerCollapsedLayout {
     public SymbolDecisionLayout(Context context) {
         this(context, true);
     }
 
     public SymbolDecisionLayout(Context context, boolean acceptsDrop) {
-        super(context, acceptsDrop);
-
-        this.addView(this.decision = new SymbolDecision(context, acceptsDrop));
+        super(context, new SymbolDecision(context, acceptsDrop), acceptsDrop);
     }
 
     @Override

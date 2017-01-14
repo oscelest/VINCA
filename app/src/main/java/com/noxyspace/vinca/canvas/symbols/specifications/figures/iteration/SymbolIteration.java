@@ -3,7 +3,7 @@ package com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration;
 import android.content.Context;
 
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerCollapsed;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
 
 public class SymbolIteration extends SymbolContainerCollapsed {
     public SymbolIteration(Context context) {

@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.specifications.empty;
+package com.noxyspace.vinca.canvas.symbols.specifications.additionals;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration.SymbolIterationLayout;
@@ -33,10 +34,10 @@ public class SymbolEmptyLayout extends SymbolLayout {
             int index = parent.indexOfChild(v);
 
             if (view instanceof SymbolContainerBracketLayout) {
-                ((SymbolContainerLayout)view.getParent()).resize(view, v);
+                ((SymbolContainerExpanded)view.getParent()).resize(view, v);
             } else {
-                if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
-                    this.moveView(view, parent, index + 1);
+                if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
+                    ((SymbolLayout)view).moveView(parent, index + 1);
                 } else {
                     if (view instanceof SymbolProcessLayout) {
                         parent.addView(new SymbolProcessLayout(getContext()), index + 1);
@@ -48,6 +49,10 @@ public class SymbolEmptyLayout extends SymbolLayout {
                         parent.addView(new SymbolDecisionLayout(getContext()), index + 1);
                     } else if (view instanceof SymbolActivityLayout) {
                         parent.addView(new SymbolActivityLayout(getContext()), index + 1);
+                    }
+
+                    if (parent instanceof SymbolContainerExpanded) {
+                        parent.addView(new SymbolEmptyLayout(getContext()), index + 2);
                     }
                 }
             }

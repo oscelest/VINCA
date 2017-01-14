@@ -109,7 +109,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
             case R.id.undo:
                 if (ActionManager.getInstance().canUndo()) {
-                    System.out.println("Undoing");
                     ActionManager.getInstance().undo();
                 } else {
                     makeToast("Nothing to undo");
@@ -118,7 +117,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
 
             case R.id.redo:
                 if (ActionManager.getInstance().canRedo()) {
-                    System.out.println("Redoing");
                     ActionManager.getInstance().redo();
                 } else {
                     makeToast("Nothing to redo");

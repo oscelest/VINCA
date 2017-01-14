@@ -6,9 +6,8 @@ import android.view.View;
 
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracket;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.pause.SymbolPauseLayout;
@@ -36,11 +35,12 @@ public class SymbolIterationLayout extends SymbolContainerLayout {
     @Override
     protected boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
+        System.out.println("DragDropped on ITeration");
 
         if (view != v && !(view instanceof SymbolContainerBracketLayout && view.getParent() == v)) {
             if (view instanceof SymbolProcessLayout || view instanceof SymbolIterationLayout || view instanceof SymbolPauseLayout || view instanceof SymbolDecisionLayout || view instanceof SymbolActivityLayout) {
                 if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
-                    this.moveView(view, v);
+                    ((SymbolLayout)view).moveView(v);
                 } else {
                     if (view instanceof SymbolProcessLayout) {
                         this.addView(new SymbolProcessLayout(getContext()));

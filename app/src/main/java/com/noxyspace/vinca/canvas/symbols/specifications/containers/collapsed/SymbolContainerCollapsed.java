@@ -1,16 +1,15 @@
-package com.noxyspace.vinca.canvas.symbols.specifications;
+package com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
 
 public class SymbolContainerCollapsed extends ImageView {
     public SymbolContainerCollapsed(Context context, int resId) {
@@ -23,16 +22,13 @@ public class SymbolContainerCollapsed extends ImageView {
         float layoutWidth = SymbolLayout.SYMBOL_DIMENSION * widthScale;
         float layoutHeight = SymbolLayout.SYMBOL_DIMENSION - (2 * SymbolContainerLayout.CONTAINER_MARGIN) * heightScale;
 
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display screen = wm.getDefaultDisplay();
         Point size = new Point();
-        screen.getSize(size);
-        int width = size.x;
-        int height = size.y;
+        ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
 
-        if ((width < 1100 && height < 600) || (width < 600 && height < 1100))  {
+        if ((size.x < 1100 && size.y < 600) || (size.x < 600 && size.y < 1100))  {
             layoutWidth = SymbolLayout.SYMBOL_DIMENSION_SMALL * widthScale;
             layoutHeight = SymbolLayout.SYMBOL_DIMENSION_SMALL - (2 * SymbolContainerLayout.CONTAINER_MARGIN) * heightScale;
+
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 layoutWidth = SymbolLayout.SYMBOL_DIMENSION_SMALL_LANDSCAPE * widthScale;
                 layoutHeight = SymbolLayout.SYMBOL_DIMENSION_SMALL_LANDSCAPE - (2 * SymbolContainerLayout.CONTAINER_MARGIN) * heightScale;

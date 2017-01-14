@@ -31,7 +31,7 @@ public class TimelineLayout extends SymbolLayout {
         if (view != v) {
             if (view instanceof SymbolProjectLayout) {
                 if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
-                    this.moveView(view, v);
+                    ((SymbolLayout)view).moveView(v);
                 } else {
                     this.addView(new SymbolProjectLayout(getContext()));
                 }
