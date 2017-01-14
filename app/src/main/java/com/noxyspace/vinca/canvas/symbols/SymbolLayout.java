@@ -501,7 +501,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 }
             }
         }
-
         return children;
     }
 

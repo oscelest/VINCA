@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuBuilder;
@@ -29,7 +28,6 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.activities.CanvasActivity;
-import com.noxyspace.vinca.activities.CreateDialog;
 import com.noxyspace.vinca.objects.ApplicationObject;
 import com.noxyspace.vinca.objects.DirectoryObject;
 import com.noxyspace.vinca.requests.directory.CreateDirectoryObjectRequest;
@@ -57,8 +55,8 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
 
     private FloatingActionButton fab_folder;
     private FloatingActionButton fab_file;
-
     private FloatingActionButton fab_btn;
+
     private boolean toggled = true;
     private boolean firstRun = true;
 

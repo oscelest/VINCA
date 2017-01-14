@@ -41,8 +41,8 @@
     <!-- settings_dialog_fragment start end-->
 
     <!-- canvas_longpress_dialog start-->
-    <string name="symbolTitle"></string>
-    <string name="symbolDescription"></string>
+    <string name="symbolTitle">Title</string>
+    <string name="symbolDescription">Description</string>
     <!-- canvas_longpress_dialog end-->
 
 
@@ -55,11 +55,10 @@
     <string name="newsTab">News</string>
     <string name="myProjects">My Projects</string>
     <string name="market">Market</string>
-    <string name="folderNamePrompt">Hvad skal mappen hedde?</string>
-    <string name="foldersName">Mappens navn:</string>
+    <string name="foldersName">Name of new folder:</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    <string name="filesName">Filens navn:</string>
+    <string name="filesName">Name of new file:</string>
     <string name="email">Email</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
