@@ -40,7 +40,7 @@ public class SymbolContainerLayout extends SymbolLayout {
 
         this.setOrientation(LinearLayout.VERTICAL);
 
-        this.header = new SymbolTitle(context, "");
+        this.header = new SymbolTitle(context, this.title);
         this.footer = new SymbolTitle(context, "");
 
         this.symbolExpanded = new SymbolContainerExpanded(context);

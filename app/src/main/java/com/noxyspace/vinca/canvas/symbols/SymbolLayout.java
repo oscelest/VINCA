@@ -46,6 +46,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
@@ -55,8 +56,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
     protected static Toast toast = null;
 
-    private String title;
-    private String description;
+    protected String title;
+    protected String description;
 
     private boolean acceptsDrop;
     private int backgroundColor;
@@ -124,7 +125,11 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                     SymbolLayout dragLayout = ((SymbolLayout)dragView);
 
                                     if (dragLayout.isDropAccepted()) {
-                                        dragLayout.longpresSymbolDialog(getContext());
+                                        if (dragLayout instanceof SymbolContainerBracketLayout) {
+                                            ((SymbolLayout)dragLayout.getParent().getParent()).longpresSymbolDialog(getContext());
+                                        } else {
+                                            dragLayout.longpresSymbolDialog(getContext());
+                                        }
                                     }
 
                                     dragView = null;
@@ -164,7 +169,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                         }
                                     } else {
                                         if (v instanceof SymbolContainerBracketLayout && v.getParent() instanceof SymbolContainerExpanded && v.getParent().getParent() instanceof SymbolContainerLayout) {
-                                            makeToast("Project\n\nA project object is....");
+                                            makeToast("Project\n\nA project object is...");
                                         } else if (v instanceof SymbolProcessLayout) {
                                             makeToast("Process\n\nA process object is....");
                                         } else if (v instanceof SymbolIterationLayout) {
@@ -320,7 +325,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 }
 
                 json.put("title", this.title == null ? "" : this.title);
-                json.put("description", this.description == null ? "" : this.title);
+                json.put("description", this.description == null ? "" : this.description);
 
                 JSONArray childArray = new JSONArray();
                 List<View> children = this.fetchChildViews();
@@ -374,6 +379,12 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             if (layout != null) {
                 if (json.has("title")) {
                     layout.title = json.getString("title");
+
+                    if (layout instanceof SymbolContainerCollapsedLayout) {
+                        ((SymbolContainerCollapsedLayout)layout).setHeader(layout.title);
+                    } else if (layout instanceof SymbolContainerLayout) {
+                        ((SymbolContainerLayout)layout).setHeader(layout.title);
+                    }
                 }
 
                 if (json.has("description")) {

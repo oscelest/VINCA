@@ -7,6 +7,6 @@ import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.Sy
 
 public class SymbolPause extends SymbolContainerCollapsed {
     public SymbolPause(Context context) {
-        super(context, R.drawable.pause);
+        super(context, R.drawable.pause, 0.75f, 1.0f);
     }
 }
