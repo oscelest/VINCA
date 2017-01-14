@@ -123,6 +123,10 @@ public class CanvasActivity extends AppCompatActivity implements View.OnDragList
                 }
                 return true;
 
+            case R.id.help:
+
+                return true;
+
             case R.id.save:
                 this.updateDirectoryObject(toJsonObject().toString());
                 this.makeToast("Saving canvas data...");

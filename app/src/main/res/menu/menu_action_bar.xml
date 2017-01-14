@@ -12,11 +12,6 @@
         android:icon="@drawable/search_white"
         android:title="Search"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/notifications"
-        android:icon="@drawable/notification_white"
-        android:title="@string/notifications"
-        app:showAsAction="always"/>
 
     <!-- Settings, should always be in the overflow -->
     <item

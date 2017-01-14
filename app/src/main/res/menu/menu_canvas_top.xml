@@ -17,6 +17,13 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/help"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/help"
+        android:state_enabled="true"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/save"
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/save"
