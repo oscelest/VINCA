@@ -1,9 +1,6 @@
-package com.noxyspace.vinca.canvas.symbols.specifications;
+package com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket;
 
 import android.content.Context;
-import android.util.TypedValue;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 

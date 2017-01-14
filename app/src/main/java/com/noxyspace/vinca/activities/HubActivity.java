@@ -131,8 +131,6 @@ public class HubActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.app_bar_search:
                 return true;
-            case R.id.notifications:
-                return true;
             case R.id.action_settings:
                 return true;
             case R.id.log_out:

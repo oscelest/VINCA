@@ -10,12 +10,11 @@ import com.noxyspace.vinca.canvas.actions.ActionManager;
 import com.noxyspace.vinca.canvas.actions.ActionParameter;
 import com.noxyspace.vinca.canvas.actions.derivatives.RemoveAction;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.SymbolContainerLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
-import com.noxyspace.vinca.objects.ApplicationObject;
 
 public class SymbolTrashcanLayout extends SymbolLayout {
     public static final int HIGHLIGHT_COLOR = 0xFFFF4C4C;
@@ -55,12 +54,12 @@ public class SymbolTrashcanLayout extends SymbolLayout {
                     }
                 } else if (view instanceof SymbolContainerBracketLayout) {
                     this.makeToast("Cannot delete container brackets");
-                } else if (parent instanceof SymbolLayout) {
+                } else if (parent instanceof SymbolContainerExpanded) {
                     ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter(parent, parent.indexOfChild(view))));
-                    this.removeViews(view);
+                    ((SymbolLayout)view).removeViews();
                     this.makeToast("Removed symbol");
                 } else {
-                    this.makeToast("Cannot delete this symbol");
+                    this.makeToast("Cannot delete this symbol: " + view.getClass().getSimpleName() + ", with parent: " + parent.getClass().getSimpleName());
                 }
             }
         } else {

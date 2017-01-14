@@ -85,6 +85,7 @@
     <!-- Strings related to CanvasActivity-->
     <string name="undo">Undo</string>
     <string name="redo">Redo</string>
+    <string name="help">Help</string>
     <string name="save">Save</string>
 
 </resources>

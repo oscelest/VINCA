@@ -4,19 +4,15 @@ import android.content.Context;
 import android.view.DragEvent;
 import android.view.View;
 
-import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsedLayout;
 
-public class SymbolPauseLayout extends SymbolLayout {
-    private SymbolPause pause;
-
+public class SymbolPauseLayout extends SymbolContainerCollapsedLayout {
     public SymbolPauseLayout(Context context) {
         this(context, true);
     }
 
     public SymbolPauseLayout(Context context, boolean acceptsDrop) {
-        super(context, acceptsDrop);
-
-        this.addView(this.pause = new SymbolPause(context));
+        super(context, new SymbolPause(context), acceptsDrop);
     }
 
     @Override

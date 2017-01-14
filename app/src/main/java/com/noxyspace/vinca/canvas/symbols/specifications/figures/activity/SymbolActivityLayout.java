@@ -6,10 +6,10 @@ import android.view.View;
 
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsedLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.method.SymbolMethodLayout;
 
-public class SymbolActivityLayout extends SymbolLayout {
-    private SymbolActivity activity;
+public class SymbolActivityLayout extends SymbolContainerCollapsedLayout {
     private boolean method;
 
     public SymbolActivityLayout(Context context) {
@@ -17,10 +17,8 @@ public class SymbolActivityLayout extends SymbolLayout {
     }
 
     public SymbolActivityLayout(Context context, boolean acceptsDrop) {
-        super(context, acceptsDrop);
-
+        super(context, new SymbolActivity(context), acceptsDrop);
         this.method = false;
-        this.addView(this.activity = new SymbolActivity(context));
     }
 
     public boolean hasMethod() {
@@ -28,7 +26,7 @@ public class SymbolActivityLayout extends SymbolLayout {
     }
 
     public void setMethod(boolean method) {
-        this.activity.setImageResource((this.method = method) ? R.drawable.activity_method : R.drawable.activity);
+        this.symbol.setImageResource((this.method = method) ? R.drawable.activity_method : R.drawable.activity);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class SymbolActivityLayout extends SymbolLayout {
         if (view != v) {
             if (view instanceof SymbolMethodLayout) {
                 if ((view instanceof SymbolLayout) && ((SymbolLayout) view).isDropAccepted()) {
-                    this.moveView(view, v);
+                    ((SymbolLayout)view).moveView(v);
                 } else {
                     if (!this.hasMethod()) {
                         this.setMethod(true);

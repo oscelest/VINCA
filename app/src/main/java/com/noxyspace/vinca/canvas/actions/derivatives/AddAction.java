@@ -24,7 +24,7 @@ public class AddAction extends ArbitraryAction {
         if (view instanceof TimelineLayout) {
             ((ViewGroup)view.getParent()).removeView(view);
         } else if (view.getParent() instanceof SymbolLayout) {
-            ((SymbolLayout)view).removeViews(view);
+            ((SymbolLayout)view).removeViews();
         }
     }
 }
