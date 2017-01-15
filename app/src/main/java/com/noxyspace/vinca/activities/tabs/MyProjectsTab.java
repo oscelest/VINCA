@@ -263,9 +263,9 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                         content.isNull("parent") ? null : content.getJSONObject("parent").getString("_id"),
                                         content.getString("name"),
                                         content.getBoolean("folder"),
-                                        content.getInt("time_created"),
-                                        content.getInt("time_updated"),
-                                        content.getInt("time_deleted"))
+                                        content.getLong("time_created"),
+                                        content.getLong("time_updated"),
+                                        content.getLong("time_deleted"))
                                 );
 
                                 if (adapter != null) {
@@ -383,8 +383,8 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                             dirObj.getString("name"),
                                             dirObj.getBoolean("folder"),
                                             dirObj.getLong("time_created"),
-                                            dirObj.getInt("time_updated"),
-                                            dirObj.getInt("time_deleted"))
+                                            dirObj.getLong("time_updated"),
+                                            dirObj.getLong("time_deleted"))
                                     );
                                 }
 
