@@ -474,12 +474,6 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     return true;
 
                                 case R.id.save:
-                                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-                                    Point size = new Point();
-                                    display.getSize(size);
-                                    int width = size.x;
-                                    int height = size.y;
-                                    Toast.makeText(getActivity(), "Width: " + width + "\nHeight: " + height, Toast.LENGTH_SHORT).show();
                                     //shareDirectoryObject(directoryObjects.get(position));
                                     return true;
 
