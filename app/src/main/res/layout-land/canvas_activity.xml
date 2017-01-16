@@ -11,7 +11,7 @@
     <android.support.v7.widget.Toolbar
         app:theme="@style/toolBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
@@ -48,7 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingBottom="50dp"
                 android:gravity="center_vertical"
                 android:id="@+id/canvas">
             </LinearLayout>

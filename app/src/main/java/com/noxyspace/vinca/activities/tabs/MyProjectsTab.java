@@ -476,19 +476,19 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     return true;
 
                                 case R.id.move:
-                                    ArrayAdapter<DirectoryObject> dirObj = new ArrayAdapter<DirectoryObject>();
-
-                                    dirObj.addAll(directoryObjects);
-
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                    builder.setTitle(R.string.dialog_move_title);
-
-                                    builder.setAdapter((ListAdapter) dirObj, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    });
+//                                    ArrayAdapter<DirectoryObject> dirObj = new ArrayAdapter<DirectoryObject>();
+//
+//                                    dirObj.addAll(directoryObjects);
+//
+//                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                                    builder.setTitle(R.string.dialog_move_title);
+//
+//                                    builder.setAdapter((ListAdapter) dirObj, new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//
+//                                        }
+//                                    });
 
                                     //shareDirectoryObject(directoryObjects.get(position));
                                     return true;
