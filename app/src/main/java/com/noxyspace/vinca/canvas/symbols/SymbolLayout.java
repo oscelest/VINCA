@@ -99,8 +99,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setPadding(0, 0, padding, 0);
             this.setMinimumHeight(padding);
             this.setOrientation(LinearLayout.HORIZONTAL);
-        } else if (this instanceof SymbolEmptyLayout) {
-            //this.setBackgroundColor(Color.RED);
         } else {
             this.setGravity(Gravity.CENTER_VERTICAL);
         }
