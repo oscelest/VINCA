@@ -99,16 +99,17 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setPadding(0, 0, padding, 0);
             this.setMinimumHeight(padding);
             this.setOrientation(LinearLayout.HORIZONTAL);
-            this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         } else if (this instanceof SymbolEmptyLayout) {
             //this.setBackgroundColor(Color.RED);
         } else {
             this.setGravity(Gravity.CENTER_VERTICAL);
         }
 
-        if (!(this instanceof SymbolContainerBracketLayout)) {
-            this.setOnDragListener(this);
+        if (this.acceptsDrop) {
+            this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
         }
+
+        this.setOnDragListener(this);
 
         if (!(this instanceof SymbolEmptyLayout)) {
             this.setOnTouchListener(new View.OnTouchListener() {
@@ -260,10 +261,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     }
 
     public void moveView(View targetView, int targetIndex) {
-        this.moveView(targetView, targetIndex, true);
-    }
-
-    public void moveView(View targetView, int targetIndex, boolean record) {
         isMovingSymbol = true;
 
         boolean isContainer = ((this instanceof SymbolContainerLayout) && (targetView instanceof SymbolContainerExpanded));
@@ -272,9 +269,9 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             List<View> children = this.fetchAllChildViews();
 
             if (!children.contains(targetView)) {
-                if (record) {
+                if (!ActionManager.isManagingAction) {
                     ActionManager.getInstance().add(new MoveAction(this,
-                        new ActionParameter((View) this.getParent(), ((ViewGroup) this.getParent()).indexOfChild(this)),
+                        new ActionParameter((View) this.getParent(), ((ViewGroup)this.getParent()).indexOfChild(this)),
                         new ActionParameter(targetView, targetIndex))
                     );
                 }
@@ -514,12 +511,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         builder.show();
     }
 
-    private void onHighlightEnter(View v) {
+    protected void onHighlightEnter(View v) {
         Drawable background = v.getBackground();
-
-        if (background == null) {
-            background = ((View)v.getParent()).getBackground();
-        }
 
         if (background != null && background instanceof ColorDrawable) {
             this.backgroundColor = ((ColorDrawable)background).getColor();
@@ -529,12 +522,10 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             } else {
                 v.setBackgroundColor(TimelineLayout.HIGHLIGHT_COLOR);
             }
-
-            this.onEnterSymbol();
         }
     }
 
-    private void onHighlightExited(View v) {
+    protected void onHighlightExited(View v) {
         if (this.backgroundColor != 0) {
             v.setBackgroundColor(this.backgroundColor);
             this.backgroundColor = 0;

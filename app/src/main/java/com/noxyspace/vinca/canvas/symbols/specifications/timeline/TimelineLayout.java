@@ -25,7 +25,7 @@ public class TimelineLayout extends SymbolLayout {
     }
 
     @Override
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
 
         if (view != v) {

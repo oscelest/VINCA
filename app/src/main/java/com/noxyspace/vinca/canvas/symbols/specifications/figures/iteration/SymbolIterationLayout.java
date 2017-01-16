@@ -33,7 +33,7 @@ public class SymbolIterationLayout extends SymbolContainerLayout {
     }
 
     @Override
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
         System.out.println("DragDropped on ITeration");
 

@@ -16,10 +16,10 @@ public class MoveAction extends ArbitraryAction {
     }
 
     public void redo() {
-        ((SymbolLayout)view).moveView(newPosition.getParent(), newPosition.getIndex(), false);
+        ((SymbolLayout)this.view).moveView(this.newPosition.getParent(), this.newPosition.getIndex());
     }
 
     public void undo() {
-        ((SymbolLayout)view).moveView(oldPosition.getParent(), oldPosition.getIndex(), false);
+        ((SymbolLayout)this.view).moveView(this.oldPosition.getParent(), this.oldPosition.getIndex());
     }
 }

@@ -39,7 +39,7 @@ public class SymbolLayoutDragHandler extends LinearLayout implements View.OnDrag
         return false;
     }
 
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         return false;
     }
 

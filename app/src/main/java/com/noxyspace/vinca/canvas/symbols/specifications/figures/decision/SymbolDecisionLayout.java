@@ -16,7 +16,7 @@ public class SymbolDecisionLayout extends SymbolContainerCollapsedLayout {
     }
 
     @Override
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         if ((View)event.getLocalState() != v) {
             this.makeToast("Decision objects does not accept children");
         }

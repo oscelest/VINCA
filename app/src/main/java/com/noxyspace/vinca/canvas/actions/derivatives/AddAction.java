@@ -17,14 +17,10 @@ public class AddAction extends ArbitraryAction {
     }
 
     public void redo() {
-        ((ViewGroup)position.getParent()).addView(view, position.getIndex());
+        ((ViewGroup)this.position.getParent()).addView(this.view, position.getIndex());
     }
 
     public void undo() {
-        if (view instanceof TimelineLayout) {
-            ((ViewGroup)view.getParent()).removeView(view);
-        } else if (view.getParent() instanceof SymbolLayout) {
-            ((SymbolLayout)view).removeViews();
-        }
+        ((ViewGroup)this.position.getParent()).removeView(this.view);
     }
 }

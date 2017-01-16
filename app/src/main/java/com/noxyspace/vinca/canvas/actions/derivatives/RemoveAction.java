@@ -19,18 +19,10 @@ public class RemoveAction extends ArbitraryAction {
     }
 
     public void redo() {
-        if (this.view instanceof TimelineLayout) {
-            ((ViewGroup)this.view.getParent()).removeView(this.view);
-        } else if (this.view instanceof SymbolLayout && this.view.getParent() instanceof SymbolContainerExpanded) {
-            ((SymbolLayout)this.view).removeViews();
-        }
+        ((ViewGroup)this.position.getParent()).removeView(this.view);
     }
 
     public void undo() {
-        ((ViewGroup)position.getParent()).addView(this.view, position.getIndex());
-
-        if (position.getParent() instanceof SymbolContainerExpanded) {
-            ((SymbolContainerExpanded)position.getParent()).addView(new SymbolEmptyLayout(position.getParent().getContext()), position.getIndex() + 1);
-        }
+        ((ViewGroup)this.position.getParent()).addView(this.view, position.getIndex());
     }
 }
