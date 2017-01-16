@@ -104,7 +104,11 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
         }
 
         if (this.acceptsDrop) {
-            this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
+            if (this instanceof SymbolTrashcanLayout) {
+                this.setBackgroundColor(getResources().getColor(R.color.lightGrey));
+            } else if (!(this instanceof SymbolTrashcanLayout)) {
+                this.setBackgroundColor(TimelineLayout.BACKGROUND_COLOR);
+            }
         }
 
         this.setOnDragListener(this);
