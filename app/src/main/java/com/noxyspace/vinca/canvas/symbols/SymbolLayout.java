@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -147,8 +148,6 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    System.out.println("Event: (" + event.getAction() + "): " + event.getX() + ", " + event.getY());
-
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             this.x = event.getX();

@@ -25,6 +25,6 @@ public class SymbolMethodLayout extends SymbolLayout {
             this.makeToast("Method objects does not accept children");
         }
 
-        return false;
+        return true;
     }
 }

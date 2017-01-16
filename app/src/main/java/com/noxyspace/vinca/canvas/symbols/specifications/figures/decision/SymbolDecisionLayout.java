@@ -21,6 +21,6 @@ public class SymbolDecisionLayout extends SymbolContainerCollapsedLayout {
             this.makeToast("Decision objects does not accept children");
         }
 
-        return false;
+        return true;
     }
 }

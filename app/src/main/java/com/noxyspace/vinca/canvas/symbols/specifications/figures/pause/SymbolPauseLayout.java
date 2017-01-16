@@ -21,6 +21,6 @@ public class SymbolPauseLayout extends SymbolContainerCollapsedLayout {
             this.makeToast("Pause objects does not accept children");
         }
 
-        return false;
+        return true;
     }
 }
