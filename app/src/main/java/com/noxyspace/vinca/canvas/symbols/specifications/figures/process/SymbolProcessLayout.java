@@ -33,7 +33,7 @@ public class SymbolProcessLayout extends SymbolContainerLayout {
     }
 
     @Override
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
 
         if (view != v && !(view instanceof SymbolContainerBracketLayout && view.getParent() == v)) {

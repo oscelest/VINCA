@@ -1,6 +1,7 @@
 package com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;

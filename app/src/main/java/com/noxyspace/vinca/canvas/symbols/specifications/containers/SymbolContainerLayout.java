@@ -1,11 +1,15 @@
 package com.noxyspace.vinca.canvas.symbols.specifications.containers;
 
 import android.content.Context;
+import android.view.DragEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.activities.CanvasActivity;
 import com.noxyspace.vinca.canvas.actions.ActionManager;
+import com.noxyspace.vinca.canvas.actions.ActionParameter;
+import com.noxyspace.vinca.canvas.actions.derivatives.AddAction;
+import com.noxyspace.vinca.canvas.actions.derivatives.RemoveAction;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolEmptyLayout;
@@ -122,6 +126,10 @@ public class SymbolContainerLayout extends SymbolLayout {
 
     public void handleAddView(View view, int index) {
         if (this.symbolExpanded != null) {
+            if (!ActionManager.isManagingAction && !CanvasActivity.isLoadingSymbols) {
+                ActionManager.getInstance().add(new AddAction(view, new ActionParameter(this, index)));
+            }
+
             this.symbolExpanded.addView(view, (index == -1) ? (this.symbolExpanded.getChildCount() - 1) : index);
 
             if (!(view instanceof SymbolEmptyLayout) && view instanceof SymbolLayout) {
@@ -141,6 +149,10 @@ public class SymbolContainerLayout extends SymbolLayout {
         } else {
             int index = this.symbolExpanded.indexOfChild(view);
             SymbolLayout empty = (SymbolLayout)this.symbolExpanded.getChildAt(index + 1);
+
+            if (!ActionManager.isManagingAction && !CanvasActivity.isLoadingSymbols) {
+                ActionManager.getInstance().add(new RemoveAction(view, new ActionParameter(this, index)));
+            }
 
             this.symbolExpanded.removeView(view);
             this.symbolExpanded.removeView(empty);

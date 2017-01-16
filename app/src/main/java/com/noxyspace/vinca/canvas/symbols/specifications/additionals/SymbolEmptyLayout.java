@@ -25,7 +25,7 @@ public class SymbolEmptyLayout extends SymbolLayout {
     }
 
     @Override
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
         ViewGroup parent = (ViewGroup)v.getParent();
 
@@ -34,10 +34,12 @@ public class SymbolEmptyLayout extends SymbolLayout {
 
             if (view instanceof SymbolContainerBracketLayout) {
                 ((SymbolContainerExpanded)view.getParent()).resize(view, v);
-            } else {
-                if ((view instanceof SymbolLayout) && ((SymbolLayout)view).isDropAccepted()) {
+            } else if (view instanceof SymbolLayout) {
+                if (((SymbolLayout)view).isDropAccepted()) {
                     ((SymbolLayout)view).moveView(parent, index + 1);
-                } else {
+                } else if (parent instanceof SymbolContainerExpanded) {
+                    parent = ((ViewGroup)parent.getParent());
+
                     if (view instanceof SymbolProcessLayout) {
                         parent.addView(new SymbolProcessLayout(getContext()), index + 1);
                     } else if (view instanceof SymbolIterationLayout) {
@@ -48,10 +50,6 @@ public class SymbolEmptyLayout extends SymbolLayout {
                         parent.addView(new SymbolDecisionLayout(getContext()), index + 1);
                     } else if (view instanceof SymbolActivityLayout) {
                         parent.addView(new SymbolActivityLayout(getContext()), index + 1);
-                    }
-
-                    if (parent instanceof SymbolContainerExpanded) {
-                        parent.addView(new SymbolEmptyLayout(getContext()), index + 2);
                     }
                 }
             }

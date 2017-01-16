@@ -16,11 +16,11 @@ public class SymbolPauseLayout extends SymbolContainerCollapsedLayout {
     }
 
     @Override
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         if ((View)event.getLocalState() != v) {
             this.makeToast("Pause objects does not accept children");
         }
 
-        return false;
+        return true;
     }
 }

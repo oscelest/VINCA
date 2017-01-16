@@ -30,7 +30,7 @@ public class SymbolActivityLayout extends SymbolContainerCollapsedLayout {
     }
 
     @Override
-    protected boolean onDragDrop(View v, DragEvent event) {
+    public boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
 
         if (view != v) {
