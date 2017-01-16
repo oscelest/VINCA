@@ -3,6 +3,7 @@ package com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ public class SymbolContainerCollapsed extends ImageView {
         Point size = new Point();
         ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
 
-        if ((size.x < 1100 && size.y < 600) || (size.x < 600 && size.y < 1100))  {
+        if ((size.x < 1100 && size.y < 600) || (size.x < 600 && size.y < 1100) || Build.MODEL.equals("GT-I9505"))  {
             layoutWidth = SymbolLayout.SYMBOL_DIMENSION_SMALL * widthScale;
             layoutHeight = SymbolLayout.SYMBOL_DIMENSION_SMALL - (2 * SymbolContainerLayout.CONTAINER_MARGIN) * heightScale;
 
