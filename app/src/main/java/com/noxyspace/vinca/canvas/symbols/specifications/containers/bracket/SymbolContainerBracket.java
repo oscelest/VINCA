@@ -3,6 +3,7 @@ package com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -24,7 +25,7 @@ public class SymbolContainerBracket extends ImageView {
         int height = size.y;
 
         LinearLayout.LayoutParams params;
-        if ((width < 1100 && height < 600) || (width < 600 && height < 1100))  {
+        if ((width < 1100 && height < 600) || (width < 600 && height < 1100) || Build.MODEL.equals("GT-I9505"))  {
             int dimens;
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 dimens = SymbolLayout.SYMBOL_DIMENSION_SMALL_LANDSCAPE;

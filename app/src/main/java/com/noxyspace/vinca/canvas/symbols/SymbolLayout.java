@@ -144,6 +144,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    System.out.println("Event: (" + event.getAction() + "): " + event.getX() + ", " + event.getY());
+
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             this.x = event.getX();
@@ -199,7 +201,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                             break;
 
                         case MotionEvent.ACTION_MOVE:
-                            if (this.dragView != null && Math.abs(this.x - event.getX()) > 10 && Math.abs(this.y - event.getY()) > 10 && !(this.dragView instanceof SymbolTrashcanLayout)) {
+                            if (this.dragView != null && Math.abs(this.x - event.getX()) > 1 && Math.abs(this.y - event.getY()) > 1 && !(this.dragView instanceof SymbolTrashcanLayout)) {
                                 handler.removeCallbacks(longPressHandler);
 
                                 if (this.dragView instanceof SymbolContainerBracketLayout) {
