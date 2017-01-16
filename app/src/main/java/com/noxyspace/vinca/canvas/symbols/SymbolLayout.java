@@ -114,6 +114,9 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
             this.setOnTouchListener(new View.OnTouchListener() {
                 final Handler handler = new Handler();
 
+                float x;
+                float y;
+
                 View dragView;
 
                 Runnable longPressHandler = new Runnable() {
@@ -143,6 +146,8 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
+                            this.x = event.getX();
+                            this.y = event.getY();
                             this.dragView = v;
                             handler.postDelayed(longPressHandler, 500);
                             return true;
@@ -194,7 +199,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                             break;
 
                         case MotionEvent.ACTION_MOVE:
-                            if (this.dragView != null && !(this.dragView instanceof SymbolTrashcanLayout)) {
+                            if (this.dragView != null && Math.abs(this.x - event.getX()) > 10 && Math.abs(this.y - event.getY()) > 10 && !(this.dragView instanceof SymbolTrashcanLayout)) {
                                 handler.removeCallbacks(longPressHandler);
 
                                 if (this.dragView instanceof SymbolContainerBracketLayout) {
