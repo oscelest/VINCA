@@ -87,7 +87,7 @@
         <View
             android:id="@+id/fill"
             android:layout_width="0dp"
-            android:layout_height="@dimen/fab_space"
+            android:layout_height="@dimen/fab_layout"
             android:layout_alignParentBottom="true" />
 
 
@@ -97,7 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/fab_plus"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/fab_space"
             android:layout_marginRight="@dimen/fab_layout"
             android:scaleX="0.8"
             android:scaleY="0.8"
@@ -113,7 +112,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/fab_folder"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/fab_space"
             android:layout_marginRight="@dimen/fab_layout"
             android:scaleX="0.8"
             android:scaleY="0.8"

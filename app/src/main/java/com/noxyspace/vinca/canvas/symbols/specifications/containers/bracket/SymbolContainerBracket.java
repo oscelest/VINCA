@@ -25,13 +25,8 @@ public class SymbolContainerBracket extends ImageView {
         int height = size.y;
 
         LinearLayout.LayoutParams params;
-        if ((width < 1100 && height < 600) || (width < 600 && height < 1100) || Build.MODEL.equals("GT-I9505"))  {
-            int dimens;
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                dimens = SymbolLayout.SYMBOL_DIMENSION_SMALL_LANDSCAPE;
-            } else {
-                dimens = SymbolLayout.SYMBOL_DIMENSION_SMALL;
-            }
+        if ((width == 1920 && height == 1080) || (width == 1080 && height == 1920))  {
+            int dimens = SymbolLayout.SYMBOL_DIMENSION_SMALL;
 
             params = new LinearLayout.LayoutParams(
                 (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dimens / 2, getResources().getDisplayMetrics()),

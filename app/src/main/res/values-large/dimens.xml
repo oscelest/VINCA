@@ -15,5 +15,5 @@
     <dimen name="symbol_bar_icon_size">75dp</dimen>
 
     <dimen name="fab_space">5dp</dimen>
-    <dimen name="fab_layout">7dp</dimen>
+    <dimen name="fab_layout">15dp</dimen>
 </resources>

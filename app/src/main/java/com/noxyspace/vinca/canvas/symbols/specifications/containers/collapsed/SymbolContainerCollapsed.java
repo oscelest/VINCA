@@ -26,14 +26,9 @@ public class SymbolContainerCollapsed extends ImageView {
         Point size = new Point();
         ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
 
-        if ((size.x < 1100 && size.y < 600) || (size.x < 600 && size.y < 1100) || Build.MODEL.equals("GT-I9505"))  {
+        if ((size.x == 1920 && size.y == 1080) || (size.x == 1080 && size.y == 1920))  {
             layoutWidth = SymbolLayout.SYMBOL_DIMENSION_SMALL * widthScale;
             layoutHeight = SymbolLayout.SYMBOL_DIMENSION_SMALL - (2 * SymbolContainerLayout.CONTAINER_MARGIN) * heightScale;
-
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                layoutWidth = SymbolLayout.SYMBOL_DIMENSION_SMALL_LANDSCAPE * widthScale;
-                layoutHeight = SymbolLayout.SYMBOL_DIMENSION_SMALL_LANDSCAPE - (2 * SymbolContainerLayout.CONTAINER_MARGIN) * heightScale;
-            }
         }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

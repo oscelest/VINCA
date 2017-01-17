@@ -52,7 +52,6 @@ import java.util.Objects;
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
     public static final int SYMBOL_DIMENSION_SMALL = 30;
-    public static final int SYMBOL_DIMENSION_SMALL_LANDSCAPE = 40;
     private static boolean isMovingSymbol;
 
     protected static Toast toast = null;
