@@ -476,27 +476,14 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     return true;
 
                                 case R.id.move:
-                                    new MoveFragment().show(getActivity().getSupportFragmentManager(), null);
-
-//                                    MoveFragment moveFrag = new MoveFragment();
-//
-//                                    getFragmentManager().beginTransaction().add(R.id.fragment_frame, moveFrag).addToBackStack(null).commit();
-
-//                                    ArrayAdapter<DirectoryObject> dirObj = new ArrayAdapter<DirectoryObject>();
-//
-//                                    dirObj.addAll(directoryObjects);
-//
-//                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                                    builder.setTitle(R.string.dialog_move_title);
-//
-//                                    builder.setAdapter((ListAdapter) dirObj, new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//
-//                                        }
-//                                    });
-
-                                    //shareDirectoryObject(directoryObjects.get(position));
+                                    String id = directoryObjects.get(position).getId();
+                                    boolean isFolder = directoryObjects.get(position).isFolder();
+                                    MoveFragment moveFrag = new MoveFragment();
+                                    Bundle args = new Bundle();
+                                    args.putString("ID", id);
+                                    args.putBoolean("IS_FOLDER", isFolder);
+                                    moveFrag.setArguments(args);
+                                    moveFrag.show(getActivity().getSupportFragmentManager(), null);
                                     return true;
 
                                 case R.id.delete:

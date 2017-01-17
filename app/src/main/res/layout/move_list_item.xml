@@ -6,7 +6,7 @@
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
     android:paddingLeft="@dimen/activity_margin"
-    android:paddingRight="@dimen/activity_margin">
+    android:paddingRight="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
