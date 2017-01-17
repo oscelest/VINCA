@@ -476,6 +476,12 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     return true;
 
                                 case R.id.move:
+                                    new MoveFragment().show(getActivity().getSupportFragmentManager(), null);
+
+//                                    MoveFragment moveFrag = new MoveFragment();
+//
+//                                    getFragmentManager().beginTransaction().add(R.id.fragment_frame, moveFrag).addToBackStack(null).commit();
+
 //                                    ArrayAdapter<DirectoryObject> dirObj = new ArrayAdapter<DirectoryObject>();
 //
 //                                    dirObj.addAll(directoryObjects);
