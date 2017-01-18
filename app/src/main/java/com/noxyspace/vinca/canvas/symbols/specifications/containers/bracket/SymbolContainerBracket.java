@@ -22,7 +22,7 @@ public class SymbolContainerBracket extends ImageView {
 
         LinearLayout.LayoutParams params;
 
-        if ((size.x == 1920 && size.y == 1080) || (size.x == 1080 && size.y == 1920)))  {
+        if ((size.x == 1920 && size.y == 1080) || (size.x == 1080 && size.y == 1920))  {
             int dimens = SymbolLayout.SYMBOL_DIMENSION_SMALL;
 
             params = new LinearLayout.LayoutParams(
