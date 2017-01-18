@@ -23,6 +23,8 @@ public class SymbolTrashcanLayout extends SymbolLayout {
     public static final int HIGHLIGHT_COLOR = 0xFFFF4C4C;
     public static final int HIGHLIGHT_COLOR_1 = Color.BLACK;
 
+    private SymbolContainerCollapsed trashcan;
+
     public SymbolTrashcanLayout(Context context) {
         this(context, true);
     }
@@ -30,7 +32,8 @@ public class SymbolTrashcanLayout extends SymbolLayout {
     public SymbolTrashcanLayout(Context context, boolean acceptsDrop) {
         super(context, acceptsDrop);
 
-        this.addView(new SymbolContainerCollapsed(context, R.drawable.trashcan_symbol));
+        this.addView(this.trashcan = new SymbolContainerCollapsed(context, android.R.drawable.ic_menu_delete));
+        this.trashcan.setColorFilter(Color.BLACK);
     }
 
     @Override
