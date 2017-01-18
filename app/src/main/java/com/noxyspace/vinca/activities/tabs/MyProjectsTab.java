@@ -3,7 +3,6 @@ package com.noxyspace.vinca.activities.tabs;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
@@ -11,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -19,13 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.noxyspace.vinca.R;
@@ -104,7 +99,6 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
         firstRun = false;
     }
 
-    //TODO:
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
@@ -478,7 +472,7 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                 case R.id.move:
                                     String id = directoryObjects.get(position).getId();
                                     boolean isFolder = directoryObjects.get(position).isFolder();
-                                    MoveFragment moveFrag = new MoveFragment();
+                                    MoveDialogFragment moveFrag = new MoveDialogFragment();
                                     Bundle args = new Bundle();
                                     args.putString("ID", id);
                                     args.putBoolean("IS_FOLDER", isFolder);

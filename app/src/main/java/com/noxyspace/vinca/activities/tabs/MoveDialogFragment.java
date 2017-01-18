@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MoveFragment extends DialogFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class MoveDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
     private List<DirectoryObject> directoryObjects = new ArrayList<>();
     private List<String> folderNames = new ArrayList<>();
     private DirectoryObject directoryObject;

@@ -323,8 +323,6 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
  }
 
  protected void onPostExecute(Bitmap feed) {
- // TODO: check this.exception
- // TODO: do something with the feed
  }
  }
 
