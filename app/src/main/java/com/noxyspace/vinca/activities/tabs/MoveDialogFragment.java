@@ -71,10 +71,10 @@ public class MoveDialogFragment extends DialogFragment implements AdapterView.On
                 } else {
                     if (currentFolder.getText().toString().equals("Home")) {
                         moveDirectoryObject(objectToMoveID, null);
-                        Toast.makeText(getActivity(), "The folder is moved - if", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "The folder has been moved", Toast.LENGTH_SHORT).show();
                     } else {
                         moveDirectoryObject(objectToMoveID, folderToMoveTo);
-                        Toast.makeText(getActivity(), "The folder is moved - else", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "The folder has been moved", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
