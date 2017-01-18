@@ -14,7 +14,6 @@ import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolMethodLay
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.bar.trashcan.SymbolTrashcanLayout;
 
 public class SymbolBar extends Fragment {
     @Override

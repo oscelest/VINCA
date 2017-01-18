@@ -36,7 +36,7 @@ import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolMethodLay
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolPauseLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProcessLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProjectLayout;
-import com.noxyspace.vinca.canvas.symbols.bar.trashcan.SymbolTrashcanLayout;
+import com.noxyspace.vinca.canvas.symbols.bar.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 
@@ -47,7 +47,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SymbolLayout extends SymbolLayoutDragHandler {
+public abstract class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
     public static final int SYMBOL_DIMENSION_SMALL = 30;
     private static boolean isMovingSymbol;

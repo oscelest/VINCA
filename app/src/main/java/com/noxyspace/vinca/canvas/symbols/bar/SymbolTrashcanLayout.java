@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.bar.trashcan;
+package com.noxyspace.vinca.canvas.symbols.bar;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,11 +6,13 @@ import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.actions.ActionManager;
 import com.noxyspace.vinca.canvas.actions.ActionParameter;
 import com.noxyspace.vinca.canvas.actions.derivatives.RemoveAction;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpandedLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolActivityLayout;
@@ -21,8 +23,6 @@ public class SymbolTrashcanLayout extends SymbolLayout {
     public static final int HIGHLIGHT_COLOR = 0xFFFF4C4C;
     public static final int HIGHLIGHT_COLOR_1 = Color.BLACK;
 
-    private SymbolTrashcan trashcan;
-
     public SymbolTrashcanLayout(Context context) {
         this(context, true);
     }
@@ -30,7 +30,7 @@ public class SymbolTrashcanLayout extends SymbolLayout {
     public SymbolTrashcanLayout(Context context, boolean acceptsDrop) {
         super(context, acceptsDrop);
 
-        this.addView(this.trashcan = new SymbolTrashcan(context));
+        this.addView(new SymbolContainerCollapsed(context, R.drawable.trashcan_symbol));
     }
 
     @Override
