@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpandedLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration.SymbolIterationLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProcessLayout;
 
 public class SymbolEmptyLayout extends SymbolLayout {
     public static final int WIDTH_COLLAPSED = 10;
@@ -33,11 +33,11 @@ public class SymbolEmptyLayout extends SymbolLayout {
             int index = parent.indexOfChild(v);
 
             if (view instanceof SymbolContainerBracketLayout) {
-                ((SymbolContainerExpanded)view.getParent()).resize(view, v);
+                ((SymbolContainerExpandedLayout)view.getParent()).resize(view, v);
             } else if (view instanceof SymbolLayout) {
                 if (((SymbolLayout)view).isDropAccepted()) {
                     ((SymbolLayout)view).moveView(parent, index + 1);
-                } else if (parent instanceof SymbolContainerExpanded) {
+                } else if (parent instanceof SymbolContainerExpandedLayout) {
                     parent = ((ViewGroup)parent.getParent());
 
                     if (view instanceof SymbolProcessLayout) {

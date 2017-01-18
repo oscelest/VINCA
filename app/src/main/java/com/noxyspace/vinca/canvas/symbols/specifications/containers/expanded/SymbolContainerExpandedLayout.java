@@ -8,22 +8,16 @@ import android.widget.LinearLayout;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolEmptyLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolTitle;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SymbolContainerExpanded extends LinearLayout {
+public class SymbolContainerExpandedLayout extends LinearLayout {
     public static final int CONTAINER_MARGIN = 5;
 
     private SymbolContainerBracketLayout symbolStart;
     private SymbolContainerBracketLayout symbolEnd;
 
-    public SymbolContainerExpanded(Context context) {
+    public SymbolContainerExpandedLayout(Context context) {
         super(context);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

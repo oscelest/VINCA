@@ -5,7 +5,7 @@ import android.view.DragEvent;
 import android.view.View;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProjectLayout;
 
 public class TimelineLayout extends SymbolLayout {
     public static final int PADDING = 50;

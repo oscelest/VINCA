@@ -11,10 +11,10 @@ import com.noxyspace.vinca.canvas.actions.ActionParameter;
 import com.noxyspace.vinca.canvas.actions.derivatives.RemoveAction;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpandedLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
 
 public class SymbolTrashcanLayout extends SymbolLayout {
@@ -55,7 +55,7 @@ public class SymbolTrashcanLayout extends SymbolLayout {
                     }
                 } else if (view instanceof SymbolContainerBracketLayout) {
                     this.makeToast("Cannot delete container brackets");
-                } else if (parent instanceof SymbolContainerExpanded && parent.getParent() instanceof SymbolContainerLayout) {
+                } else if (parent instanceof SymbolContainerExpandedLayout && parent.getParent() instanceof SymbolContainerLayout) {
                     ((SymbolContainerLayout)parent.getParent()).removeView(view);
                     this.makeToast("Removed symbol");
                 } else {

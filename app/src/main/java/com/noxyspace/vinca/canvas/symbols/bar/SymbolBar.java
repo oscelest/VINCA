@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.noxyspace.vinca.R;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration.SymbolIterationLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.method.SymbolMethodLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.process.SymbolProcessLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolMethodLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.bar.trashcan.SymbolTrashcanLayout;
 
 public class SymbolBar extends Fragment {

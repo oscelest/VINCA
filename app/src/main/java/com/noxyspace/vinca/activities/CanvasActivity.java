@@ -28,7 +28,7 @@ import com.android.volley.Response;
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.actions.ActionParameter;
 import com.noxyspace.vinca.canvas.actions.derivatives.AddAction;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
 import com.noxyspace.vinca.canvas.actions.ActionManager;
 import com.noxyspace.vinca.objects.ApplicationObject;

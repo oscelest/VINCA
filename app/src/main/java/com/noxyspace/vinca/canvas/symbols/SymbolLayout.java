@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -25,18 +24,18 @@ import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.actions.ActionManager;
 import com.noxyspace.vinca.canvas.actions.ActionParameter;
 import com.noxyspace.vinca.canvas.actions.derivatives.MoveAction;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpandedLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsedLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolEmptyLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration.SymbolIterationLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.method.SymbolMethodLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.process.SymbolProcessLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.project.SymbolProjectLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolActivityLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolDecisionLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolIterationLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolMethodLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolPauseLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.figures.SymbolProjectLayout;
 import com.noxyspace.vinca.canvas.symbols.bar.trashcan.SymbolTrashcanLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.timeline.TimelineLayout;
 import com.noxyspace.vinca.objects.ApplicationObject;
@@ -47,7 +46,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SymbolLayout extends SymbolLayoutDragHandler {
     public static final int SYMBOL_DIMENSION = 80;
@@ -168,7 +166,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                         } else if (v instanceof SymbolContainerBracketLayout) {
                                             ViewParent parent = v.getParent();
 
-                                            if (parent != null && parent instanceof SymbolContainerExpanded) {
+                                            if (parent != null && parent instanceof SymbolContainerExpandedLayout) {
                                                 parent = parent.getParent();
 
                                                 if (parent != null && parent instanceof SymbolContainerLayout) {
@@ -177,7 +175,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                             }
                                         }
                                     } else {
-                                        if (v instanceof SymbolContainerBracketLayout && v.getParent() instanceof SymbolContainerExpanded && v.getParent().getParent() instanceof SymbolContainerLayout) {
+                                        if (v instanceof SymbolContainerBracketLayout && v.getParent() instanceof SymbolContainerExpandedLayout && v.getParent().getParent() instanceof SymbolContainerLayout) {
                                             makeToast("Project\n\nA project object is...");
                                         } else if (v instanceof SymbolProcessLayout) {
                                             makeToast("Process\n\nA process object is....");
@@ -207,7 +205,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                                 handler.removeCallbacks(longPressHandler);
 
                                 if (this.dragView instanceof SymbolContainerBracketLayout) {
-                                    if (this.dragView.getParent() != null && this.dragView.getParent() instanceof SymbolContainerExpanded) {
+                                    if (this.dragView.getParent() != null && this.dragView.getParent() instanceof SymbolContainerExpandedLayout) {
                                         if (this.dragView.getParent().getParent() != null && this.dragView.getParent().getParent() instanceof SymbolContainerLayout) {
                                             SymbolContainerLayout containerLayout = (SymbolContainerLayout)this.dragView.getParent().getParent();
 
@@ -266,7 +264,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
     public void moveView(View targetView, int targetIndex) {
         isMovingSymbol = true;
 
-        boolean isContainer = ((this instanceof SymbolContainerLayout) && (targetView instanceof SymbolContainerExpanded));
+        boolean isContainer = ((this instanceof SymbolContainerLayout) && (targetView instanceof SymbolContainerExpandedLayout));
 
         if ((isContainer && ((SymbolContainerLayout)this).getExpandedLayout() != targetView) || (!isContainer && this != targetView)) {
             List<View> children = this.fetchAllChildViews();
@@ -290,7 +288,7 @@ public class SymbolLayout extends SymbolLayoutDragHandler {
                 System.out.println("Adding " + this.getClass().getSimpleName() + " to " + targetView.getClass().getSimpleName() + " with targetIndex = " + targetIndex);
                 ((ViewGroup)targetView).addView(this, targetIndex);
 
-                if (targetView instanceof SymbolContainerExpanded) {
+                if (targetView instanceof SymbolContainerExpandedLayout) {
                     ((ViewGroup)targetView).addView(new SymbolEmptyLayout(getContext()), targetIndex + 1);
                 }
             } else {

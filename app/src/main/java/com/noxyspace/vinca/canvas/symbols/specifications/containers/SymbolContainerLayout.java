@@ -1,7 +1,6 @@
 package com.noxyspace.vinca.canvas.symbols.specifications.containers;
 
 import android.content.Context;
-import android.view.DragEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -15,7 +14,7 @@ import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.Symb
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolEmptyLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.additionals.SymbolTitle;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpandedLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class SymbolContainerLayout extends SymbolLayout {
     private SymbolTitle header;
     private SymbolTitle footer;
 
-    private SymbolContainerExpanded symbolExpanded;
+    private SymbolContainerExpandedLayout symbolExpanded;
     private SymbolContainerCollapsed symbolCollapsed;
 
     private boolean collapsed;
@@ -47,13 +46,13 @@ public class SymbolContainerLayout extends SymbolLayout {
         this.header = new SymbolTitle(context, this.title);
         this.footer = new SymbolTitle(context, "");
 
-        this.symbolExpanded = new SymbolContainerExpanded(context);
+        this.symbolExpanded = new SymbolContainerExpandedLayout(context);
         this.symbolCollapsed = null;
 
         this.collapsed = collapsed;
     }
 
-    public SymbolContainerExpanded getExpandedLayout() {
+    public SymbolContainerExpandedLayout getExpandedLayout() {
         return this.symbolExpanded;
     }
 

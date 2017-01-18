@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpanded;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.expanded.SymbolContainerExpandedLayout;
 
 public class SymbolContainerBracketLayout extends SymbolLayout {
     private SymbolContainerBracket bracket;
@@ -23,7 +23,7 @@ public class SymbolContainerBracketLayout extends SymbolLayout {
 
     @Override
     public boolean onDragDrop(View v, DragEvent event) {
-        if (this.getParent() instanceof SymbolContainerExpanded && this.getParent().getParent() instanceof SymbolContainerLayout) {
+        if (this.getParent() instanceof SymbolContainerExpandedLayout && this.getParent().getParent() instanceof SymbolContainerLayout) {
             return ((SymbolLayout)this.getParent().getParent()).onDragDrop(v, event);
         }
 

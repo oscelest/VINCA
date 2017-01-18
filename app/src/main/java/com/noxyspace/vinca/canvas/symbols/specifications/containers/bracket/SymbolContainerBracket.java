@@ -17,16 +17,14 @@ public class SymbolContainerBracket extends ImageView {
     public SymbolContainerBracket(Context context, int resId) {
         super(context);
 
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display screen = wm.getDefaultDisplay();
         Point size = new Point();
-        screen.getSize(size);
-        int width = size.x;
-        int height = size.y;
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
 
         LinearLayout.LayoutParams params;
-        if ((width < 1100 && height < 600) || (width < 600 && height < 1100) || Build.MODEL.equals("GT-I9505"))  {
+
+        if ((size.x < 1100 && size.y < 600) || (size.x < 600 && size.y < 1100) || Build.MODEL.equals("GT-I9505"))  {
             int dimens;
+
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 dimens = SymbolLayout.SYMBOL_DIMENSION_SMALL_LANDSCAPE;
             } else {

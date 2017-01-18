@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.specifications.figures.iteration;
+package com.noxyspace.vinca.canvas.symbols.specifications.figures;
 
 import android.content.Context;
 import android.view.DragEvent;
@@ -8,34 +8,30 @@ import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.bracket.SymbolContainerBracketLayout;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.activity.SymbolActivityLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.decision.SymbolDecisionLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.pause.SymbolPauseLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.process.SymbolProcessLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
 
-public class SymbolIterationLayout extends SymbolContainerLayout {
-    public SymbolIterationLayout(Context context) {
+public class SymbolProcessLayout extends SymbolContainerLayout {
+    public SymbolProcessLayout(Context context) {
         this(context, true);
     }
 
-    public SymbolIterationLayout(Context context, boolean acceptsDrop) {
+    public SymbolProcessLayout(Context context, boolean acceptsDrop) {
         this(context, acceptsDrop, false);
     }
 
-    public SymbolIterationLayout(Context context, boolean acceptsDrop, boolean collapsed) {
+    public SymbolProcessLayout(Context context, boolean acceptsDrop, boolean collapsed) {
         super(context, acceptsDrop, collapsed);
 
         this.createContainerSymbols(
-            new SymbolContainerBracketLayout(context, R.drawable.iteration_start),
-            new SymbolContainerBracketLayout(context, R.drawable.iteration_end),
-            new SymbolIteration(context)
+            new SymbolContainerBracketLayout(context, R.drawable.process_start),
+            new SymbolContainerBracketLayout(context, R.drawable.process_end),
+            new SymbolContainerCollapsed(context, R.drawable.process_collapsed, 1.15f, 1.0f)
         );
     }
 
     @Override
     public boolean onDragDrop(View v, DragEvent event) {
         View view = (View)event.getLocalState();
-        System.out.println("DragDropped on ITeration");
 
         if (view != v && !(view instanceof SymbolContainerBracketLayout && view.getParent() == v)) {
             if (view instanceof SymbolProcessLayout || view instanceof SymbolIterationLayout || view instanceof SymbolPauseLayout || view instanceof SymbolDecisionLayout || view instanceof SymbolActivityLayout) {
@@ -55,7 +51,7 @@ public class SymbolIterationLayout extends SymbolContainerLayout {
                     }
                 }
             } else {
-                this.makeToast("Iteration objects only accept: [ Process, Iteration, Pause, Decision, Activity ]");
+                this.makeToast("Process objects only accept: [ Process, Iteration, Pause, Decision, Activity ]");
             }
         }
 

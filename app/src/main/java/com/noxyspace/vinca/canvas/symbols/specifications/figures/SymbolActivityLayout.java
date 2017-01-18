@@ -1,4 +1,4 @@
-package com.noxyspace.vinca.canvas.symbols.specifications.figures.activity;
+package com.noxyspace.vinca.canvas.symbols.specifications.figures;
 
 import android.content.Context;
 import android.view.DragEvent;
@@ -6,8 +6,8 @@ import android.view.View;
 
 import com.noxyspace.vinca.R;
 import com.noxyspace.vinca.canvas.symbols.SymbolLayout;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsedLayout;
-import com.noxyspace.vinca.canvas.symbols.specifications.figures.method.SymbolMethodLayout;
 
 public class SymbolActivityLayout extends SymbolContainerCollapsedLayout {
     private boolean method;
@@ -17,7 +17,7 @@ public class SymbolActivityLayout extends SymbolContainerCollapsedLayout {
     }
 
     public SymbolActivityLayout(Context context, boolean acceptsDrop) {
-        super(context, new SymbolActivity(context), acceptsDrop);
+        super(context, new SymbolContainerCollapsed(context, R.drawable.activity), acceptsDrop);
         this.method = false;
     }
 

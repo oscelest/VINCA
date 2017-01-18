@@ -9,8 +9,6 @@ import android.widget.TextView;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.SymbolContainerLayout;
 
 public class SymbolTitle extends TextView {
-    private static final int TEXT_HEIGHT = 10;
-
     public SymbolTitle(Context context) {
         this(context, "");
     }

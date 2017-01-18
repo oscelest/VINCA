@@ -1,9 +1,11 @@
-package com.noxyspace.vinca.canvas.symbols.specifications.figures.pause;
+package com.noxyspace.vinca.canvas.symbols.specifications.figures;
 
 import android.content.Context;
 import android.view.DragEvent;
 import android.view.View;
 
+import com.noxyspace.vinca.R;
+import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsed;
 import com.noxyspace.vinca.canvas.symbols.specifications.containers.collapsed.SymbolContainerCollapsedLayout;
 
 public class SymbolPauseLayout extends SymbolContainerCollapsedLayout {
@@ -12,7 +14,7 @@ public class SymbolPauseLayout extends SymbolContainerCollapsedLayout {
     }
 
     public SymbolPauseLayout(Context context, boolean acceptsDrop) {
-        super(context, new SymbolPause(context), acceptsDrop);
+        super(context, new SymbolContainerCollapsed(context, R.drawable.pause, 0.75f, 1.0f), acceptsDrop);
     }
 
     @Override
