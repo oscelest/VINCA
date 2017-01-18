@@ -38,7 +38,7 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
     private ArrayList<String> descriptionList = new ArrayList<String>();
     private ArrayList<String> imageUrl = new ArrayList<String>();
 
-    private FloatingActionButton fab_btn_news;
+//    private FloatingActionButton fab_btn_news;
 
     private CustomAdapter adapter;
     private int id = 1;
@@ -49,8 +49,8 @@ public class NewsTab extends ListFragment implements AdapterView.OnItemClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_tab_fragment, container, false);
 
-        fab_btn_news = (FloatingActionButton) view.findViewById(R.id.fab_plus_news);
-        fab_btn_news.setOnClickListener(this);
+//        fab_btn_news = (FloatingActionButton) view.findViewById(R.id.fab_plus_news);
+//        fab_btn_news.setOnClickListener(this);
 
         if (newsList.isEmpty()) {
 

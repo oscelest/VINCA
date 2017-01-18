@@ -1,67 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/title_bar_padding_top_bottom"
+            android:paddingTop="@dimen/title_bar_padding_top_bottom">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/title_bar_padding_top_bottom"
-                android:layout_marginLeft="@dimen/activity_margin"
-                android:layout_marginRight="@dimen/activity_margin"
-                android:paddingTop="@dimen/title_bar_padding_top_bottom">
+                android:layout_weight="1"
+                android:text="@string/projectTitle_big"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/projectTitle_big"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:id="@+id/title"/>
+            <TextView
+                android:id="@+id/created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/createdAt_big"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/createdAt_big"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:id="@+id/created"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/lastEditedBy_big"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="@dimen/fab_layout"
-                    android:id="@+id/lastEdit"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@android:color/darker_gray" />
-
-            <ListView
-                android:id="@android:id/list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></ListView>
+            <TextView
+                android:id="@+id/lastEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fab_layout"
+                android:layout_weight="1"
+                android:text="@string/lastEditedBy_big"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_frame"
+        android:layout_gravity="center"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -69,20 +75,20 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_above="@+id/fill"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="@dimen/fab_layout"
             android:clickable="true"
-            android:layout_above="@+id/fill"
             android:src="@drawable/plus_button"
             app:backgroundTint="@color/colorPrimary" />
 
         <View
+            android:id="@+id/fill"
             android:layout_width="0dp"
-            android:layout_height="@dimen/fab_space"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/fill"/>
+            android:layout_height="@dimen/fab_layout"
+            android:layout_alignParentBottom="true" />
 
 
         <android.support.design.widget.FloatingActionButton
@@ -91,7 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/fab_plus"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/fab_space"
             android:layout_marginRight="@dimen/fab_layout"
             android:scaleX="0.8"
             android:scaleY="0.8"
@@ -107,7 +112,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/fab_folder"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/fab_space"
             android:layout_marginRight="@dimen/fab_layout"
             android:scaleX="0.8"
             android:scaleY="0.8"

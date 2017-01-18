@@ -19,9 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -473,8 +475,15 @@ public class MyProjectsTab extends ListFragment implements AdapterView.OnItemCli
                                     renameDirectoryObjectDialog(directoryObjects.get(position));
                                     return true;
 
-                                case R.id.save:
-                                    //shareDirectoryObject(directoryObjects.get(position));
+                                case R.id.move:
+                                    String id = directoryObjects.get(position).getId();
+                                    boolean isFolder = directoryObjects.get(position).isFolder();
+                                    MoveFragment moveFrag = new MoveFragment();
+                                    Bundle args = new Bundle();
+                                    args.putString("ID", id);
+                                    args.putBoolean("IS_FOLDER", isFolder);
+                                    moveFrag.setArguments(args);
+                                    moveFrag.show(getActivity().getSupportFragmentManager(), null);
                                     return true;
 
                                 case R.id.delete:

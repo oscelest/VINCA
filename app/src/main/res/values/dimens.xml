@@ -1,5 +1,4 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_margin">25dp</dimen>
 
     <dimen name="title_bar_padding_top_bottom">4dp</dimen>
@@ -15,8 +14,8 @@
 
     <dimen name="symbol_bar_icon_size">75dp</dimen>
 
-    <dimen name="fab_space">-33dp</dimen>
-    <dimen name="fab_layout">3dp</dimen>
+    <dimen name="fab_space">0dp</dimen>
+    <dimen name="fab_layout">15dp</dimen>
 
 
 </resources>
